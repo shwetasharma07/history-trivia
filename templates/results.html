@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - History Trivia</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="results-page">
+    <div class="container">
+        <div class="results-card bounce-in">
+            <div class="results-header">
+                <h1 class="results-title" id="results-title">Great Job!</h1>
+                <div class="results-emoji" id="results-emoji">&#x1F389;</div>
+            </div>
+
+            <div class="score-circle" id="score-circle">
+                <div class="score-inner">
+                    <span class="final-score" id="final-score">0</span>
+                    <span class="score-divider">/</span>
+                    <span class="total-questions" id="total-questions">10</span>
+                </div>
+                <span class="score-label">Questions Correct</span>
+            </div>
+
+            <div class="score-message" id="score-message">
+                You're a history superstar!
+            </div>
+
+            <!-- Save Score Form -->
+            <div class="save-score-section" id="save-score-section">
+                <h3>Save Your Score!</h3>
+                <form id="save-score-form" class="save-form">
+                    <input
+                        type="text"
+                        id="player-name"
+                        placeholder="Enter your name"
+                        maxlength="20"
+                        required
+                        class="name-input"
+                    >
+                    <button type="submit" class="save-button">
+                        <span>&#x1F4BE;</span> Save to Leaderboard
+                    </button>
+                </form>
+            </div>
+
+            <!-- Save Success Message -->
+            <div class="save-success hidden" id="save-success">
+                <span class="success-icon">&#x2705;</span>
+                <span class="success-text" id="success-text">Score saved!</span>
+            </div>
+
+            <div class="results-actions">
+                <a href="/play" class="action-button play-again">
+                    <span>&#x1F504;</span> Play Again
+                </a>
+                <a href="/leaderboard" class="action-button view-leaderboard">
+                    <span>&#x1F3C6;</span> Leaderboard
+                </a>
+                <a href="/" class="action-button go-home">
+                    <span>&#x1F3E0;</span> Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get score from URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const score = parseInt(urlParams.get('score')) || 0;
+        const total = parseInt(urlParams.get('total')) || 10;
+        const percentage = (score / total) * 100;
+
+        // Update display
+        document.getElementById('final-score').textContent = score;
+        document.getElementById('total-questions').textContent = total;
+
+        // Set message and emoji based on score
+        const resultsTitle = document.getElementById('results-title');
+        const resultsEmoji = document.getElementById('results-emoji');
+        const scoreMessage = document.getElementById('score-message');
+        const scoreCircle = document.getElementById('score-circle');
+
+        if (percentage === 100) {
+            resultsTitle.textContent = 'PERFECT SCORE!';
+            resultsEmoji.innerHTML = '&#x1F451;';
+            scoreMessage.textContent = "You're a history genius!";
+            scoreCircle.classList.add('perfect');
+            // Extra confetti for perfect score!
+            setTimeout(() => {
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+            }, 500);
+        } else if (percentage >= 80) {
+            resultsTitle.textContent = 'Amazing!';
+            resultsEmoji.innerHTML = '&#x1F31F;';
+            scoreMessage.textContent = "You really know your history!";
+            scoreCircle.classList.add('great');
+        } else if (percentage >= 60) {
+            resultsTitle.textContent = 'Great Job!';
+            resultsEmoji.innerHTML = '&#x1F389;';
+            scoreMessage.textContent = "You're on your way to becoming a history expert!";
+            scoreCircle.classList.add('good');
+        } else if (percentage >= 40) {
+            resultsTitle.textContent = 'Nice Try!';
+            resultsEmoji.innerHTML = '&#x1F44D;';
+            scoreMessage.textContent = "Keep learning and you'll be a pro in no time!";
+            scoreCircle.classList.add('okay');
+        } else {
+            resultsTitle.textContent = 'Keep Learning!';
+            resultsEmoji.innerHTML = '&#x1F4DA;';
+            scoreMessage.textContent = "History is full of surprises. Try again!";
+            scoreCircle.classList.add('learning');
+        }
+
+        // Confetti on load
+        if (percentage >= 60) {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        // Handle save score form
+        document.getElementById('save-score-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const playerName = document.getElementById('player-name').value.trim();
+
+            if (!playerName) return;
+
+            try {
+                const response = await fetch(`/api/save-score?player_name=${encodeURIComponent(playerName)}&score=${score}&total_questions=${total}`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+
+                document.getElementById('save-score-section').classList.add('hidden');
+                const successDiv = document.getElementById('save-success');
+                successDiv.classList.remove('hidden');
+
+                if (data.made_leaderboard) {
+                    document.getElementById('success-text').innerHTML =
+                        `Score saved! You made the leaderboard at #${data.rank}! &#x1F3C6;`;
+                    confetti({ particleCount: 50, spread: 60 });
+                } else {
+                    document.getElementById('success-text').textContent = 'Score saved!';
+                }
+            } catch (error) {
+                console.error('Error saving score:', error);
+                alert('Could not save score. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

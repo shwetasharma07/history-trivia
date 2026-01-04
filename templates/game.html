@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playing - History Trivia</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="game-page">
+    <div class="container">
+        <!-- Header with score and progress -->
+        <header class="game-header">
+            <div class="score-display">
+                <span class="score-label">Score</span>
+                <span class="score-value" id="score">0</span>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <span class="progress-text" id="progress-text">1 / 10</span>
+            </div>
+            <div class="era-badge" id="era-badge">
+                <span class="era-icon"></span>
+                <span class="era-text">Ancient</span>
+            </div>
+        </header>
+
+        <!-- Question Card -->
+        <main class="question-section">
+            <div class="question-card" id="question-card">
+                <div class="question-number" id="question-number">Question 1</div>
+                <h2 class="question-text" id="question-text">Loading question...</h2>
+
+                <div class="choices-container" id="choices-container">
+                    <!-- Choices will be injected here -->
+                </div>
+
+                <!-- Fun Fact (shown after answering) -->
+                <div class="fun-fact-container hidden" id="fun-fact-container">
+                    <div class="fun-fact-header">
+                        <span class="fun-fact-icon">&#x1F4A1;</span>
+                        <span>Fun Fact!</span>
+                    </div>
+                    <p class="fun-fact-text" id="fun-fact-text"></p>
+                </div>
+
+                <!-- Next Button -->
+                <button class="next-button hidden" id="next-button">
+                    Next Question <span>&#x27A1;</span>
+                </button>
+            </div>
+        </main>
+
+        <!-- Feedback Overlay -->
+        <div class="feedback-overlay hidden" id="feedback-overlay">
+            <div class="feedback-content" id="feedback-content">
+                <!-- Correct/Wrong feedback will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - History Trivia</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="leaderboard-page">
+    <div class="container">
+        <div class="leaderboard-card bounce-in">
+            <div class="leaderboard-header">
+                <h1 class="leaderboard-title">
+                    <span>&#x1F3C6;</span> Hall of Fame <span>&#x1F3C6;</span>
+                </h1>
+                <p class="leaderboard-subtitle">Top History Masters</p>
+            </div>
+
+            <div class="leaderboard-table-container">
+                <table class="leaderboard-table" id="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th class="rank-col">Rank</th>
+                            <th class="name-col">Name</th>
+                            <th class="score-col">Score</th>
+                            <th class="date-col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <!-- Scores will be loaded here -->
+                    </tbody>
+                </table>
+
+                <div class="empty-leaderboard hidden" id="empty-leaderboard">
+                    <span class="empty-icon">&#x1F914;</span>
+                    <p>No scores yet!</p>
+                    <p class="empty-cta">Be the first to play and set a record!</p>
+                </div>
+            </div>
+
+            <div class="leaderboard-actions">
+                <a href="/play" class="action-button play-now">
+                    <span>&#x1F3AE;</span> Play Now
+                </a>
+                <a href="/" class="action-button go-home">
+                    <span>&#x1F3E0;</span> Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load leaderboard data
+        async function loadLeaderboard() {
+            try {
+                const response = await fetch('/api/leaderboard');
+                const data = await response.json();
+                const tbody = document.getElementById('leaderboard-body');
+                const emptyDiv = document.getElementById('empty-leaderboard');
+
+                if (data.scores.length === 0) {
+                    emptyDiv.classList.remove('hidden');
+                    document.getElementById('leaderboard-table').classList.add('hidden');
+                    return;
+                }
+
+                const rankEmojis = ['&#x1F947;', '&#x1F948;', '&#x1F949;'];
+
+                tbody.innerHTML = data.scores.map((score, index) => `
+                    <tr class="score-row ${index < 3 ? 'top-three' : ''}" style="animation-delay: ${index * 0.1}s">
+                        <td class="rank-cell">
+                            ${index < 3 ? `<span class="rank-emoji">${rankEmojis[index]}</span>` : `<span class="rank-number">${score.rank}</span>`}
+                        </td>
+                        <td class="name-cell">${escapeHtml(score.player_name)}</td>
+                        <td class="score-cell">
+                            <span class="score-value">${score.score}</span>
+                            <span class="score-total">/ ${score.total_questions}</span>
+                        </td>
+                        <td class="date-cell">${score.date}</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading leaderboard:', error);
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        loadLeaderboard();
+    </script>
+</body>
+</html>
