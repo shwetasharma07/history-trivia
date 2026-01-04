@@ -1,0 +1,394 @@
+{
+  "ancient": {
+    "easy": [
+      {
+        "question": "Which ancient civilization built the pyramids of Giza?",
+        "options": ["Romans", "Greeks", "Egyptians", "Persians"],
+        "correct_answer": 2,
+        "explanation": "The pyramids of Giza were built by the ancient Egyptians around 2560 BCE as tombs for pharaohs."
+      },
+      {
+        "question": "What was the name of the famous Greek city-state known for its military prowess?",
+        "options": ["Athens", "Sparta", "Corinth", "Thebes"],
+        "correct_answer": 1,
+        "explanation": "Sparta was renowned for its military-focused society and powerful army in ancient Greece."
+      },
+      {
+        "question": "Who was the first Roman Emperor?",
+        "options": ["Julius Caesar", "Augustus", "Nero", "Caligula"],
+        "correct_answer": 1,
+        "explanation": "Augustus (born Octavian) became the first Roman Emperor in 27 BCE after defeating Mark Antony."
+      },
+      {
+        "question": "The Colosseum was built in which city?",
+        "options": ["Athens", "Alexandria", "Rome", "Carthage"],
+        "correct_answer": 2,
+        "explanation": "The Colosseum was built in Rome between 70-80 CE and could hold up to 80,000 spectators."
+      },
+      {
+        "question": "Which river was essential to ancient Egyptian civilization?",
+        "options": ["Tigris", "Euphrates", "Nile", "Ganges"],
+        "correct_answer": 2,
+        "explanation": "The Nile River provided water, fertile soil, and transportation for ancient Egyptian civilization."
+      }
+    ],
+    "medium": [
+      {
+        "question": "Who was the Carthaginian general who crossed the Alps with elephants?",
+        "options": ["Scipio", "Hannibal", "Hamilcar", "Hasdrubal"],
+        "correct_answer": 1,
+        "explanation": "Hannibal Barca crossed the Alps in 218 BCE during the Second Punic War against Rome."
+      },
+      {
+        "question": "What was the primary writing system of ancient Mesopotamia?",
+        "options": ["Hieroglyphics", "Cuneiform", "Linear B", "Sanskrit"],
+        "correct_answer": 1,
+        "explanation": "Cuneiform was developed by the Sumerians around 3400 BCE using wedge-shaped marks on clay tablets."
+      },
+      {
+        "question": "Which battle in 490 BCE saw the Greeks defeat the Persians?",
+        "options": ["Thermopylae", "Salamis", "Marathon", "Plataea"],
+        "correct_answer": 2,
+        "explanation": "The Battle of Marathon was a decisive Greek victory that inspired the modern marathon race."
+      },
+      {
+        "question": "Who was the last active pharaoh of ancient Egypt?",
+        "options": ["Nefertiti", "Hatshepsut", "Cleopatra VII", "Ramesses II"],
+        "correct_answer": 2,
+        "explanation": "Cleopatra VII ruled Egypt from 51-30 BCE until her death ended the Ptolemaic dynasty."
+      },
+      {
+        "question": "The ancient Library of Alexandria was located in which modern country?",
+        "options": ["Greece", "Egypt", "Turkey", "Iraq"],
+        "correct_answer": 1,
+        "explanation": "The Library of Alexandria was in Alexandria, Egypt, and was one of the largest libraries of the ancient world."
+      }
+    ],
+    "hard": [
+      {
+        "question": "Which Assyrian king created one of the first libraries at Nineveh?",
+        "options": ["Sargon II", "Ashurbanipal", "Sennacherib", "Tiglath-Pileser III"],
+        "correct_answer": 1,
+        "explanation": "Ashurbanipal (668-627 BCE) collected over 30,000 clay tablets at his library in Nineveh."
+      },
+      {
+        "question": "What was the name of the Persian administrative division system?",
+        "options": ["Provinces", "Satrapies", "Nomes", "Cantons"],
+        "correct_answer": 1,
+        "explanation": "Satrapies were provinces governed by satraps in the Persian Achaemenid Empire."
+      },
+      {
+        "question": "Which Roman Emperor divided the empire into Eastern and Western halves?",
+        "options": ["Constantine", "Diocletian", "Theodosius", "Hadrian"],
+        "correct_answer": 1,
+        "explanation": "Diocletian established the Tetrarchy in 285 CE, dividing the empire for administrative purposes."
+      },
+      {
+        "question": "The Rosetta Stone helped decode which ancient writing system?",
+        "options": ["Cuneiform", "Linear A", "Egyptian hieroglyphics", "Phoenician"],
+        "correct_answer": 2,
+        "explanation": "The Rosetta Stone, discovered in 1799, allowed Jean-François Champollion to decode hieroglyphics in 1822."
+      },
+      {
+        "question": "Which ancient civilization developed the concept of zero as a number?",
+        "options": ["Greeks", "Romans", "Babylonians", "Egyptians"],
+        "correct_answer": 2,
+        "explanation": "The Babylonians developed a placeholder zero around 300 BCE, though Indians later developed zero as a true number."
+      }
+    ]
+  },
+  "medieval": {
+    "easy": [
+      {
+        "question": "What was the period of European history from roughly 500-1500 CE called?",
+        "options": ["Renaissance", "Middle Ages", "Enlightenment", "Classical Period"],
+        "correct_answer": 1,
+        "explanation": "The Middle Ages, also called the Medieval period, lasted from the fall of Rome to the Renaissance."
+      },
+      {
+        "question": "What type of fortified structure did medieval lords live in?",
+        "options": ["Villas", "Castles", "Temples", "Palaces"],
+        "correct_answer": 1,
+        "explanation": "Castles served as both residences and defensive fortifications for medieval nobility."
+      },
+      {
+        "question": "Who led the Norman conquest of England in 1066?",
+        "options": ["Richard I", "William the Conqueror", "Henry II", "Edward I"],
+        "correct_answer": 1,
+        "explanation": "William, Duke of Normandy, defeated King Harold at Hastings and became King of England."
+      },
+      {
+        "question": "What was the dominant religion in medieval Europe?",
+        "options": ["Islam", "Judaism", "Christianity", "Paganism"],
+        "correct_answer": 2,
+        "explanation": "Christianity, centered in the Roman Catholic Church, dominated medieval European religious life."
+      },
+      {
+        "question": "What were the religious wars to capture the Holy Land called?",
+        "options": ["Jihads", "Crusades", "Reconquista", "Holy Wars"],
+        "correct_answer": 1,
+        "explanation": "The Crusades were a series of religious wars from 1095-1291 to capture Jerusalem and the Holy Land."
+      }
+    ],
+    "medium": [
+      {
+        "question": "What pandemic killed roughly one-third of Europe's population in the 14th century?",
+        "options": ["Smallpox", "Cholera", "Black Death", "Typhus"],
+        "correct_answer": 2,
+        "explanation": "The Black Death (bubonic plague) killed 75-200 million people between 1347-1351."
+      },
+      {
+        "question": "Who was the founder of the Mongol Empire?",
+        "options": ["Kublai Khan", "Genghis Khan", "Tamerlane", "Attila"],
+        "correct_answer": 1,
+        "explanation": "Genghis Khan united the Mongol tribes and founded the largest contiguous land empire in history."
+      },
+      {
+        "question": "What document did King John of England sign in 1215?",
+        "options": ["Bill of Rights", "Magna Carta", "Constitution", "Declaration"],
+        "correct_answer": 1,
+        "explanation": "The Magna Carta limited royal power and established principles of due process and rule of law."
+      },
+      {
+        "question": "Which conflict between England and France lasted from 1337-1453?",
+        "options": ["War of the Roses", "Hundred Years' War", "Seven Years' War", "Thirty Years' War"],
+        "correct_answer": 1,
+        "explanation": "The Hundred Years' War was fought over claims to the French throne and ended with French victory."
+      },
+      {
+        "question": "What was the medieval economic system based on land ownership called?",
+        "options": ["Capitalism", "Mercantilism", "Feudalism", "Socialism"],
+        "correct_answer": 2,
+        "explanation": "Feudalism was a hierarchical system where lords granted land to vassals in exchange for military service."
+      }
+    ],
+    "hard": [
+      {
+        "question": "Which Byzantine Emperor codified Roman law in the 6th century?",
+        "options": ["Constantine", "Justinian I", "Heraclius", "Basil II"],
+        "correct_answer": 1,
+        "explanation": "Justinian I created the Corpus Juris Civilis (Body of Civil Law) around 529-534 CE."
+      },
+      {
+        "question": "What was the name of the Islamic Golden Age center of learning in Baghdad?",
+        "options": ["Al-Azhar", "House of Wisdom", "Madrasah", "Library of Cordoba"],
+        "correct_answer": 1,
+        "explanation": "The House of Wisdom (Bayt al-Hikma) was founded in 830 CE and translated Greek and Persian texts."
+      },
+      {
+        "question": "Which medieval scholar wrote 'Summa Theologica'?",
+        "options": ["Augustine", "Thomas Aquinas", "Anselm", "Peter Abelard"],
+        "correct_answer": 1,
+        "explanation": "Thomas Aquinas wrote Summa Theologica in the 13th century, synthesizing Christian theology with Aristotelian philosophy."
+      },
+      {
+        "question": "What was the Great Schism of 1054?",
+        "options": ["Protestant Reformation", "East-West Church split", "Papal exile to Avignon", "English church separation"],
+        "correct_answer": 1,
+        "explanation": "The Great Schism split Christianity into Roman Catholic and Eastern Orthodox churches over theological disputes."
+      },
+      {
+        "question": "Which Venetian merchant wrote about his travels to China?",
+        "options": ["Ibn Battuta", "Marco Polo", "Vasco da Gama", "Christopher Columbus"],
+        "correct_answer": 1,
+        "explanation": "Marco Polo traveled to China in the 13th century and wrote 'The Travels of Marco Polo' about Kublai Khan's court."
+      }
+    ]
+  },
+  "modern": {
+    "easy": [
+      {
+        "question": "Which revolution began in France in 1789?",
+        "options": ["Industrial Revolution", "French Revolution", "American Revolution", "Russian Revolution"],
+        "correct_answer": 1,
+        "explanation": "The French Revolution began with the storming of the Bastille and led to the end of the monarchy."
+      },
+      {
+        "question": "Who was the first President of the United States?",
+        "options": ["Thomas Jefferson", "John Adams", "George Washington", "Benjamin Franklin"],
+        "correct_answer": 2,
+        "explanation": "George Washington served as the first U.S. President from 1789-1797."
+      },
+      {
+        "question": "The Industrial Revolution began in which country?",
+        "options": ["France", "Germany", "United States", "Great Britain"],
+        "correct_answer": 3,
+        "explanation": "The Industrial Revolution began in Great Britain in the mid-18th century with textile manufacturing."
+      },
+      {
+        "question": "Who was the Emperor of France who was defeated at Waterloo?",
+        "options": ["Louis XIV", "Napoleon Bonaparte", "Charles de Gaulle", "Louis XVI"],
+        "correct_answer": 1,
+        "explanation": "Napoleon Bonaparte was defeated at Waterloo in 1815, ending his rule and the Napoleonic Wars."
+      },
+      {
+        "question": "Which American war was fought between the North and South from 1861-1865?",
+        "options": ["Revolutionary War", "War of 1812", "Civil War", "Mexican-American War"],
+        "correct_answer": 2,
+        "explanation": "The American Civil War was fought over slavery and states' rights, ending with Union victory."
+      }
+    ],
+    "medium": [
+      {
+        "question": "What event triggered the start of World War I?",
+        "options": ["Sinking of Lusitania", "Assassination of Franz Ferdinand", "German invasion of Poland", "Russian Revolution"],
+        "correct_answer": 1,
+        "explanation": "The assassination of Archduke Franz Ferdinand in Sarajevo on June 28, 1914, triggered WWI."
+      },
+      {
+        "question": "Which country launched Sputnik, the first artificial satellite?",
+        "options": ["United States", "Soviet Union", "Germany", "China"],
+        "correct_answer": 1,
+        "explanation": "The Soviet Union launched Sputnik 1 on October 4, 1957, beginning the Space Age."
+      },
+      {
+        "question": "The Berlin Wall fell in which year?",
+        "options": ["1985", "1987", "1989", "1991"],
+        "correct_answer": 2,
+        "explanation": "The Berlin Wall fell on November 9, 1989, symbolizing the end of the Cold War division of Europe."
+      },
+      {
+        "question": "Who was the leader of the Indian independence movement known for nonviolent resistance?",
+        "options": ["Jawaharlal Nehru", "Mahatma Gandhi", "Subhas Chandra Bose", "Muhammad Ali Jinnah"],
+        "correct_answer": 1,
+        "explanation": "Mahatma Gandhi led India's independence movement using nonviolent civil disobedience."
+      },
+      {
+        "question": "What was the name of the policy of racial segregation in South Africa?",
+        "options": ["Jim Crow", "Apartheid", "Segregation", "Color Bar"],
+        "correct_answer": 1,
+        "explanation": "Apartheid was the system of institutionalized racial segregation in South Africa from 1948-1994."
+      }
+    ],
+    "hard": [
+      {
+        "question": "Which treaty ended World War I and imposed harsh terms on Germany?",
+        "options": ["Treaty of Paris", "Treaty of Versailles", "Treaty of Brest-Litovsk", "Treaty of Trianon"],
+        "correct_answer": 1,
+        "explanation": "The Treaty of Versailles (1919) imposed war guilt, reparations, and territorial losses on Germany."
+      },
+      {
+        "question": "What was the name of Mao Zedong's campaign to rapidly industrialize China?",
+        "options": ["Cultural Revolution", "Great Leap Forward", "Long March", "Hundred Flowers Campaign"],
+        "correct_answer": 1,
+        "explanation": "The Great Leap Forward (1958-1962) was a failed industrialization campaign that caused widespread famine."
+      },
+      {
+        "question": "Which 1884-1885 conference divided Africa among European powers?",
+        "options": ["Vienna Conference", "Berlin Conference", "Paris Conference", "London Conference"],
+        "correct_answer": 1,
+        "explanation": "The Berlin Conference established rules for European colonization of Africa without African representation."
+      },
+      {
+        "question": "What was the doctrine of U.S. foreign policy to contain Soviet expansion?",
+        "options": ["Monroe Doctrine", "Truman Doctrine", "Eisenhower Doctrine", "Nixon Doctrine"],
+        "correct_answer": 1,
+        "explanation": "The Truman Doctrine (1947) pledged U.S. support for countries resisting communist expansion."
+      },
+      {
+        "question": "Which revolution in 1917 led to the creation of the Soviet Union?",
+        "options": ["February Revolution", "October Revolution", "Bolshevik Revolution", "Both B and C"],
+        "correct_answer": 3,
+        "explanation": "The October/Bolshevik Revolution of 1917 overthrew the Provisional Government and established communist rule."
+      }
+    ]
+  },
+  "world-wars": {
+    "easy": [
+      {
+        "question": "In which year did World War I begin?",
+        "options": ["1912", "1914", "1916", "1918"],
+        "correct_answer": 1,
+        "explanation": "World War I began on July 28, 1914, following the assassination of Archduke Franz Ferdinand."
+      },
+      {
+        "question": "Which country did Germany invade to start World War II in Europe?",
+        "options": ["France", "Poland", "Austria", "Czechoslovakia"],
+        "correct_answer": 1,
+        "explanation": "Germany invaded Poland on September 1, 1939, prompting Britain and France to declare war."
+      },
+      {
+        "question": "What was the alliance of Germany, Italy, and Japan called in WWII?",
+        "options": ["Allies", "Central Powers", "Axis Powers", "Triple Entente"],
+        "correct_answer": 2,
+        "explanation": "The Axis Powers were the nations that fought against the Allied Powers in World War II."
+      },
+      {
+        "question": "What was D-Day?",
+        "options": ["End of WWI", "Pearl Harbor attack", "Allied invasion of Normandy", "German surrender"],
+        "correct_answer": 2,
+        "explanation": "D-Day (June 6, 1944) was the Allied invasion of Nazi-occupied France at Normandy beaches."
+      },
+      {
+        "question": "Which event brought the United States into World War II?",
+        "options": ["Sinking of Lusitania", "Attack on Pearl Harbor", "German U-boat attacks", "Fall of France"],
+        "correct_answer": 1,
+        "explanation": "Japan's attack on Pearl Harbor on December 7, 1941, led the U.S. to declare war."
+      }
+    ],
+    "medium": [
+      {
+        "question": "What was the name of Germany's failed strategy to quickly defeat France in WWI?",
+        "options": ["Blitzkrieg", "Schlieffen Plan", "Operation Barbarossa", "Fall Gelb"],
+        "correct_answer": 1,
+        "explanation": "The Schlieffen Plan aimed to defeat France in six weeks by attacking through Belgium."
+      },
+      {
+        "question": "Which battle is considered the turning point of WWII on the Eastern Front?",
+        "options": ["Battle of Moscow", "Battle of Stalingrad", "Battle of Kursk", "Siege of Leningrad"],
+        "correct_answer": 1,
+        "explanation": "The Battle of Stalingrad (1942-1943) was a devastating German defeat that turned the tide."
+      },
+      {
+        "question": "What was the code name for the German invasion of the Soviet Union?",
+        "options": ["Operation Overlord", "Operation Barbarossa", "Operation Sea Lion", "Operation Torch"],
+        "correct_answer": 1,
+        "explanation": "Operation Barbarossa began on June 22, 1941, and was the largest military operation in history."
+      },
+      {
+        "question": "Which country suffered the most military deaths in World War II?",
+        "options": ["Germany", "Japan", "Soviet Union", "China"],
+        "correct_answer": 2,
+        "explanation": "The Soviet Union lost approximately 8-10 million military personnel, the highest of any nation."
+      },
+      {
+        "question": "What was the systematic genocide of Jews by Nazi Germany called?",
+        "options": ["The Final Solution", "The Holocaust", "Kristallnacht", "The Purge"],
+        "correct_answer": 1,
+        "explanation": "The Holocaust resulted in the murder of approximately 6 million Jews by the Nazi regime."
+      }
+    ],
+    "hard": [
+      {
+        "question": "Which WWI battle saw the first large-scale use of poison gas by Germany?",
+        "options": ["Battle of the Somme", "Battle of Verdun", "Second Battle of Ypres", "Battle of Passchendaele"],
+        "correct_answer": 2,
+        "explanation": "Germany used chlorine gas at the Second Battle of Ypres in April 1915."
+      },
+      {
+        "question": "What was the name of the German code machine broken by Allied cryptographers?",
+        "options": ["Lorenz", "Enigma", "Purple", "Typex"],
+        "correct_answer": 1,
+        "explanation": "The Enigma machine's codes were broken by Polish and British cryptographers, aiding Allied intelligence."
+      },
+      {
+        "question": "Which conference in 1945 divided post-war Europe into spheres of influence?",
+        "options": ["Tehran Conference", "Yalta Conference", "Potsdam Conference", "Casablanca Conference"],
+        "correct_answer": 1,
+        "explanation": "The Yalta Conference (February 1945) saw Roosevelt, Churchill, and Stalin plan post-war Europe."
+      },
+      {
+        "question": "What was the last major German offensive on the Western Front in WWII?",
+        "options": ["Operation Market Garden", "Battle of the Bulge", "Operation Nordwind", "Siege of Bastogne"],
+        "correct_answer": 1,
+        "explanation": "The Battle of the Bulge (December 1944-January 1945) was Germany's final major offensive."
+      },
+      {
+        "question": "Which two Japanese cities were atomic bombs dropped on?",
+        "options": ["Tokyo and Osaka", "Hiroshima and Nagasaki", "Kyoto and Kobe", "Yokohama and Nagoya"],
+        "correct_answer": 1,
+        "explanation": "Atomic bombs were dropped on Hiroshima (August 6) and Nagasaki (August 9) in 1945."
+      }
+    ]
+  }
+}
