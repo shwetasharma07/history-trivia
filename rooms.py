@@ -1,7 +1,21 @@
 """
-Rooms module for BrainRace async multiplayer.
+Rooms Module for BrainRace Asynchronous Multiplayer.
 
-Handles room creation, joining, and score tracking using SQLite.
+This module handles the persistence layer for asynchronous multiplayer games
+where players can play the same quiz at different times. Features include:
+- Room creation with unique 6-character codes
+- Player joining and tracking
+- Score submission and ranking within rooms
+- Automatic room expiration (default 24 hours)
+
+Rooms are stored in SQLite alongside the leaderboard data. Each room has:
+- A unique alphanumeric code for sharing
+- Pre-selected questions that all players answer
+- Expiration time for automatic cleanup
+- Player list with individual scores
+
+This is distinct from the WebSocket-based real-time multiplayer,
+which uses the websocket_manager module for live synchronized games.
 """
 
 import sqlite3
@@ -9,20 +23,49 @@ import json
 import random
 import string
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, Any
 
-DATABASE_PATH = "leaderboard.db"
+# Path to the SQLite database file (shared with leaderboard)
+DATABASE_PATH: str = "leaderboard.db"
 
 
 def _get_connection() -> sqlite3.Connection:
-    """Get a database connection with row factory for dict-like access."""
+    """
+    Create and return a SQLite database connection.
+
+    The connection is configured with sqlite3.Row as the row factory,
+    enabling dict-like access to query results.
+
+    Returns:
+        A sqlite3.Connection object ready for queries.
+    """
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
 
 def init_rooms_db() -> None:
-    """Initialize the rooms database tables."""
+    """
+    Initialize the rooms database tables.
+
+    Creates two tables if they don't exist:
+
+    1. rooms: Stores room metadata
+       - id: Auto-incrementing primary key
+       - room_code: Unique shareable code (e.g., 'ABC123')
+       - created_at/expires_at: Timestamps for lifecycle management
+       - host_name: Creator's display name
+       - categories/difficulty: Game settings
+       - question_ids: JSON array of question IDs
+       - status: Room state ('waiting', 'playing', etc.)
+
+    2. room_players: Stores player data within rooms
+       - Links to room via room_id foreign key
+       - Tracks score, correct count, streak
+       - completion status and timestamp
+
+    This function is called automatically on module import.
+    """
     conn = _get_connection()
     cursor = conn.cursor()
 
@@ -62,7 +105,19 @@ def init_rooms_db() -> None:
 
 
 def _generate_room_code(length: int = 6) -> str:
-    """Generate a unique room code."""
+    """
+    Generate a random alphanumeric room code.
+
+    Creates a code using uppercase letters and digits that players
+    can share to join the same room. Uniqueness is verified by the
+    caller (create_room function).
+
+    Args:
+        length: Number of characters in the code (default 6).
+
+    Returns:
+        A random string like 'ABC123' or 'XY7Z9W'.
+    """
     chars = string.ascii_uppercase + string.digits
     return ''.join(random.choice(chars) for _ in range(length))
 

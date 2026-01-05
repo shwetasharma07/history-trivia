@@ -1,31 +1,56 @@
 """
-History Trivia Game Engine
+BrainRace Game Engine Module.
 
-Handles game logic including scoring, streaks, lives, and state management.
-Does not handle question loading or user I/O.
+This module handles the core game logic for BrainRace trivia games,
+including:
+- Score calculation with difficulty-based points
+- Streak tracking and bonus multipliers
+- Lives system (3 lives, lose one per wrong answer)
+- Immutable game state management
+
+The engine is designed to be stateless - it receives game state and
+returns updated state, making it easy to test and integrate with
+different frontends (CLI, web, etc.).
+
+This module does NOT handle:
+- Question loading (see question_bank module)
+- User I/O or display
+- Persistence (see leaderboard module)
 """
 
 from __future__ import annotations
-from typing import TypedDict, Optional
+from typing import TypedDict, Optional, Any
 
 # Points awarded per difficulty level
-DIFFICULTY_POINTS = {
+DIFFICULTY_POINTS: dict[str, int] = {
     "easy": 10,
     "medium": 20,
     "hard": 30,
 }
 
 # Streak bonus multipliers (streak_length: multiplier)
-STREAK_BONUSES = {
+# When a player reaches a streak threshold, they get the corresponding multiplier
+STREAK_BONUSES: dict[int, float] = {
     3: 1.5,   # 50% bonus at 3 streak
     5: 2.0,   # 100% bonus at 5 streak
     10: 3.0,  # 200% bonus at 10 streak
 }
 
-STARTING_LIVES = 3
+# Number of lives players start with
+STARTING_LIVES: int = 3
 
 
 class Question(TypedDict):
+    """
+    TypedDict representing a single trivia question.
+
+    Attributes:
+        question: The question text to display.
+        options: List of 4 answer choices.
+        answer: Index (0-3) of the correct answer in options.
+        explanation: Educational explanation shown after answering.
+        difficulty: Difficulty level ('easy', 'medium', or 'hard').
+    """
     question: str
     options: list[str]
     answer: int
@@ -34,6 +59,22 @@ class Question(TypedDict):
 
 
 class GameState(TypedDict):
+    """
+    TypedDict representing the complete state of a game session.
+
+    The game state is immutable - functions return new state objects
+    rather than modifying the existing state.
+
+    Attributes:
+        questions: List of all questions for this game.
+        current_question_index: Index of the next question to answer.
+        score: Cumulative score earned.
+        lives: Remaining lives (game ends at 0).
+        streak: Current consecutive correct answers.
+        max_streak: Best streak achieved this game.
+        correct_answers: Total correct answers given.
+        total_answered: Total questions answered (correct or not).
+    """
     questions: list[Question]
     current_question_index: int
     score: int
@@ -46,13 +87,20 @@ class GameState(TypedDict):
 
 def start_game(questions: list[Question]) -> GameState:
     """
-    Initialize a new game with the provided questions.
+    Initialize a new game session with the provided questions.
+
+    Creates a fresh game state with:
+    - All questions loaded
+    - Score at 0
+    - Full lives (STARTING_LIVES)
+    - No streak or answers recorded
 
     Args:
-        questions: List of question dicts from external source
+        questions: List of Question TypedDicts to use for this game.
+            Typically obtained from the question_bank module.
 
     Returns:
-        Initial game state
+        A new GameState ready for the first question.
     """
     return GameState(
         questions=questions,
@@ -68,13 +116,14 @@ def start_game(questions: list[Question]) -> GameState:
 
 def get_current_question(game_state: GameState) -> Optional[Question]:
     """
-    Get the current question, or None if no more questions.
+    Get the current question to be answered.
 
     Args:
-        game_state: Current game state
+        game_state: The current game state.
 
     Returns:
-        Current question dict or None
+        The current Question if there are remaining questions,
+        or None if all questions have been answered.
     """
     index = game_state["current_question_index"]
     questions = game_state["questions"]
@@ -85,7 +134,18 @@ def get_current_question(game_state: GameState) -> Optional[Question]:
 
 
 def _calculate_streak_multiplier(streak: int) -> float:
-    """Calculate bonus multiplier based on current streak."""
+    """
+    Calculate the score multiplier based on current streak.
+
+    The multiplier is determined by the highest streak threshold
+    that has been reached. Thresholds are defined in STREAK_BONUSES.
+
+    Args:
+        streak: The current number of consecutive correct answers.
+
+    Returns:
+        The multiplier to apply to base points (1.0 if no bonus applies).
+    """
     multiplier = 1.0
     for threshold, bonus in sorted(STREAK_BONUSES.items()):
         if streak >= threshold:
@@ -98,14 +158,27 @@ def submit_answer(
     answer_index: int
 ) -> tuple[bool, int, GameState]:
     """
-    Submit an answer for the current question.
+    Submit an answer for the current question and update game state.
+
+    This is the main game action function. It:
+    - Checks if the answer is correct
+    - Updates score with difficulty-based points and streak bonuses
+    - Updates streak (increment on correct, reset on wrong)
+    - Decrements lives on wrong answers
+    - Advances to the next question
+
+    The function returns a new GameState rather than modifying
+    the input state (immutable update pattern).
 
     Args:
-        game_state: Current game state
-        answer_index: Index of the selected answer (0-based)
+        game_state: The current game state.
+        answer_index: Index (0-3) of the selected answer option.
 
     Returns:
-        Tuple of (is_correct, points_earned, updated_game_state)
+        A tuple containing:
+        - is_correct: Whether the answer was correct
+        - points_earned: Points awarded for this answer (0 if wrong)
+        - new_state: Updated GameState with all changes applied
     """
     question = get_current_question(game_state)
     if question is None:
@@ -150,30 +223,40 @@ def is_game_over(game_state: GameState) -> bool:
     """
     Check if the game has ended.
 
-    Game ends when:
-    - Player runs out of lives, OR
-    - All questions have been answered
+    The game ends under two conditions:
+    1. The player has run out of lives (lives <= 0)
+    2. All questions have been answered
 
     Args:
-        game_state: Current game state
+        game_state: The current game state to check.
 
     Returns:
-        True if game is over
+        True if the game is over, False if play should continue.
     """
     no_lives = game_state["lives"] <= 0
     no_questions = game_state["current_question_index"] >= len(game_state["questions"])
     return no_lives or no_questions
 
 
-def get_final_score(game_state: GameState) -> dict:
+def get_final_score(game_state: GameState) -> dict[str, Any]:
     """
-    Get final game statistics.
+    Get comprehensive final game statistics.
+
+    Calculates and returns all relevant statistics for displaying
+    end-of-game results and saving to the leaderboard.
 
     Args:
-        game_state: Final game state
+        game_state: The final game state after game over.
 
     Returns:
-        Dict with score, accuracy, max_streak, etc.
+        A dictionary containing:
+        - score: Total points earned
+        - correct_answers: Number of correct answers
+        - total_answered: Total questions attempted
+        - accuracy: Percentage of correct answers (0-100)
+        - max_streak: Longest streak of consecutive correct answers
+        - lives_remaining: Lives left at game end (0 if ran out)
+        - completed: Whether all questions were answered
     """
     total = game_state["total_answered"]
     correct = game_state["correct_answers"]

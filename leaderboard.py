@@ -1,25 +1,56 @@
 """
-Leaderboard module for History Trivia Game.
+Leaderboard Module for BrainRace Trivia Game.
 
-Handles saving and retrieving high scores using SQLite.
+This module handles persistent storage and retrieval of player high scores
+using a SQLite database. Features include:
+- Saving game scores with metadata (category, difficulty, date)
+- Retrieving top scores for display on the leaderboard
+- Looking up individual player's best scores
+- Automatic database initialization on module import
+
+The leaderboard is stored in a local SQLite database file (leaderboard.db).
 """
 
 import sqlite3
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Any
 
-DATABASE_PATH = "leaderboard.db"
+# Path to the SQLite database file
+DATABASE_PATH: str = "leaderboard.db"
 
 
 def _get_connection() -> sqlite3.Connection:
-    """Get a database connection with row factory for dict-like access."""
+    """
+    Create and return a SQLite database connection.
+
+    The connection is configured with sqlite3.Row as the row factory,
+    allowing column access by name (dict-like) in addition to index.
+
+    Returns:
+        A sqlite3.Connection object ready for queries.
+    """
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
 
 def init_db() -> None:
-    """Initialize the leaderboard database table."""
+    """
+    Initialize the leaderboard database table.
+
+    Creates the high_scores table if it doesn't exist. This function
+    is automatically called on module import to ensure the database
+    is ready for use.
+
+    The table schema includes:
+    - id: Auto-incrementing primary key
+    - player_name: Display name of the player
+    - score: Total points achieved
+    - date: Timestamp of when the score was recorded
+    - category: Optional category filter used
+    - difficulty: Optional difficulty setting used
+    - total_questions: Number of questions in the game
+    """
     conn = _get_connection()
     cursor = conn.cursor()
     cursor.execute("""
@@ -43,19 +74,25 @@ def save_score(
     category: Optional[str] = None,
     difficulty: Optional[str] = None,
     total_questions: Optional[int] = None
-) -> dict:
+) -> dict[str, Any]:
     """
     Save a player's score to the leaderboard.
 
+    Records the score with timestamp and optional game metadata.
+    Also checks if the score qualifies for the top 10 leaderboard.
+
     Args:
-        player_name: Name of the player
-        score: The score achieved
-        category: Category/era played (e.g., 'ancient', 'medieval', 'modern', 'mixed')
-        difficulty: Difficulty level played
-        total_questions: Number of questions in the game
+        player_name: Display name of the player.
+        score: The total score achieved.
+        category: Category filter used in the game (e.g., 'ancient-civilizations').
+        difficulty: Difficulty setting used (e.g., 'progressive', 'hard').
+        total_questions: Number of questions in the game session.
 
     Returns:
-        Dict with save result including rank if in top 10
+        A dictionary containing:
+        - success: Always True on successful save
+        - made_leaderboard: Whether the score is in the top 10
+        - rank: Position in top 10 (1-10) or None if not ranked
     """
     conn = _get_connection()
     cursor = conn.cursor()
@@ -88,15 +125,25 @@ def save_score(
     }
 
 
-def get_top_scores(limit: int = 10) -> list[dict]:
+def get_top_scores(limit: int = 10) -> list[dict[str, Any]]:
     """
-    Get top scores from the leaderboard.
+    Get the top scores from the leaderboard.
+
+    Retrieves scores ordered by score descending, typically for
+    displaying on the leaderboard page.
 
     Args:
-        limit: Maximum number of scores to return (default 10)
+        limit: Maximum number of scores to return (default 10).
 
     Returns:
-        List of score dicts with rank, player_name, score, date, category, difficulty, total_questions
+        A list of score dictionaries, each containing:
+        - rank: Position (1-based) in the leaderboard
+        - player_name: Display name of the player
+        - score: Total points achieved
+        - date: Date portion of the timestamp (YYYY-MM-DD)
+        - category: Category filter used (may be None)
+        - difficulty: Difficulty setting used (may be None)
+        - total_questions: Number of questions in the game
     """
     conn = _get_connection()
     cursor = conn.cursor()
@@ -122,15 +169,25 @@ def get_top_scores(limit: int = 10) -> list[dict]:
     return scores
 
 
-def get_player_best(player_name: str) -> Optional[dict]:
+def get_player_best(player_name: str) -> Optional[dict[str, Any]]:
     """
-    Get a player's best score.
+    Get a player's personal best score.
+
+    Looks up the highest score achieved by a specific player,
+    useful for displaying personal records or achievements.
 
     Args:
-        player_name: Name of the player
+        player_name: The exact display name to search for.
 
     Returns:
-        Dict with player's best score info, or None if no scores found
+        A dictionary with the player's best score containing:
+        - player_name: The player's name
+        - score: Their highest score
+        - date: Date of the record (YYYY-MM-DD)
+        - category: Category filter used
+        - difficulty: Difficulty setting used
+
+        Returns None if the player has no recorded scores.
     """
     conn = _get_connection()
     cursor = conn.cursor()

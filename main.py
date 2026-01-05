@@ -1,9 +1,23 @@
+"""
+BrainRace Trivia Game - Main Application Module.
+
+This module serves as the entry point for the BrainRace trivia game,
+a FastAPI-based web application that supports:
+- Single-player trivia games with configurable difficulty
+- Asynchronous multiplayer via room codes
+- Real-time multiplayer via WebSocket connections
+- Persistent leaderboards and score tracking
+
+The application provides both REST API endpoints for game logic
+and HTML template rendering for the frontend.
+"""
+
 from fastapi import FastAPI, Request, Depends, Form, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import List, Optional, Any
 import random
 import json
 
@@ -16,7 +30,7 @@ from websocket_manager import manager
 
 # Store questions in memory for answer checking (keyed by session)
 # In production, you'd use a proper session store
-_active_questions: dict[int, dict] = {}
+_active_questions: dict[int, dict[str, Any]] = {}
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -29,20 +43,59 @@ templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/", response_class=HTMLResponse)
-async def home(request: Request):
-    """Home page - Start the game"""
+async def home(request: Request) -> HTMLResponse:
+    """
+    Render the home page of the BrainRace trivia game.
+
+    Args:
+        request: The incoming HTTP request object.
+
+    Returns:
+        HTMLResponse: The rendered index.html template.
+    """
     return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/play", response_class=HTMLResponse)
-async def play(request: Request):
-    """Game page"""
+async def play(request: Request) -> HTMLResponse:
+    """
+    Render the single-player game page.
+
+    Args:
+        request: The incoming HTTP request object.
+
+    Returns:
+        HTMLResponse: The rendered game.html template.
+    """
     return templates.TemplateResponse("game.html", {"request": request})
 
 
 @app.get("/api/questions")
-async def get_questions(count: int = 10, categories: Optional[str] = None, difficulty: str = "progressive"):
-    """Get random questions for a game with selected difficulty mode"""
+async def get_questions(
+    count: int = 10,
+    categories: Optional[str] = None,
+    difficulty: str = "progressive"
+) -> dict[str, list[dict[str, Any]]]:
+    """
+    Retrieve a set of trivia questions for a game session.
+
+    Questions are stored in memory for answer validation. The response
+    excludes correct answers to prevent cheating.
+
+    Args:
+        count: Number of questions to retrieve (default: 10).
+        categories: Comma-separated list of category IDs to filter by.
+        difficulty: Difficulty mode - "progressive" (easy to hard),
+            "easy", "medium", "hard", or "mixed" (random difficulties).
+
+    Returns:
+        A dictionary containing a list of questions, each with:
+        - id: Question identifier for answer checking
+        - category: The question's category
+        - difficulty: The question's difficulty level
+        - question: The question text
+        - choices: List of answer options
+    """
     # Parse categories from comma-separated string
     category_list = None
     if categories:
@@ -72,8 +125,14 @@ async def get_questions(count: int = 10, categories: Optional[str] = None, diffi
 
 
 @app.get("/api/categories")
-async def get_categories():
-    """Get available question categories"""
+async def get_categories() -> dict[str, list[dict[str, str]]]:
+    """
+    Retrieve all available question categories.
+
+    Returns:
+        A dictionary with a 'categories' key containing a list of category
+        objects, each with 'id' (slug) and 'name' (display name) fields.
+    """
     categories = question_bank.get_categories()
     # Return with display names
     display_names = {
@@ -98,8 +157,27 @@ DIFFICULTY_POINTS = {"easy": 10, "medium": 20, "hard": 30}
 
 
 @app.post("/api/check-answer")
-async def check_answer(question_id: int, answer: int):
-    """Check if an answer is correct and return the explanation"""
+async def check_answer(
+    question_id: int,
+    answer: int
+) -> dict[str, Any] | JSONResponse:
+    """
+    Validate a player's answer and return the result.
+
+    Args:
+        question_id: The ID of the question being answered.
+        answer: The index (0-3) of the selected answer option.
+
+    Returns:
+        A dictionary containing:
+        - correct: Whether the answer was correct
+        - correct_answer: The index of the correct answer
+        - fun_fact: Explanation/fact about the answer
+        - difficulty: The question's difficulty level
+        - points: Points earned (0 if incorrect)
+
+        Returns 404 JSONResponse if question_id not found.
+    """
     question = _active_questions.get(question_id)
     if not question:
         return JSONResponse({"error": "Question not found"}, status_code=404)
@@ -124,8 +202,24 @@ async def save_score(
     category: Optional[str] = None,
     difficulty: Optional[str] = None,
     db: Session = Depends(get_db)
-):
-    """Save a player's score to the leaderboard"""
+) -> dict[str, Any]:
+    """
+    Save a player's game score to the leaderboard.
+
+    Saves to both the legacy SQLAlchemy database and the new
+    leaderboard module for backwards compatibility.
+
+    Args:
+        player_name: The player's display name.
+        score: The total score achieved.
+        total_questions: Number of questions in the game.
+        category: Optional category filter used in the game.
+        difficulty: Optional difficulty setting used.
+        db: Database session (injected via FastAPI dependency).
+
+    Returns:
+        A dictionary with save result, including leaderboard rank if applicable.
+    """
     # Save to legacy database for backwards compatibility
     new_score = Score(
         player_name=player_name,
@@ -147,15 +241,29 @@ async def save_score(
 
 
 @app.get("/api/leaderboard")
-async def get_leaderboard():
-    """Get top 10 scores"""
+async def get_leaderboard() -> dict[str, list[dict[str, Any]]]:
+    """
+    Retrieve the top 10 scores from the leaderboard.
+
+    Returns:
+        A dictionary with a 'scores' key containing a list of score
+        records, each including player name, score, date, and game settings.
+    """
     scores = leaderboard.get_top_scores(10)
     return {"scores": scores}
 
 
 @app.get("/leaderboard", response_class=HTMLResponse)
-async def leaderboard_page(request: Request):
-    """Leaderboard page"""
+async def leaderboard_page(request: Request) -> HTMLResponse:
+    """
+    Render the leaderboard page with top scores.
+
+    Args:
+        request: The incoming HTTP request object.
+
+    Returns:
+        HTMLResponse: The rendered leaderboard.html template with scores data.
+    """
     scores = leaderboard.get_top_scores(10)
     return templates.TemplateResponse(
         "leaderboard.html",
@@ -164,8 +272,19 @@ async def leaderboard_page(request: Request):
 
 
 @app.get("/results", response_class=HTMLResponse)
-async def results_page(request: Request):
-    """Results page after game ends"""
+async def results_page(request: Request) -> HTMLResponse:
+    """
+    Render the game results page.
+
+    This page is shown after a single-player game ends,
+    displaying the final score and allowing score submission.
+
+    Args:
+        request: The incoming HTTP request object.
+
+    Returns:
+        HTMLResponse: The rendered results.html template.
+    """
     return templates.TemplateResponse("results.html", {"request": request})
 
 
@@ -174,8 +293,19 @@ async def results_page(request: Request):
 # ============================================
 
 @app.get("/lobby", response_class=HTMLResponse)
-async def lobby_page(request: Request):
-    """Lobby page for creating/joining rooms"""
+async def lobby_page(request: Request) -> HTMLResponse:
+    """
+    Render the multiplayer lobby page.
+
+    The lobby allows players to create new game rooms or
+    join existing rooms using a room code.
+
+    Args:
+        request: The incoming HTTP request object.
+
+    Returns:
+        HTMLResponse: The rendered lobby.html template.
+    """
     return templates.TemplateResponse("lobby.html", {"request": request})
 
 
@@ -185,8 +315,22 @@ async def create_room(
     categories: Optional[str] = None,
     difficulty: str = "progressive",
     question_count: int = 10
-):
-    """Create a new game room"""
+) -> dict[str, Any]:
+    """
+    Create a new asynchronous multiplayer game room.
+
+    Generates a unique room code and pre-selects questions for the game.
+    Other players can join using the room code before starting.
+
+    Args:
+        host_name: Display name of the room creator.
+        categories: Comma-separated list of category IDs to filter questions.
+        difficulty: Difficulty mode for question selection.
+        question_count: Number of questions for the game (default: 10).
+
+    Returns:
+        A dictionary with room creation result including the room_code.
+    """
     # Parse categories
     category_list = None
     if categories:
@@ -219,15 +363,33 @@ async def create_room(
 
 
 @app.post("/api/rooms/join")
-async def join_room(room_code: str, player_name: str):
-    """Join an existing room"""
+async def join_room(room_code: str, player_name: str) -> dict[str, Any]:
+    """
+    Join an existing game room.
+
+    Args:
+        room_code: The unique room code to join.
+        player_name: Display name of the player joining.
+
+    Returns:
+        A dictionary with join result including room details and status.
+    """
     result = rooms.join_room(room_code, player_name)
     return result
 
 
 @app.get("/api/rooms/{room_code}")
-async def get_room_info(room_code: str):
-    """Get room information"""
+async def get_room_info(room_code: str) -> dict[str, Any] | JSONResponse:
+    """
+    Retrieve information about a game room.
+
+    Args:
+        room_code: The unique room code.
+
+    Returns:
+        A dictionary containing room details, player list, and question count.
+        Returns 404 JSONResponse if the room is not found or has expired.
+    """
     room = rooms.get_room(room_code)
     if not room:
         return JSONResponse({"error": "Room not found or expired"}, status_code=404)
@@ -241,8 +403,21 @@ async def get_room_info(room_code: str):
 
 
 @app.get("/api/rooms/{room_code}/questions")
-async def get_room_questions(room_code: str):
-    """Get questions for a room game"""
+async def get_room_questions(
+    room_code: str
+) -> dict[str, list[dict[str, Any]]] | JSONResponse:
+    """
+    Retrieve the questions for a room-based game.
+
+    Questions are returned without correct answers to prevent cheating.
+
+    Args:
+        room_code: The unique room code.
+
+    Returns:
+        A dictionary with a 'questions' key containing the question list.
+        Returns 404 JSONResponse if the room is not found or has expired.
+    """
     room = rooms.get_room(room_code)
     if not room:
         return JSONResponse({"error": "Room not found or expired"}, status_code=404)
@@ -270,8 +445,20 @@ async def save_room_score(
     score: int,
     correct_count: int,
     best_streak: int
-):
-    """Save a player's score for a room game"""
+) -> dict[str, Any]:
+    """
+    Save a player's score for a room-based game.
+
+    Args:
+        room_code: The unique room code.
+        player_name: The player's display name.
+        score: Total score achieved.
+        correct_count: Number of correct answers.
+        best_streak: Longest streak of consecutive correct answers.
+
+    Returns:
+        A dictionary with save result and current room standings.
+    """
     result = rooms.save_room_score(
         room_code=room_code,
         player_name=player_name,
@@ -283,8 +470,20 @@ async def save_room_score(
 
 
 @app.get("/room/{room_code}", response_class=HTMLResponse)
-async def room_page(request: Request, room_code: str):
-    """Room lobby page showing players"""
+async def room_page(request: Request, room_code: str) -> HTMLResponse:
+    """
+    Render the room lobby page showing connected players.
+
+    Players can wait here until the host starts the game.
+
+    Args:
+        request: The incoming HTTP request object.
+        room_code: The unique room code.
+
+    Returns:
+        HTMLResponse: The room.html template with player list,
+        or lobby.html with error if room not found.
+    """
     room = rooms.get_room(room_code)
     if not room:
         return templates.TemplateResponse("lobby.html", {
@@ -301,8 +500,18 @@ async def room_page(request: Request, room_code: str):
 
 
 @app.get("/room/{room_code}/play", response_class=HTMLResponse)
-async def room_play_page(request: Request, room_code: str):
-    """Play page for room-based game"""
+async def room_play_page(request: Request, room_code: str) -> HTMLResponse:
+    """
+    Render the game page for a room-based multiplayer game.
+
+    Args:
+        request: The incoming HTTP request object.
+        room_code: The unique room code.
+
+    Returns:
+        HTMLResponse: The room-game.html template,
+        or lobby.html with error if room not found.
+    """
     room = rooms.get_room(room_code)
     if not room:
         return templates.TemplateResponse("lobby.html", {
@@ -317,8 +526,19 @@ async def room_play_page(request: Request, room_code: str):
 
 
 @app.get("/room/{room_code}/results", response_class=HTMLResponse)
-async def room_results_page(request: Request, room_code: str):
-    """Results page for room-based game"""
+async def room_results_page(request: Request, room_code: str) -> HTMLResponse:
+    """
+    Render the results page for a room-based multiplayer game.
+
+    Shows final standings and scores for all players in the room.
+
+    Args:
+        request: The incoming HTTP request object.
+        room_code: The unique room code.
+
+    Returns:
+        HTMLResponse: The room-results.html template with player standings.
+    """
     room = rooms.get_room(room_code)
     players = rooms.get_room_players(room_code) if room else []
 
@@ -335,14 +555,34 @@ async def room_results_page(request: Request, room_code: str):
 # ============================================
 
 @app.get("/realtime", response_class=HTMLResponse)
-async def realtime_lobby_page(request: Request):
-    """Real-time multiplayer lobby page"""
+async def realtime_lobby_page(request: Request) -> HTMLResponse:
+    """
+    Render the real-time multiplayer lobby page.
+
+    This lobby is for WebSocket-based synchronous multiplayer where
+    all players answer questions simultaneously with a shared timer.
+
+    Args:
+        request: The incoming HTTP request object.
+
+    Returns:
+        HTMLResponse: The rendered realtime-lobby.html template.
+    """
     return templates.TemplateResponse("realtime-lobby.html", {"request": request})
 
 
 @app.get("/realtime/{room_code}", response_class=HTMLResponse)
-async def realtime_game_page(request: Request, room_code: str):
-    """Real-time multiplayer game page"""
+async def realtime_game_page(request: Request, room_code: str) -> HTMLResponse:
+    """
+    Render the real-time multiplayer game page.
+
+    Args:
+        request: The incoming HTTP request object.
+        room_code: The unique room code for the WebSocket game.
+
+    Returns:
+        HTMLResponse: The rendered realtime-game.html template.
+    """
     return templates.TemplateResponse("realtime-game.html", {
         "request": request,
         "room_code": room_code
@@ -350,8 +590,25 @@ async def realtime_game_page(request: Request, room_code: str):
 
 
 @app.websocket("/ws/{room_code}/{player_name}")
-async def websocket_endpoint(websocket: WebSocket, room_code: str, player_name: str):
-    """WebSocket endpoint for real-time multiplayer"""
+async def websocket_endpoint(websocket: WebSocket, room_code: str, player_name: str) -> None:
+    """
+    WebSocket endpoint for real-time multiplayer gameplay.
+
+    Handles bidirectional communication for synchronized gameplay including:
+    - Room creation (when room_code is "create")
+    - Joining existing rooms
+    - Game start commands (host only)
+    - Answer submissions
+    - Chat messages
+
+    The connection is maintained throughout the game session and handles
+    automatic cleanup on disconnect.
+
+    Args:
+        websocket: The WebSocket connection instance.
+        room_code: Room code to join, or "create" for new room.
+        player_name: The player's display name.
+    """
     await websocket.accept()
 
     try:

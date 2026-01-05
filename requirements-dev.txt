@@ -1,4 +1,30 @@
-# Development and testing dependencies
+# BrainRace Trivia Game - Development & Testing Dependencies
+# Install with: pip install -r requirements-dev.txt
+# Note: Also install production deps: pip install -r requirements.txt
+
+# Include production dependencies
+-r requirements.txt
+
+# Testing framework
 pytest>=7.4.0
+
+# Code coverage reporting
 pytest-cov>=4.1.0
+
+# Randomize test order to catch test isolation issues
 pytest-randomly>=3.15.0
+
+# Async test support for WebSocket tests
+pytest-asyncio>=0.23.0
+
+# HTTP client for API testing
+httpx>=0.26.0
+
+# Code formatting (optional but recommended)
+black>=23.12.0
+
+# Linting (optional but recommended)
+ruff>=0.1.0
+
+# Type checking (optional but recommended)
+mypy>=1.8.0
