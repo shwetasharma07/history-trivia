@@ -8,47 +8,87 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="game-page">
-    <div class="container">
-        <!-- Header with score and progress -->
+    <div class="game-container">
+        <!-- Stats Bar -->
         <header class="game-header">
-            <div class="score-display">
-                <span class="score-label">Score</span>
-                <span class="score-value" id="score">0</span>
-            </div>
-            <div class="progress-container">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
+            <div class="stats-row">
+                <div class="stat-item stat-score">
+                    <div class="stat-icon">&#x2B50;</div>
+                    <div class="stat-content">
+                        <span class="stat-label">Score</span>
+                        <span class="stat-value" id="score">0</span>
+                    </div>
                 </div>
-                <span class="progress-text" id="progress-text">1 / 10</span>
+
+                <div class="stat-item stat-lives">
+                    <div class="stat-icon">&#x2764;&#xFE0F;</div>
+                    <div class="stat-content">
+                        <span class="stat-label">Lives</span>
+                        <div class="lives-display" id="lives-display">
+                            <span class="life-heart active">&#x2764;</span>
+                            <span class="life-heart active">&#x2764;</span>
+                            <span class="life-heart active">&#x2764;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-item stat-streak">
+                    <div class="stat-icon">&#x1F525;</div>
+                    <div class="stat-content">
+                        <span class="stat-label">Streak</span>
+                        <span class="stat-value" id="streak">0</span>
+                    </div>
+                </div>
             </div>
-            <div class="era-badge" id="era-badge">
-                <span class="era-icon"></span>
-                <span class="era-text">Ancient</span>
+
+            <div class="progress-row">
+                <div class="era-badge" id="era-badge">
+                    <span class="era-icon">&#x1F3DB;</span>
+                    <span class="era-text">Ancient</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span class="progress-label">Question</span>
+                        <span class="progress-text" id="progress-text">1 of 10</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
             </div>
         </header>
 
         <!-- Question Card -->
         <main class="question-section">
             <div class="question-card" id="question-card">
-                <div class="question-number" id="question-number">Question 1</div>
+                <div class="question-header">
+                    <span class="question-number" id="question-number">Question 1</span>
+                </div>
                 <h2 class="question-text" id="question-text">Loading question...</h2>
 
                 <div class="choices-container" id="choices-container">
                     <!-- Choices will be injected here -->
                 </div>
 
+                <!-- Answer Result Banner -->
+                <div class="answer-result hidden" id="answer-result">
+                    <div class="result-icon" id="result-icon">&#x2705;</div>
+                    <div class="result-text" id="result-text">Correct!</div>
+                </div>
+
                 <!-- Fun Fact (shown after answering) -->
                 <div class="fun-fact-container hidden" id="fun-fact-container">
                     <div class="fun-fact-header">
                         <span class="fun-fact-icon">&#x1F4A1;</span>
-                        <span>Fun Fact!</span>
+                        <span>Did you know?</span>
                     </div>
                     <p class="fun-fact-text" id="fun-fact-text"></p>
                 </div>
 
                 <!-- Next Button -->
                 <button class="next-button hidden" id="next-button">
-                    Next Question <span>&#x27A1;</span>
+                    <span class="next-text">Next Question</span>
+                    <span class="next-arrow">&#x2192;</span>
                 </button>
             </div>
         </main>
@@ -58,6 +98,12 @@
             <div class="feedback-content" id="feedback-content">
                 <!-- Correct/Wrong feedback will appear here -->
             </div>
+        </div>
+
+        <!-- Streak Bonus Popup -->
+        <div class="streak-popup hidden" id="streak-popup">
+            <span class="streak-fire">&#x1F525;</span>
+            <span class="streak-text" id="streak-popup-text">3 in a row!</span>
         </div>
     </div>
 
