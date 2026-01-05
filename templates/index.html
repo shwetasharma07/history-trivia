@@ -8,224 +8,364 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="home-page">
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+        <div class="grid-overlay"></div>
+    </div>
+
     <div class="container">
-        <div class="hero">
-            <div class="title-wrapper">
-                <h1 class="main-title bounce-in">
-                    <span class="emoji">&#x1F9E0;</span>
-                    BrainRace
-                    <span class="emoji">&#x1F3C1;</span>
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="logo-container">
+                <div class="logo-glow"></div>
+                <h1 class="game-logo">
+                    <span class="logo-icon pulse-glow">&#x1F9E0;</span>
+                    <span class="logo-text">
+                        <span class="letter" style="--i:1">B</span>
+                        <span class="letter" style="--i:2">r</span>
+                        <span class="letter" style="--i:3">a</span>
+                        <span class="letter" style="--i:4">i</span>
+                        <span class="letter" style="--i:5">n</span>
+                        <span class="letter accent" style="--i:6">R</span>
+                        <span class="letter accent" style="--i:7">a</span>
+                        <span class="letter accent" style="--i:8">c</span>
+                        <span class="letter accent" style="--i:9">e</span>
+                    </span>
+                    <span class="logo-icon pulse-glow">&#x1F3C1;</span>
                 </h1>
-                <p class="subtitle fade-in">Race to prove your knowledge!</p>
+                <p class="tagline">
+                    <span class="tagline-word">Challenge</span>
+                    <span class="tagline-dot">&#x2022;</span>
+                    <span class="tagline-word">Compete</span>
+                    <span class="tagline-dot">&#x2022;</span>
+                    <span class="tagline-word">Conquer</span>
+                </p>
             </div>
 
-            <div class="game-mode-selector fade-in-delay">
-                <h3>Game Mode</h3>
-                <div class="mode-options">
-                    <label class="mode-option">
-                        <input type="radio" name="gameMode" value="solo" checked>
-                        <span class="mode-card">
-                            <span class="mode-icon">&#x1F464;</span>
-                            <span class="mode-name">Solo</span>
-                        </span>
-                    </label>
-                    <label class="mode-option">
-                        <input type="radio" name="gameMode" value="local">
-                        <span class="mode-card">
-                            <span class="mode-icon">&#x1F465;</span>
-                            <span class="mode-name">Local Multiplayer</span>
-                        </span>
-                    </label>
-                    <a href="/lobby" class="mode-option mode-link">
-                        <span class="mode-card">
-                            <span class="mode-icon">&#x1F310;</span>
-                            <span class="mode-name">Online Rooms</span>
-                        </span>
-                    </a>
-                    <a href="/realtime" class="mode-option mode-link realtime-link">
-                        <span class="mode-card">
-                            <span class="mode-icon">&#x26A1;</span>
-                            <span class="mode-name">Live Battle</span>
-                        </span>
-                    </a>
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-pill">
+                    <span class="stat-icon">&#x1F4DA;</span>
+                    <span class="stat-value">7</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-icon">&#x2753;</span>
+                    <span class="stat-value">100+</span>
+                    <span class="stat-label">Questions</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-icon">&#x1F3AE;</span>
+                    <span class="stat-value">4</span>
+                    <span class="stat-label">Game Modes</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Mode Selection -->
+        <div class="mode-section">
+            <h2 class="section-title">
+                <span class="title-icon">&#x1F3AF;</span>
+                Choose Your Battle
+            </h2>
+            <div class="mode-grid">
+                <label class="mode-card-wrapper">
+                    <input type="radio" name="gameMode" value="solo" checked>
+                    <div class="mode-card solo-mode">
+                        <div class="mode-card-bg"></div>
+                        <div class="mode-card-content">
+                            <div class="mode-icon-wrapper">
+                                <span class="mode-icon">&#x1F464;</span>
+                                <div class="mode-icon-ring"></div>
+                            </div>
+                            <h3 class="mode-title">Solo Quest</h3>
+                            <p class="mode-desc">Test your limits alone</p>
+                            <div class="mode-features">
+                                <span class="feature-tag">3 Lives</span>
+                                <span class="feature-tag">Streaks</span>
+                            </div>
+                        </div>
+                        <div class="mode-shine"></div>
+                    </div>
+                </label>
+
+                <label class="mode-card-wrapper">
+                    <input type="radio" name="gameMode" value="local">
+                    <div class="mode-card local-mode">
+                        <div class="mode-card-bg"></div>
+                        <div class="mode-card-content">
+                            <div class="mode-icon-wrapper">
+                                <span class="mode-icon">&#x1F465;</span>
+                                <div class="mode-icon-ring"></div>
+                            </div>
+                            <h3 class="mode-title">Couch Party</h3>
+                            <p class="mode-desc">Play with friends nearby</p>
+                            <div class="mode-features">
+                                <span class="feature-tag">2-4 Players</span>
+                                <span class="feature-tag">Hot Seat</span>
+                            </div>
+                        </div>
+                        <div class="mode-shine"></div>
+                    </div>
+                </label>
+
+                <a href="/lobby" class="mode-card-wrapper mode-link">
+                    <div class="mode-card room-mode">
+                        <div class="mode-card-bg"></div>
+                        <div class="mode-card-content">
+                            <div class="mode-icon-wrapper">
+                                <span class="mode-icon">&#x1F310;</span>
+                                <div class="mode-icon-ring"></div>
+                            </div>
+                            <h3 class="mode-title">Online Rooms</h3>
+                            <p class="mode-desc">Play at your own pace</p>
+                            <div class="mode-features">
+                                <span class="feature-tag">Async</span>
+                                <span class="feature-tag">Share Code</span>
+                            </div>
+                        </div>
+                        <div class="mode-shine"></div>
+                    </div>
+                </a>
+
+                <a href="/realtime" class="mode-card-wrapper mode-link">
+                    <div class="mode-card live-mode">
+                        <div class="mode-card-bg"></div>
+                        <div class="mode-card-content">
+                            <div class="mode-icon-wrapper">
+                                <span class="mode-icon">&#x26A1;</span>
+                                <div class="mode-icon-ring"></div>
+                            </div>
+                            <h3 class="mode-title">Live Battle</h3>
+                            <p class="mode-desc">Real-time competition</p>
+                            <div class="mode-features">
+                                <span class="feature-tag live-tag">LIVE</span>
+                                <span class="feature-tag">Sync Play</span>
+                            </div>
+                        </div>
+                        <div class="mode-shine"></div>
+                        <div class="live-pulse"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Player Setup -->
+        <div id="player-setup-section" class="setup-section">
+            <div id="solo-setup" class="player-setup glass-panel">
+                <div class="setup-header">
+                    <span class="setup-icon">&#x1F464;</span>
+                    <h3>Enter the Arena</h3>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="username" class="neon-input" placeholder="Your legendary name..." maxlength="20">
+                    <div class="input-glow"></div>
                 </div>
             </div>
 
-            <div id="solo-setup" class="player-setup fade-in-delay">
-                <label for="username" class="username-label">Your Name</label>
-                <input type="text" id="username" class="username-input" placeholder="Enter your name..." maxlength="20">
-            </div>
-
-            <div id="multiplayer-setup" class="player-setup fade-in-delay" style="display: none;">
+            <div id="multiplayer-setup" class="player-setup glass-panel" style="display: none;">
+                <div class="setup-header">
+                    <span class="setup-icon">&#x1F465;</span>
+                    <h3>Assemble Your Team</h3>
+                </div>
                 <div class="player-count-selector">
-                    <label>Number of Players</label>
-                    <div class="player-count-options">
+                    <span class="count-label">Players:</span>
+                    <div class="count-buttons">
                         <button type="button" class="count-btn active" data-count="2">2</button>
                         <button type="button" class="count-btn" data-count="3">3</button>
                         <button type="button" class="count-btn" data-count="4">4</button>
                     </div>
                 </div>
-                <div class="player-names">
-                    <div class="player-name-input">
-                        <label>Player 1</label>
-                        <input type="text" class="username-input player-input" data-player="1" placeholder="Name..." maxlength="15">
+                <div class="player-inputs-grid">
+                    <div class="player-input-wrapper">
+                        <span class="player-badge" style="--player-color: #f472b6;">P1</span>
+                        <input type="text" class="neon-input player-input" data-player="1" placeholder="Player 1" maxlength="15">
                     </div>
-                    <div class="player-name-input">
-                        <label>Player 2</label>
-                        <input type="text" class="username-input player-input" data-player="2" placeholder="Name..." maxlength="15">
+                    <div class="player-input-wrapper">
+                        <span class="player-badge" style="--player-color: #60a5fa;">P2</span>
+                        <input type="text" class="neon-input player-input" data-player="2" placeholder="Player 2" maxlength="15">
                     </div>
-                    <div class="player-name-input" data-for="3" style="display: none;">
-                        <label>Player 3</label>
-                        <input type="text" class="username-input player-input" data-player="3" placeholder="Name..." maxlength="15">
+                    <div class="player-input-wrapper" data-for="3" style="display: none;">
+                        <span class="player-badge" style="--player-color: #34d399;">P3</span>
+                        <input type="text" class="neon-input player-input" data-player="3" placeholder="Player 3" maxlength="15">
                     </div>
-                    <div class="player-name-input" data-for="4" style="display: none;">
-                        <label>Player 4</label>
-                        <input type="text" class="username-input player-input" data-player="4" placeholder="Name..." maxlength="15">
+                    <div class="player-input-wrapper" data-for="4" style="display: none;">
+                        <span class="player-badge" style="--player-color: #fbbf24;">P4</span>
+                        <input type="text" class="neon-input player-input" data-player="4" placeholder="Player 4" maxlength="15">
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="category-selector fade-in-delay">
-                <div class="selector-header">
-                    <h3>Choose Your Categories</h3>
-                    <label class="select-all-toggle">
-                        <input type="checkbox" id="select-all" checked>
-                        <span>Select All</span>
-                    </label>
-                </div>
-                <div class="category-grid">
-                    <label class="category-option">
-                        <input type="checkbox" name="category" value="ancient-civilizations" checked>
-                        <span class="category-card">
-                            <span class="category-emoji">&#x1F3FA;</span>
-                            <span class="category-name">Ancient Civilizations</span>
-                        </span>
-                    </label>
-                    <label class="category-option">
-                        <input type="checkbox" name="category" value="medieval-europe" checked>
-                        <span class="category-card">
-                            <span class="category-emoji">&#x2694;</span>
-                            <span class="category-name">Medieval Europe</span>
-                        </span>
-                    </label>
-                    <label class="category-option">
-                        <input type="checkbox" name="category" value="world-wars" checked>
-                        <span class="category-card">
-                            <span class="category-emoji">&#x1F3C6;</span>
-                            <span class="category-name">World Wars</span>
-                        </span>
-                    </label>
-                    <label class="category-option">
-                        <input type="checkbox" name="category" value="cold-war" checked>
-                        <span class="category-card">
-                            <span class="category-emoji">&#x2744;</span>
-                            <span class="category-name">Cold War</span>
-                        </span>
-                    </label>
-                    <label class="category-option">
-                        <input type="checkbox" name="category" value="ancient-philosophy" checked>
-                        <span class="category-card">
-                            <span class="category-emoji">&#x1F4DC;</span>
-                            <span class="category-name">Ancient Philosophy</span>
-                        </span>
-                    </label>
-                    <label class="category-option">
-                        <input type="checkbox" name="category" value="revolutionary-periods" checked>
-                        <span class="category-card">
-                            <span class="category-emoji">&#x1F525;</span>
-                            <span class="category-name">Revolutionary Periods</span>
-                        </span>
-                    </label>
-                    <label class="category-option">
-                        <input type="checkbox" name="category" value="science" checked>
-                        <span class="category-card">
-                            <span class="category-emoji">&#x1F52C;</span>
-                            <span class="category-name">Science</span>
-                        </span>
-                    </label>
-                </div>
-                <p class="selected-count"><span id="category-count">7</span> categories selected</p>
+        <!-- Category Selection -->
+        <div class="category-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-icon">&#x1F4DA;</span>
+                    Pick Your Topics
+                </h2>
+                <label class="toggle-all">
+                    <input type="checkbox" id="select-all" checked>
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-label">All</span>
+                </label>
             </div>
-
-            <div class="difficulty-selector fade-in-delay-2">
-                <h3>Difficulty Mode</h3>
-                <div class="difficulty-options">
-                    <label class="difficulty-option">
-                        <input type="radio" name="difficulty" value="progressive" checked>
-                        <span class="difficulty-card">
-                            <span class="diff-icon">&#x1F4C8;</span>
-                            <span class="diff-name">Progressive</span>
-                            <span class="diff-desc">Starts easy, gets harder</span>
-                        </span>
-                    </label>
-                    <label class="difficulty-option">
-                        <input type="radio" name="difficulty" value="easy">
-                        <span class="difficulty-card">
-                            <span class="diff-icon">&#x1F7E2;</span>
-                            <span class="diff-name">Easy</span>
-                            <span class="diff-desc">Beginner friendly</span>
-                        </span>
-                    </label>
-                    <label class="difficulty-option">
-                        <input type="radio" name="difficulty" value="medium">
-                        <span class="difficulty-card">
-                            <span class="diff-icon">&#x1F7E1;</span>
-                            <span class="diff-name">Medium</span>
-                            <span class="diff-desc">Moderate challenge</span>
-                        </span>
-                    </label>
-                    <label class="difficulty-option">
-                        <input type="radio" name="difficulty" value="hard">
-                        <span class="difficulty-card">
-                            <span class="diff-icon">&#x1F534;</span>
-                            <span class="diff-name">Hard</span>
-                            <span class="diff-desc">Expert level</span>
-                        </span>
-                    </label>
-                    <label class="difficulty-option">
-                        <input type="radio" name="difficulty" value="mixed">
-                        <span class="difficulty-card">
-                            <span class="diff-icon">&#x1F500;</span>
-                            <span class="diff-name">Mixed</span>
-                            <span class="diff-desc">Random difficulty</span>
-                        </span>
-                    </label>
-                </div>
+            <div class="category-grid">
+                <label class="category-chip">
+                    <input type="checkbox" name="category" value="ancient-civilizations" checked>
+                    <span class="chip-content">
+                        <span class="chip-emoji">&#x1F3FA;</span>
+                        <span class="chip-text">Ancient Civilizations</span>
+                    </span>
+                </label>
+                <label class="category-chip">
+                    <input type="checkbox" name="category" value="medieval-europe" checked>
+                    <span class="chip-content">
+                        <span class="chip-emoji">&#x2694;</span>
+                        <span class="chip-text">Medieval Europe</span>
+                    </span>
+                </label>
+                <label class="category-chip">
+                    <input type="checkbox" name="category" value="world-wars" checked>
+                    <span class="chip-content">
+                        <span class="chip-emoji">&#x1F3C6;</span>
+                        <span class="chip-text">World Wars</span>
+                    </span>
+                </label>
+                <label class="category-chip">
+                    <input type="checkbox" name="category" value="cold-war" checked>
+                    <span class="chip-content">
+                        <span class="chip-emoji">&#x2744;</span>
+                        <span class="chip-text">Cold War</span>
+                    </span>
+                </label>
+                <label class="category-chip">
+                    <input type="checkbox" name="category" value="ancient-philosophy" checked>
+                    <span class="chip-content">
+                        <span class="chip-emoji">&#x1F4DC;</span>
+                        <span class="chip-text">Philosophy</span>
+                    </span>
+                </label>
+                <label class="category-chip">
+                    <input type="checkbox" name="category" value="revolutionary-periods" checked>
+                    <span class="chip-content">
+                        <span class="chip-emoji">&#x1F525;</span>
+                        <span class="chip-text">Revolutions</span>
+                    </span>
+                </label>
+                <label class="category-chip">
+                    <input type="checkbox" name="category" value="science" checked>
+                    <span class="chip-content">
+                        <span class="chip-emoji">&#x1F52C;</span>
+                        <span class="chip-text">Science</span>
+                    </span>
+                </label>
             </div>
+            <div class="category-counter">
+                <span id="category-count">7</span>/7 selected
+            </div>
+        </div>
 
-            <div class="timed-mode-selector fade-in-delay-2">
-                <h3>Time Mode</h3>
-                <div class="timed-mode-options">
-                    <label class="timed-option">
-                        <input type="radio" name="timedMode" value="classic" checked>
-                        <span class="timed-card">
-                            <span class="timed-icon">&#x1F3AE;</span>
-                            <span class="timed-name">Classic</span>
-                            <span class="timed-desc">No time limit</span>
-                        </span>
-                    </label>
-                    <label class="timed-option">
-                        <input type="radio" name="timedMode" value="timed">
-                        <span class="timed-card">
-                            <span class="timed-icon">&#x23F1;</span>
-                            <span class="timed-name">Timed</span>
-                            <span class="timed-desc">15 sec per question, +5 speed bonus</span>
-                        </span>
-                    </label>
+        <!-- Game Settings -->
+        <div class="settings-section">
+            <div class="settings-row">
+                <!-- Difficulty -->
+                <div class="setting-group">
+                    <h3 class="setting-title">
+                        <span>&#x1F4AA;</span> Difficulty
+                    </h3>
+                    <div class="pill-selector">
+                        <label class="pill-option">
+                            <input type="radio" name="difficulty" value="progressive" checked>
+                            <span class="pill">&#x1F4C8; Progressive</span>
+                        </label>
+                        <label class="pill-option">
+                            <input type="radio" name="difficulty" value="easy">
+                            <span class="pill easy">&#x1F7E2; Easy</span>
+                        </label>
+                        <label class="pill-option">
+                            <input type="radio" name="difficulty" value="medium">
+                            <span class="pill medium">&#x1F7E1; Medium</span>
+                        </label>
+                        <label class="pill-option">
+                            <input type="radio" name="difficulty" value="hard">
+                            <span class="pill hard">&#x1F534; Hard</span>
+                        </label>
+                        <label class="pill-option">
+                            <input type="radio" name="difficulty" value="mixed">
+                            <span class="pill">&#x1F500; Mixed</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Time Mode -->
+                <div class="setting-group">
+                    <h3 class="setting-title">
+                        <span>&#x23F1;</span> Time Mode
+                    </h3>
+                    <div class="toggle-cards">
+                        <label class="toggle-card">
+                            <input type="radio" name="timedMode" value="classic" checked>
+                            <div class="toggle-card-content">
+                                <span class="toggle-icon">&#x1F3AE;</span>
+                                <span class="toggle-name">Classic</span>
+                                <span class="toggle-info">No timer</span>
+                            </div>
+                        </label>
+                        <label class="toggle-card">
+                            <input type="radio" name="timedMode" value="timed">
+                            <div class="toggle-card-content">
+                                <span class="toggle-icon">&#x26A1;</span>
+                                <span class="toggle-name">Speed Run</span>
+                                <span class="toggle-info">15s + bonus</span>
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="start-section fade-in-delay-2">
-                <button id="start-game" class="play-button pulse">
-                    <span class="button-text">Start Adventure!</span>
-                    <span class="button-emoji">&#x1F3AE;</span>
-                </button>
-                <a href="/leaderboard" class="leaderboard-link">
-                    <span>&#x1F3C6;</span> View Leaderboard
-                </a>
+        <!-- Start Button -->
+        <div class="launch-section">
+            <button id="start-game" class="launch-button">
+                <span class="launch-bg"></span>
+                <span class="launch-content">
+                    <span class="launch-text">Launch Game</span>
+                    <span class="launch-icon">&#x1F680;</span>
+                </span>
+                <span class="launch-particles">
+                    <span class="particle"></span>
+                    <span class="particle"></span>
+                    <span class="particle"></span>
+                </span>
+            </button>
+            <a href="/leaderboard" class="leaderboard-btn">
+                <span>&#x1F3C6;</span>
+                <span>Hall of Fame</span>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-section">
+            <div class="power-ups-preview">
+                <span class="preview-label">Power-ups available:</span>
+                <div class="preview-icons">
+                    <span class="preview-icon" title="50/50">&#x2702;</span>
+                    <span class="preview-icon" title="Skip">&#x23ED;</span>
+                    <span class="preview-icon" title="2x Points">&#xD7;2</span>
+                    <span class="preview-icon" title="Hint">&#x1F4A1;</span>
+                </div>
             </div>
         </div>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const selectAll = document.getElementById('select-all');
@@ -238,15 +378,26 @@
             const multiplayerSetup = document.getElementById('multiplayer-setup');
             const countBtns = document.querySelectorAll('.count-btn');
             const playerInputs = document.querySelectorAll('.player-input');
+            const modeCards = document.querySelectorAll('.mode-card-wrapper:not(.mode-link)');
 
             let playerCount = 2;
             let gameMode = 'solo';
 
-            // Load saved username if exists
+            // Load saved username
             const savedUsername = sessionStorage.getItem('username');
             if (savedUsername) {
                 usernameInput.value = savedUsername;
             }
+
+            // Mode card animations
+            modeCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.querySelector('.mode-card').classList.add('hovered');
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.querySelector('.mode-card').classList.remove('hovered');
+                });
+            });
 
             // Game mode switching
             gameModeInputs.forEach(input => {
@@ -270,14 +421,12 @@
                     this.classList.add('active');
                     playerCount = parseInt(this.dataset.count);
 
-                    // Show/hide player inputs
-                    document.querySelector('[data-for="3"]').style.display = playerCount >= 3 ? 'block' : 'none';
-                    document.querySelector('[data-for="4"]').style.display = playerCount >= 4 ? 'block' : 'none';
+                    document.querySelector('[data-for="3"]').style.display = playerCount >= 3 ? 'flex' : 'none';
+                    document.querySelector('[data-for="4"]').style.display = playerCount >= 4 ? 'flex' : 'none';
                     validateForm();
                 });
             });
 
-            // Validate on player input
             playerInputs.forEach(input => {
                 input.addEventListener('input', validateForm);
             });
@@ -290,17 +439,17 @@
 
             function validateForm() {
                 const hasCategories = document.querySelectorAll('input[name="category"]:checked').length > 0;
-
                 let hasPlayers = false;
+
                 if (gameMode === 'solo') {
                     hasPlayers = usernameInput.value.trim().length > 0;
                 } else {
-                    // Check all visible player inputs have names
                     const visibleInputs = Array.from(playerInputs).slice(0, playerCount);
                     hasPlayers = visibleInputs.every(input => input.value.trim().length > 0);
                 }
 
                 startButton.disabled = !hasCategories || !hasPlayers;
+                startButton.classList.toggle('ready', hasCategories && hasPlayers);
             }
 
             function updateSelectAll() {
@@ -325,52 +474,52 @@
             });
 
             startButton.addEventListener('click', function() {
+                if (this.disabled) return;
+
                 const selected = Array.from(document.querySelectorAll('input[name="category"]:checked'))
                     .map(cb => cb.value);
-                if (selected.length === 0) {
-                    alert('Please select at least one category!');
-                    return;
-                }
 
                 const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
                 const timedMode = document.querySelector('input[name="timedMode"]:checked').value;
 
-                // Store common settings
                 sessionStorage.setItem('selectedCategories', selected.join(','));
                 sessionStorage.setItem('difficulty', difficulty);
                 sessionStorage.setItem('timedMode', timedMode);
                 sessionStorage.setItem('gameMode', gameMode);
 
                 if (gameMode === 'solo') {
-                    const username = usernameInput.value.trim();
-                    if (!username) {
-                        alert('Please enter your name!');
-                        usernameInput.focus();
-                        return;
-                    }
-                    sessionStorage.setItem('username', username);
+                    sessionStorage.setItem('username', usernameInput.value.trim());
                     sessionStorage.removeItem('players');
                 } else {
-                    // Get player names
                     const players = [];
                     for (let i = 1; i <= playerCount; i++) {
-                        const name = document.querySelector(`[data-player="${i}"]`).value.trim();
-                        if (!name) {
-                            alert(`Please enter name for Player ${i}!`);
-                            return;
-                        }
-                        players.push(name);
+                        players.push(document.querySelector(`[data-player="${i}"]`).value.trim());
                     }
                     sessionStorage.setItem('players', JSON.stringify(players));
                     sessionStorage.setItem('playerCount', playerCount);
                     sessionStorage.removeItem('username');
                 }
 
-                window.location.href = '/play';
+                // Launch animation
+                this.classList.add('launching');
+                setTimeout(() => {
+                    window.location.href = '/play';
+                }, 400);
             });
 
-            // Initial validation
             validateForm();
+
+            // Floating shapes parallax effect
+            document.addEventListener('mousemove', (e) => {
+                const shapes = document.querySelectorAll('.shape');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+
+                shapes.forEach((shape, i) => {
+                    const speed = (i + 1) * 20;
+                    shape.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+                });
+            });
         });
     </script>
 </body>
