@@ -4,11 +4,84 @@
 // With Power-ups, Hints, and Timed Mode
 // ============================================
 
+// Simple sound manager using Web Audio API
+class SoundManager {
+    constructor() {
+        this.enabled = localStorage.getItem('soundEnabled') !== 'false';
+        this.audioContext = null;
+    }
+
+    initContext() {
+        if (!this.audioContext) {
+            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+
+    playTone(frequency, duration, type = 'sine', volume = 0.3) {
+        if (!this.enabled) return;
+        this.initContext();
+
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+
+        gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + duration);
+    }
+
+    correct() {
+        // Happy ascending arpeggio
+        this.playTone(523.25, 0.1, 'sine', 0.2); // C5
+        setTimeout(() => this.playTone(659.25, 0.1, 'sine', 0.2), 80); // E5
+        setTimeout(() => this.playTone(783.99, 0.15, 'sine', 0.25), 160); // G5
+    }
+
+    wrong() {
+        // Descending buzz
+        this.playTone(200, 0.15, 'sawtooth', 0.15);
+        setTimeout(() => this.playTone(150, 0.2, 'sawtooth', 0.1), 100);
+    }
+
+    streak() {
+        // Triumphant fanfare
+        this.playTone(523.25, 0.1, 'sine', 0.2);
+        setTimeout(() => this.playTone(659.25, 0.1, 'sine', 0.2), 100);
+        setTimeout(() => this.playTone(783.99, 0.1, 'sine', 0.2), 200);
+        setTimeout(() => this.playTone(1046.50, 0.3, 'sine', 0.3), 300);
+    }
+
+    click() {
+        this.playTone(800, 0.05, 'sine', 0.1);
+    }
+
+    timeWarning() {
+        this.playTone(440, 0.1, 'square', 0.1);
+    }
+
+    toggle() {
+        this.enabled = !this.enabled;
+        localStorage.setItem('soundEnabled', this.enabled);
+        if (this.enabled) this.click();
+        return this.enabled;
+    }
+}
+
+const soundManager = new SoundManager();
+
 class BrainRaceGame {
     constructor() {
         this.questions = [];
         this.currentQuestionIndex = 0;
         this.answered = false;
+        this.sounds = soundManager;
 
         // Game mode
         this.gameMode = sessionStorage.getItem('gameMode') || 'solo';
@@ -395,6 +468,55 @@ class BrainRaceGame {
 
     setupEventListeners() {
         this.nextButton.addEventListener('click', () => this.nextQuestion());
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => this.handleKeyPress(e));
+    }
+
+    handleKeyPress(event) {
+        // Ignore if user is typing in an input field
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+            return;
+        }
+
+        const key = event.key;
+
+        // Answer selection: 1-4 or A-D
+        if (!this.answered) {
+            let answerIndex = -1;
+
+            if (key >= '1' && key <= '4') {
+                answerIndex = parseInt(key) - 1;
+            } else if (key.toLowerCase() >= 'a' && key.toLowerCase() <= 'd') {
+                answerIndex = key.toLowerCase().charCodeAt(0) - 'a'.charCodeAt(0);
+            }
+
+            if (answerIndex >= 0 && answerIndex < 4) {
+                const buttons = this.choicesContainer.querySelectorAll('.choice-button');
+                if (buttons[answerIndex] && !buttons[answerIndex].disabled) {
+                    buttons[answerIndex].click();
+                }
+            }
+        }
+
+        // Enter or Space for next question
+        if ((key === 'Enter' || key === ' ') && this.answered && !this.nextButton.classList.contains('hidden')) {
+            event.preventDefault();
+            this.nextQuestion();
+        }
+
+        // Power-up shortcuts: Q for 50/50, W for skip, E for double points, H for hint
+        if (!this.answered) {
+            if (key.toLowerCase() === 'q' && this.fiftyFiftyBtn && !this.fiftyFiftyBtn.disabled) {
+                this.useFiftyFifty();
+            } else if (key.toLowerCase() === 'w' && this.skipBtn && !this.skipBtn.disabled) {
+                this.useSkip();
+            } else if (key.toLowerCase() === 'e' && this.doublePointsBtn && !this.doublePointsBtn.disabled) {
+                this.useDoublePoints();
+            } else if (key.toLowerCase() === 'h' && this.hintBtn && !this.hintBtn.disabled) {
+                this.useHint();
+            }
+        }
     }
 
     displayQuestion() {
@@ -556,6 +678,7 @@ class BrainRaceGame {
 
             if (result.correct) {
                 selectedButton.classList.add('correct');
+                this.sounds.correct();
                 let points = result.points || 10;
 
                 // Apply hint penalty (50% reduction)
@@ -593,6 +716,7 @@ class BrainRaceGame {
                 }
 
                 if (playerScore.streak === 3 || playerScore.streak === 5 || playerScore.streak === 7 || playerScore.streak === 10) {
+                    this.sounds.streak();
                     this.showStreakPopup(playerScore.streak);
                 }
 
@@ -600,6 +724,7 @@ class BrainRaceGame {
                 this.showAnswerResult(true);
             } else {
                 selectedButton.classList.add('wrong');
+                this.sounds.wrong();
                 buttons[result.correct_answer].classList.add('correct');
                 playerScore.streak = 0;
                 this.streakDisplay.textContent = playerScore.streak;
@@ -717,7 +842,26 @@ class BrainRaceGame {
     }
 
     finishGame() {
+        // Check for Perfect Round Bonus (all questions correct)
+        const playerScore = this.playerScores[0];
+        const isPerfect = !this.isMultiplayer && playerScore.correct === this.questions.length;
+
+        if (isPerfect) {
+            // Award 50 bonus points for perfect round
+            playerScore.score += 50;
+            this.showPowerUpFeedback('PERFECT ROUND! +50 Bonus!');
+            this.sounds.streak(); // Play victory sound
+        }
+
         if (this.isMultiplayer) {
+            // Check for multiplayer perfect rounds and apply bonuses
+            this.playerScores.forEach((ps, idx) => {
+                const questionsPerPlayer = Math.ceil(this.questions.length / this.playerCount);
+                if (ps.correct === questionsPerPlayer) {
+                    ps.score += 50;
+                }
+            });
+
             // Store multiplayer results
             const results = this.players.map((player, idx) => ({
                 name: player,
@@ -731,13 +875,18 @@ class BrainRaceGame {
             sessionStorage.setItem('totalQuestions', this.questions.length);
             window.location.href = '/results?mode=multiplayer';
         } else {
-            const params = new URLSearchParams({
-                score: this.playerScores[0].score,
-                total: this.questions.length,
-                streak: this.playerScores[0].bestStreak,
-                lives: this.lives
-            });
-            window.location.href = `/results?${params.toString()}`;
+            // Small delay if perfect to show the bonus message
+            const delay = isPerfect ? 800 : 0;
+            setTimeout(() => {
+                const params = new URLSearchParams({
+                    score: playerScore.score,
+                    total: this.questions.length,
+                    streak: playerScore.bestStreak,
+                    lives: this.lives,
+                    perfect: isPerfect ? '1' : '0'
+                });
+                window.location.href = `/results?${params.toString()}`;
+            }, delay);
         }
     }
 }

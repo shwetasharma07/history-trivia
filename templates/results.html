@@ -90,9 +90,13 @@
 
             <!-- Action Buttons -->
             <div class="results-actions">
-                <a href="/play" class="action-button play-again">
-                    <span>&#x1F504;</span>
-                    <span>Play Again</span>
+                <button id="quick-rematch" class="action-button rematch" title="Play again with same settings (R)">
+                    <span>&#x26A1;</span>
+                    <span>Quick Rematch</span>
+                </button>
+                <a href="/" class="action-button play-again">
+                    <span>&#x2699;</span>
+                    <span>New Game</span>
                 </a>
                 <a href="/leaderboard" class="action-button view-leaderboard">
                     <span>&#x1F3C6;</span>
@@ -156,6 +160,7 @@
             const total = parseInt(urlParams.get('total')) || 10;
             const bestStreak = parseInt(urlParams.get('streak')) || 0;
             const livesLeft = parseInt(urlParams.get('lives')) || 0;
+            const isPerfect = urlParams.get('perfect') === '1';
 
             // Pre-fill username from sessionStorage
             const savedUsername = sessionStorage.getItem('username');
@@ -163,10 +168,10 @@
                 document.getElementById('player-name').value = savedUsername;
             }
 
-            initSoloResults(score, total, bestStreak, livesLeft);
+            initSoloResults(score, total, bestStreak, livesLeft, isPerfect);
         }
 
-        function initSoloResults(score, total, bestStreak, livesLeft) {
+        function initSoloResults(score, total, bestStreak, livesLeft, isPerfect = false) {
             const percentage = Math.min(100, Math.round((score / (total * 20)) * 100)); // Normalize to percentage
 
             // Update display elements
@@ -199,7 +204,20 @@
             const scoreMessage = document.getElementById('score-message');
             const scoreRing = document.getElementById('score-ring');
 
-            if (percentage >= 90) {
+            if (isPerfect) {
+                // Special handling for perfect round
+                resultsTitle.textContent = 'PERFECT!';
+                resultsSubtitle.textContent = 'Flawless Victory! +50 Bonus!';
+                resultsEmoji.innerHTML = '&#x1F31F;';
+                scoreMessage.textContent = "Not a single mistake! You're a true genius!";
+                scoreRing.classList.add('perfect');
+                // Extra celebration for perfect round
+                setTimeout(() => {
+                    confetti({ particleCount: 300, spread: 120, origin: { y: 0.6 } });
+                    setTimeout(() => confetti({ particleCount: 150, angle: 60, spread: 80, origin: { x: 0 } }), 250);
+                    setTimeout(() => confetti({ particleCount: 150, angle: 120, spread: 80, origin: { x: 1 } }), 400);
+                }, 300);
+            } else if (percentage >= 90) {
                 resultsTitle.textContent = 'AMAZING!';
                 resultsSubtitle.textContent = 'Outstanding performance!';
                 resultsEmoji.innerHTML = '&#x1F451;';
@@ -273,6 +291,20 @@
                 }
             });
         }
+
+        // Quick Rematch - Play again with same settings
+        document.getElementById('quick-rematch').addEventListener('click', () => {
+            // Settings are already in sessionStorage from the previous game
+            // Just redirect to play page
+            window.location.href = '/play';
+        });
+
+        // Keyboard shortcut: R for rematch
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'r' && !e.target.matches('input, textarea')) {
+                window.location.href = '/play';
+            }
+        });
     </script>
 </body>
 </html>
