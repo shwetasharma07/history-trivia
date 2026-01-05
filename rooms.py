@@ -128,19 +128,27 @@ def create_room(
     categories: Optional[str] = None,
     difficulty: Optional[str] = None,
     expires_hours: int = 24
-) -> dict:
+) -> dict[str, Any]:
     """
-    Create a new game room.
+    Create a new asynchronous multiplayer game room.
+
+    Generates a unique room code and stores the room configuration
+    in the database. The host is automatically added as the first
+    player in the room.
 
     Args:
-        host_name: Name of the player creating the room
-        question_ids: List of question IDs for this room's game
-        categories: Categories selected for the game
-        difficulty: Difficulty setting
-        expires_hours: Hours until room expires (default 24)
+        host_name: Display name of the player creating the room.
+        question_ids: List of question IDs that all players will answer.
+        categories: Comma-separated category filter string (for display).
+        difficulty: Difficulty mode used (for display).
+        expires_hours: Hours until the room expires (default 24).
 
     Returns:
-        Dict with room info including room_code
+        A dictionary containing:
+        - success: Always True on successful creation
+        - room_code: The shareable code (e.g., 'ABC123')
+        - room_id: Database ID of the room
+        - expires_at: Timestamp when the room will expire
     """
     conn = _get_connection()
     cursor = conn.cursor()
@@ -187,15 +195,27 @@ def create_room(
     }
 
 
-def get_room(room_code: str) -> Optional[dict]:
+def get_room(room_code: str) -> Optional[dict[str, Any]]:
     """
-    Get room info by room code.
+    Retrieve room information by room code.
+
+    Looks up a room and returns its full details if found and not expired.
+    Room codes are case-insensitive (converted to uppercase).
 
     Args:
-        room_code: The unique room code
+        room_code: The unique room code (e.g., 'ABC123').
 
     Returns:
-        Room info dict or None if not found/expired
+        A dictionary containing room details:
+        - id: Database ID
+        - room_code: The room code
+        - created_at/expires_at: Timestamps
+        - host_name: Creator's name
+        - categories/difficulty: Game settings
+        - question_ids: List of question IDs (parsed from JSON)
+        - status: Current room status
+
+        Returns None if the room doesn't exist or has expired.
     """
     conn = _get_connection()
     cursor = conn.cursor()
@@ -229,16 +249,24 @@ def get_room(room_code: str) -> Optional[dict]:
     }
 
 
-def join_room(room_code: str, player_name: str) -> dict:
+def join_room(room_code: str, player_name: str) -> dict[str, Any]:
     """
-    Join an existing room.
+    Join an existing game room.
+
+    Adds a player to the room's player list. If the player has
+    already joined, returns their current status without duplicating.
 
     Args:
-        room_code: The room code to join
-        player_name: Name of the player joining
+        room_code: The room code to join.
+        player_name: Display name of the player joining.
 
     Returns:
-        Dict with success status and room info
+        A dictionary containing:
+        - success: Whether the join was successful
+        - error: Error message if success is False
+        - room: Full room details (if successful)
+        - already_joined: Whether player was already in the room
+        - already_completed: Whether player already finished the game
     """
     room = get_room(room_code)
     if not room:
@@ -278,15 +306,26 @@ def join_room(room_code: str, player_name: str) -> dict:
     }
 
 
-def get_room_players(room_code: str) -> list[dict]:
+def get_room_players(room_code: str) -> list[dict[str, Any]]:
     """
-    Get all players in a room.
+    Get all players in a room with their scores.
+
+    Returns the player list sorted by score (descending) and then
+    by completion time for players with equal scores.
 
     Args:
-        room_code: The room code
+        room_code: The room code to look up.
 
     Returns:
-        List of player dicts with scores
+        A list of player dictionaries, each containing:
+        - player_name: The player's display name
+        - score: Total points achieved
+        - correct_count: Number of correct answers
+        - best_streak: Longest answer streak
+        - completed: Whether they've finished the game
+        - completed_at: Timestamp of completion (if completed)
+
+        Returns empty list if the room doesn't exist.
     """
     room = get_room(room_code)
     if not room:
@@ -321,19 +360,27 @@ def save_room_score(
     score: int,
     correct_count: int,
     best_streak: int
-) -> dict:
+) -> dict[str, Any]:
     """
-    Save a player's score for a room game.
+    Save a player's final score for a room-based game.
+
+    Updates the player's record in the room with their final score
+    and marks them as completed. This is called when a player
+    finishes answering all questions in the room's quiz.
 
     Args:
-        room_code: The room code
-        player_name: Player's name
-        score: Total score
-        correct_count: Number of correct answers
-        best_streak: Best streak achieved
+        room_code: The room code.
+        player_name: The player's display name.
+        score: Total points achieved.
+        correct_count: Number of correct answers.
+        best_streak: Longest consecutive correct answer streak.
 
     Returns:
-        Dict with save result and current standings
+        A dictionary containing:
+        - success: Whether the save was successful
+        - error: Error message if success is False
+        - rank: Player's position in the room standings
+        - players: Full updated player list with scores
     """
     room = get_room(room_code)
     if not room:
@@ -368,10 +415,14 @@ def save_room_score(
 
 def cleanup_expired_rooms() -> int:
     """
-    Remove expired rooms and their players.
+    Remove expired rooms and their associated player data.
+
+    Deletes rooms that have passed their expiration time, along with
+    all player records for those rooms. This can be called periodically
+    to keep the database clean.
 
     Returns:
-        Number of rooms cleaned up
+        The number of rooms that were deleted.
     """
     conn = _get_connection()
     cursor = conn.cursor()
