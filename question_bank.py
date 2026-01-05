@@ -52,7 +52,8 @@ def get_questions(
 
     Args:
         count: Number of questions to return (default 10)
-        category: Filter by category ('ancient', 'medieval', 'modern', 'world-wars')
+        category: Filter by category ('ancient-civilizations', 'medieval-europe',
+                  'world-wars', 'cold-war', 'ancient-philosophy', 'revolutionary-periods')
         difficulty: Filter by difficulty ('easy', 'medium', 'hard')
 
     Returns:
@@ -77,7 +78,14 @@ def get_questions(
 
 def get_categories() -> list[str]:
     """Return available question categories."""
-    return ["ancient", "medieval", "modern", "world-wars"]
+    return [
+        "ancient-civilizations",
+        "medieval-europe",
+        "world-wars",
+        "cold-war",
+        "ancient-philosophy",
+        "revolutionary-periods"
+    ]
 
 
 def get_difficulties() -> list[str]:

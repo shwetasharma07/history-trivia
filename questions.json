@@ -1,393 +1,913 @@
 {
-  "ancient": {
+  "ancient-civilizations": {
     "easy": [
       {
-        "question": "Which ancient civilization built the pyramids of Giza?",
-        "options": ["Romans", "Greeks", "Egyptians", "Persians"],
-        "correct_answer": 2,
-        "explanation": "The pyramids of Giza were built by the ancient Egyptians around 2560 BCE as tombs for pharaohs."
-      },
-      {
-        "question": "What was the name of the famous Greek city-state known for its military prowess?",
-        "options": ["Athens", "Sparta", "Corinth", "Thebes"],
+        "question": "Which ancient civilization developed the first known writing system, cuneiform?",
+        "options": ["Egyptians", "Sumerians", "Phoenicians", "Hittites"],
         "correct_answer": 1,
-        "explanation": "Sparta was renowned for its military-focused society and powerful army in ancient Greece."
+        "explanation": "The Sumerians invented cuneiform around 3400 BCE in Mesopotamia. They used reed styluses to press wedge-shaped marks into clay tablets, initially for accounting records."
       },
       {
-        "question": "Who was the first Roman Emperor?",
-        "options": ["Julius Caesar", "Augustus", "Nero", "Caligula"],
+        "question": "What material did ancient Egyptians use to make paper-like writing surfaces?",
+        "options": ["Bamboo", "Papyrus", "Silk", "Palm leaves"],
         "correct_answer": 1,
-        "explanation": "Augustus (born Octavian) became the first Roman Emperor in 27 BCE after defeating Mark Antony."
+        "explanation": "Papyrus was made from the pith of the papyrus plant, sliced into strips, layered crosswise, and pressed together. The word 'paper' derives from 'papyrus' though they're made differently."
       },
       {
-        "question": "The Colosseum was built in which city?",
-        "options": ["Athens", "Alexandria", "Rome", "Carthage"],
+        "question": "The Parthenon in Athens was dedicated to which Greek goddess?",
+        "options": ["Hera", "Artemis", "Athena", "Aphrodite"],
         "correct_answer": 2,
-        "explanation": "The Colosseum was built in Rome between 70-80 CE and could hold up to 80,000 spectators."
+        "explanation": "The Parthenon was built 447-432 BCE to honor Athena Parthenos (Athena the Virgin), the patron goddess of Athens. It housed a 40-foot gold and ivory statue of her."
       },
       {
-        "question": "Which river was essential to ancient Egyptian civilization?",
-        "options": ["Tigris", "Euphrates", "Nile", "Ganges"],
+        "question": "Which ancient empire built an extensive road system including the Royal Road?",
+        "options": ["Roman Empire", "Persian Empire", "Maurya Empire", "Han Dynasty"],
+        "correct_answer": 1,
+        "explanation": "The Persian Royal Road stretched 1,700 miles from Susa to Sardis. Messengers could travel it in 9 days using relay stations, inspiring the later Persian postal system."
+      },
+      {
+        "question": "What was the primary purpose of the Great Wall of China?",
+        "options": ["Trade route", "Flood control", "Defense against nomadic invasions", "Religious pilgrimage path"],
         "correct_answer": 2,
-        "explanation": "The Nile River provided water, fertile soil, and transportation for ancient Egyptian civilization."
+        "explanation": "Built and rebuilt over centuries, the Great Wall defended against northern nomadic groups like the Xiongnu. It also served for border control and regulating trade along the Silk Road."
+      },
+      {
+        "question": "The Indus Valley Civilization was known for having advanced what infrastructure?",
+        "options": ["Aqueducts", "Urban drainage and sewage systems", "Road networks", "Underground granaries"],
+        "correct_answer": 1,
+        "explanation": "Cities like Mohenjo-daro (2500 BCE) had sophisticated drainage with covered sewers, private toilets, and public baths. This sanitation was unmatched until Roman times."
+      },
+      {
+        "question": "Which Phoenician city-state was famous for its purple dye trade?",
+        "options": ["Byblos", "Sidon", "Tyre", "Carthage"],
+        "correct_answer": 2,
+        "explanation": "Tyre produced Tyrian purple from murex sea snails. The dye was so valuable and labor-intensive that purple became associated with royalty throughout the Mediterranean world."
+      },
+      {
+        "question": "What innovation did the Hittites introduce that gave them military advantage around 1500 BCE?",
+        "options": ["Bronze weapons", "Iron smelting", "Cavalry tactics", "Siege towers"],
+        "correct_answer": 1,
+        "explanation": "The Hittites were among the first to smelt iron, though they kept the technology secret. Iron weapons were stronger and held edges better than bronze, transforming warfare."
       }
     ],
     "medium": [
       {
-        "question": "Who was the Carthaginian general who crossed the Alps with elephants?",
-        "options": ["Scipio", "Hannibal", "Hamilcar", "Hasdrubal"],
-        "correct_answer": 1,
-        "explanation": "Hannibal Barca crossed the Alps in 218 BCE during the Second Punic War against Rome."
-      },
-      {
-        "question": "What was the primary writing system of ancient Mesopotamia?",
-        "options": ["Hieroglyphics", "Cuneiform", "Linear B", "Sanskrit"],
-        "correct_answer": 1,
-        "explanation": "Cuneiform was developed by the Sumerians around 3400 BCE using wedge-shaped marks on clay tablets."
-      },
-      {
-        "question": "Which battle in 490 BCE saw the Greeks defeat the Persians?",
-        "options": ["Thermopylae", "Salamis", "Marathon", "Plataea"],
+        "question": "The Code of Hammurabi contains approximately how many laws?",
+        "options": ["50", "150", "282", "500"],
         "correct_answer": 2,
-        "explanation": "The Battle of Marathon was a decisive Greek victory that inspired the modern marathon race."
+        "explanation": "Hammurabi's Code (c. 1754 BCE) contains 282 laws carved on a basalt stele. It covers property rights, trade, family, labor, and criminal penalties, applying different punishments based on social class."
       },
       {
-        "question": "Who was the last active pharaoh of ancient Egypt?",
-        "options": ["Nefertiti", "Hatshepsut", "Cleopatra VII", "Ramesses II"],
-        "correct_answer": 2,
-        "explanation": "Cleopatra VII ruled Egypt from 51-30 BCE until her death ended the Ptolemaic dynasty."
-      },
-      {
-        "question": "The ancient Library of Alexandria was located in which modern country?",
-        "options": ["Greece", "Egypt", "Turkey", "Iraq"],
+        "question": "Which ancient Greek city-state's government is considered the first democracy?",
+        "options": ["Sparta", "Athens", "Corinth", "Thebes"],
         "correct_answer": 1,
-        "explanation": "The Library of Alexandria was in Alexandria, Egypt, and was one of the largest libraries of the ancient world."
+        "explanation": "Athenian democracy began with Cleisthenes' reforms in 508 BCE. Citizens voted directly on laws in the Assembly, though women, slaves, and non-citizens were excluded from participation."
+      },
+      {
+        "question": "The ancient Egyptian Book of the Dead primarily dealt with what subject?",
+        "options": ["Royal genealogy", "Agricultural cycles", "Journey through the afterlife", "Military conquests"],
+        "correct_answer": 2,
+        "explanation": "The Book of the Dead contained spells and instructions to help the deceased navigate the underworld. The heart was weighed against Ma'at's feather to determine one's fate."
+      },
+      {
+        "question": "What was the significance of the Mandate of Heaven in ancient China?",
+        "options": ["Astronomical calendar system", "Divine right to rule and justification for rebellion", "Buddhist religious doctrine", "Trade agreement with nomadic peoples"],
+        "correct_answer": 1,
+        "explanation": "The Mandate of Heaven justified a ruler's power but also legitimized overthrow of corrupt dynasties. Natural disasters or famines signaled heaven's displeasure, enabling regime change."
+      },
+      {
+        "question": "The Maurya Empire's capital was located at which city?",
+        "options": ["Varanasi", "Pataliputra", "Ujjain", "Taxila"],
+        "correct_answer": 1,
+        "explanation": "Pataliputra (modern Patna) was one of the largest cities in the ancient world under Emperor Ashoka. Greek ambassador Megasthenes described it as rivaling the splendor of Persian capitals."
+      },
+      {
+        "question": "What was the primary function of the Roman institution called the 'cursus honorum'?",
+        "options": ["Military training academy", "Sequence of political offices", "Religious priesthood", "Gladiatorial school"],
+        "correct_answer": 1,
+        "explanation": "The cursus honorum was the sequential order of public offices (quaestor, aedile, praetor, consul). It established minimum ages and intervals between positions, structuring Roman political careers."
+      },
+      {
+        "question": "The Babylonian astronomical practice of dividing the sky into 12 sections became the basis for what?",
+        "options": ["The Julian calendar", "The zodiac", "Navigation charts", "Agricultural seasons"],
+        "correct_answer": 1,
+        "explanation": "Babylonian astronomers divided the ecliptic into 12 equal 30-degree sections around 5th century BCE. This zodiac system was adopted by Greeks and remains the basis for astrology today."
+      },
+      {
+        "question": "Which Carthaginian practice horrified Roman writers and may have involved child sacrifice?",
+        "options": ["Topheth rituals", "Baal worship ceremonies", "Naval initiation rites", "Harvest festivals"],
+        "correct_answer": 0,
+        "explanation": "The Tophet was a sacred precinct where infant remains were found alongside votive offerings. Scholars debate whether this was sacrifice or burial of stillborns, but Romans used it as propaganda."
       }
     ],
     "hard": [
       {
-        "question": "Which Assyrian king created one of the first libraries at Nineveh?",
-        "options": ["Sargon II", "Ashurbanipal", "Sennacherib", "Tiglath-Pileser III"],
-        "correct_answer": 1,
-        "explanation": "Ashurbanipal (668-627 BCE) collected over 30,000 clay tablets at his library in Nineveh."
-      },
-      {
-        "question": "What was the name of the Persian administrative division system?",
-        "options": ["Provinces", "Satrapies", "Nomes", "Cantons"],
-        "correct_answer": 1,
-        "explanation": "Satrapies were provinces governed by satraps in the Persian Achaemenid Empire."
-      },
-      {
-        "question": "Which Roman Emperor divided the empire into Eastern and Western halves?",
-        "options": ["Constantine", "Diocletian", "Theodosius", "Hadrian"],
-        "correct_answer": 1,
-        "explanation": "Diocletian established the Tetrarchy in 285 CE, dividing the empire for administrative purposes."
-      },
-      {
-        "question": "The Rosetta Stone helped decode which ancient writing system?",
-        "options": ["Cuneiform", "Linear A", "Egyptian hieroglyphics", "Phoenician"],
+        "question": "The Elamite civilization, rivals of Mesopotamian powers, was centered in which modern-day country?",
+        "options": ["Turkey", "Syria", "Iran", "Afghanistan"],
         "correct_answer": 2,
-        "explanation": "The Rosetta Stone, discovered in 1799, allowed Jean-François Champollion to decode hieroglyphics in 1822."
+        "explanation": "Elam occupied southwestern Iran with its capital at Susa. The Elamites developed their own script (Proto-Elamite), sacked Babylon in 1155 BCE, and influenced Persian culture before being absorbed by the Achaemenids."
       },
       {
-        "question": "Which ancient civilization developed the concept of zero as a number?",
-        "options": ["Greeks", "Romans", "Babylonians", "Egyptians"],
-        "correct_answer": 2,
-        "explanation": "The Babylonians developed a placeholder zero around 300 BCE, though Indians later developed zero as a true number."
+        "question": "What was the primary purpose of the Egyptian 'Opening of the Mouth' ceremony?",
+        "options": ["Coronation of pharaohs", "Restoring senses to the mummified deceased", "Temple dedication", "Nile flood prediction"],
+        "correct_answer": 1,
+        "explanation": "This ritual used special implements to touch the mummy's mouth, eyes, and ears, symbolically restoring the ability to eat, see, and hear in the afterlife. It was essential for the ka (spirit) to function."
+      },
+      {
+        "question": "The Greco-Bactrian Kingdom represented the easternmost extent of which cultural influence?",
+        "options": ["Roman", "Hellenistic Greek", "Persian", "Indian"],
+        "correct_answer": 1,
+        "explanation": "After Alexander's conquests, Greek settlers in Bactria (modern Afghanistan/Central Asia) maintained Hellenistic culture until 125 BCE. They produced remarkable coinage and influenced Gandharan Buddhist art."
+      },
+      {
+        "question": "What technology did the Nabataeans of Petra master that allowed them to thrive in the desert?",
+        "options": ["Underground irrigation channels", "Water harvesting and storage systems", "Desalination", "Deep well drilling"],
+        "correct_answer": 1,
+        "explanation": "The Nabataeans built sophisticated systems of dams, cisterns, and channels to capture rare rainfall. This water management made Petra a prosperous trading hub on incense routes despite its arid location."
+      },
+      {
+        "question": "The Late Bronze Age Collapse (c. 1200 BCE) saw the mysterious destruction of multiple civilizations. Which group is often blamed?",
+        "options": ["Assyrians", "Sea Peoples", "Scythians", "Dorians"],
+        "correct_answer": 1,
+        "explanation": "Egyptian records describe the Sea Peoples attacking Mediterranean civilizations. Their origins remain debated, but their raids coincided with the fall of the Hittites, Mycenaeans, and Ugarit. Climate change and systems collapse also contributed."
+      },
+      {
+        "question": "What was unique about the Minoan civilization's religious practices compared to other Bronze Age cultures?",
+        "options": ["Monotheism", "Prominence of female deities and priestesses", "Ancestor worship exclusively", "Animal-headed gods"],
+        "correct_answer": 1,
+        "explanation": "Minoan religion featured prominent goddesses, female priestesses, and bull imagery. Unlike patriarchal Near Eastern religions, women held significant religious roles, reflected in palace frescoes and figurines."
+      },
+      {
+        "question": "The Satavahana dynasty is credited with pioneering which architectural innovation in India?",
+        "options": ["Temple gopurams", "Rock-cut caves and chaitya halls", "Stepped wells", "Fort architecture"],
+        "correct_answer": 1,
+        "explanation": "Under Satavahana patronage (1st century BCE-2nd century CE), Buddhist rock-cut architecture flourished at Ajanta, Ellora, and Karle. These caves featured elaborate sculptures and the earliest surviving Indian paintings."
+      },
+      {
+        "question": "Which ancient civilization developed the concept of 'ma'at,' representing cosmic order and justice?",
+        "options": ["Babylonians", "Egyptians", "Greeks", "Persians"],
+        "correct_answer": 1,
+        "explanation": "Ma'at was both a goddess and abstract concept of truth, justice, and cosmic balance. Pharaohs were expected to uphold ma'at; one's heart was weighed against her feather after death to determine worthiness."
       }
     ]
   },
-  "medieval": {
+  "medieval-europe": {
     "easy": [
       {
-        "question": "What was the period of European history from roughly 500-1500 CE called?",
-        "options": ["Renaissance", "Middle Ages", "Enlightenment", "Classical Period"],
+        "question": "What was the name of the legal document King John of England was forced to sign in 1215?",
+        "options": ["Domesday Book", "Magna Carta", "Bill of Rights", "Charter of the Forest"],
         "correct_answer": 1,
-        "explanation": "The Middle Ages, also called the Medieval period, lasted from the fall of Rome to the Renaissance."
+        "explanation": "The Magna Carta limited royal power and established that the king was subject to law. It introduced concepts like due process and influenced constitutional law for centuries."
       },
       {
-        "question": "What type of fortified structure did medieval lords live in?",
-        "options": ["Villas", "Castles", "Temples", "Palaces"],
+        "question": "The feudal system was based primarily on the exchange of what?",
+        "options": ["Currency for goods", "Land for military service", "Slaves for protection", "Religious devotion for salvation"],
         "correct_answer": 1,
-        "explanation": "Castles served as both residences and defensive fortifications for medieval nobility."
+        "explanation": "Lords granted fiefs (land) to vassals who owed military service, loyalty, and counsel in return. Peasants worked the land, creating a hierarchical system of mutual obligations."
       },
       {
-        "question": "Who led the Norman conquest of England in 1066?",
-        "options": ["Richard I", "William the Conqueror", "Henry II", "Edward I"],
+        "question": "Which religious institution held the most political power in medieval Western Europe?",
+        "options": ["Eastern Orthodox Church", "Roman Catholic Church", "Various monasteries", "Local parish churches"],
         "correct_answer": 1,
-        "explanation": "William, Duke of Normandy, defeated King Harold at Hastings and became King of England."
+        "explanation": "The Catholic Church, led by the Pope, controlled vast lands, collected tithes, crowned emperors, and could excommunicate rulers. It was the unifying institution across fragmented kingdoms."
       },
       {
-        "question": "What was the dominant religion in medieval Europe?",
-        "options": ["Islam", "Judaism", "Christianity", "Paganism"],
-        "correct_answer": 2,
-        "explanation": "Christianity, centered in the Roman Catholic Church, dominated medieval European religious life."
+        "question": "The Bayeux Tapestry depicts which historical event?",
+        "options": ["First Crusade", "Norman Conquest of England", "Hundred Years' War", "Viking raids"],
+        "correct_answer": 1,
+        "explanation": "This 230-foot embroidered cloth shows the 1066 Norman invasion, culminating in the Battle of Hastings. It's a crucial historical document showing medieval warfare, ships, and daily life."
       },
       {
-        "question": "What were the religious wars to capture the Holy Land called?",
-        "options": ["Jihads", "Crusades", "Reconquista", "Holy Wars"],
+        "question": "What role did monasteries play in preserving knowledge during the early Middle Ages?",
+        "options": ["They destroyed pagan texts", "Monks copied and preserved manuscripts", "They focused only on religious texts", "Knowledge preservation wasn't their function"],
         "correct_answer": 1,
-        "explanation": "The Crusades were a series of religious wars from 1095-1291 to capture Jerusalem and the Holy Land."
+        "explanation": "Monasteries were the primary centers of literacy. Monks laboriously copied both religious and classical texts, preserving works of Aristotle, Virgil, and others that might have been lost."
+      },
+      {
+        "question": "The medieval guild system regulated which aspect of town life?",
+        "options": ["Religious practices", "Trade and craft production", "Military defense", "Agricultural output"],
+        "correct_answer": 1,
+        "explanation": "Guilds controlled quality standards, prices, training (through apprenticeships), and who could practice a trade. They provided social welfare for members and held significant political influence in cities."
+      },
+      {
+        "question": "Which empire served as the continuation of the Roman Empire in the East throughout the medieval period?",
+        "options": ["Holy Roman Empire", "Byzantine Empire", "Ottoman Empire", "Carolingian Empire"],
+        "correct_answer": 1,
+        "explanation": "The Byzantine Empire, with its capital at Constantinople, lasted until 1453. It preserved Roman law, Greek culture, and Orthodox Christianity while the Western Empire fragmented."
+      },
+      {
+        "question": "What was the primary goal of the First Crusade launched in 1095?",
+        "options": ["Convert Muslims to Christianity", "Capture Jerusalem from Muslim control", "Defend Constantinople", "Establish trade routes"],
+        "correct_answer": 1,
+        "explanation": "Pope Urban II called for the crusade to recapture Jerusalem and the Holy Land. The crusaders succeeded in 1099, establishing the Kingdom of Jerusalem, which lasted until 1291."
       }
     ],
     "medium": [
       {
-        "question": "What pandemic killed roughly one-third of Europe's population in the 14th century?",
-        "options": ["Smallpox", "Cholera", "Black Death", "Typhus"],
-        "correct_answer": 2,
-        "explanation": "The Black Death (bubonic plague) killed 75-200 million people between 1347-1351."
-      },
-      {
-        "question": "Who was the founder of the Mongol Empire?",
-        "options": ["Kublai Khan", "Genghis Khan", "Tamerlane", "Attila"],
+        "question": "The Investiture Controversy was primarily a power struggle between which two parties?",
+        "options": ["Kings and nobles", "Popes and Holy Roman Emperors", "Bishops and monks", "France and England"],
         "correct_answer": 1,
-        "explanation": "Genghis Khan united the Mongol tribes and founded the largest contiguous land empire in history."
+        "explanation": "This 11th-12th century conflict centered on who could appoint (invest) bishops. Pope Gregory VII and Emperor Henry IV clashed, with Henry famously waiting barefoot in snow at Canossa to receive absolution."
       },
       {
-        "question": "What document did King John of England sign in 1215?",
-        "options": ["Bill of Rights", "Magna Carta", "Constitution", "Declaration"],
+        "question": "What innovation made the medieval heavy cavalry charge possible?",
+        "options": ["The longbow", "The stirrup", "Chain mail", "The lance"],
         "correct_answer": 1,
-        "explanation": "The Magna Carta limited royal power and established principles of due process and rule of law."
+        "explanation": "Stirrups, adopted from Central Asian nomads, allowed mounted knights to brace for impact without being unseated. This transformed cavalry from mobile archers into shock troops."
       },
       {
-        "question": "Which conflict between England and France lasted from 1337-1453?",
-        "options": ["War of the Roses", "Hundred Years' War", "Seven Years' War", "Thirty Years' War"],
+        "question": "The Hanseatic League was a medieval alliance of what?",
+        "options": ["Kingdoms", "Merchant trading cities", "Religious orders", "Universities"],
         "correct_answer": 1,
-        "explanation": "The Hundred Years' War was fought over claims to the French throne and ended with French victory."
+        "explanation": "The Hanseatic League (13th-17th centuries) united German and Baltic trading cities like Lubeck, Hamburg, and Bruges. It dominated Northern European trade and could impose embargoes on entire kingdoms."
       },
       {
-        "question": "What was the medieval economic system based on land ownership called?",
-        "options": ["Capitalism", "Mercantilism", "Feudalism", "Socialism"],
-        "correct_answer": 2,
-        "explanation": "Feudalism was a hierarchical system where lords granted land to vassals in exchange for military service."
+        "question": "What was the significance of the Battle of Tours (732 CE)?",
+        "options": ["Norman conquest of France", "Halted Muslim expansion into Western Europe", "Beginning of the Crusades", "End of the Carolingian dynasty"],
+        "correct_answer": 1,
+        "explanation": "Charles Martel's Frankish forces defeated an Umayyad army advancing from Spain. Historians debate its importance, but it marked the high point of Muslim expansion in Western Europe."
+      },
+      {
+        "question": "The medieval practice of 'simony' referred to what offense?",
+        "options": ["Heresy against the Church", "Buying or selling religious offices", "Breaking a feudal oath", "Practicing usury"],
+        "correct_answer": 1,
+        "explanation": "Named after Simon Magus who tried to buy the Holy Spirit's power, simony was widespread as wealthy families purchased bishoprics. Church reformers considered it a grave sin undermining spiritual authority."
+      },
+      {
+        "question": "Which medieval legal concept allowed accused persons to prove innocence through combat or physical ordeals?",
+        "options": ["Habeas corpus", "Trial by ordeal", "Inquisition", "Canon law"],
+        "correct_answer": 1,
+        "explanation": "Trial by ordeal used hot iron, boiling water, or combat to determine guilt. It was believed God would protect the innocent. The Fourth Lateran Council (1215) banned clerical participation, leading to its decline."
+      },
+      {
+        "question": "The 'little ice age' of the early 14th century contributed to what major European crisis?",
+        "options": ["Fall of Constantinople", "The Great Famine of 1315-1317", "The Peasants' Revolt", "The Hundred Years' War"],
+        "correct_answer": 1,
+        "explanation": "Climate cooling caused massive crop failures across Europe. An estimated 10-25% of the population died, weakening populations just before the Black Death arrived in 1347."
+      },
+      {
+        "question": "What was the 'Reconquista'?",
+        "options": ["Crusader states in the Holy Land", "Christian reconquest of the Iberian Peninsula from Moors", "Byzantine recovery of Anatolia", "Viking settlement in Normandy"],
+        "correct_answer": 1,
+        "explanation": "The Reconquista (722-1492) was the gradual Christian conquest of Muslim Iberia. It ended when Ferdinand and Isabella captured Granada and expelled Muslims and Jews in 1492."
       }
     ],
     "hard": [
       {
-        "question": "Which Byzantine Emperor codified Roman law in the 6th century?",
-        "options": ["Constantine", "Justinian I", "Heraclius", "Basil II"],
-        "correct_answer": 1,
-        "explanation": "Justinian I created the Corpus Juris Civilis (Body of Civil Law) around 529-534 CE."
-      },
-      {
-        "question": "What was the name of the Islamic Golden Age center of learning in Baghdad?",
-        "options": ["Al-Azhar", "House of Wisdom", "Madrasah", "Library of Cordoba"],
-        "correct_answer": 1,
-        "explanation": "The House of Wisdom (Bayt al-Hikma) was founded in 830 CE and translated Greek and Persian texts."
-      },
-      {
-        "question": "Which medieval scholar wrote 'Summa Theologica'?",
-        "options": ["Augustine", "Thomas Aquinas", "Anselm", "Peter Abelard"],
-        "correct_answer": 1,
-        "explanation": "Thomas Aquinas wrote Summa Theologica in the 13th century, synthesizing Christian theology with Aristotelian philosophy."
-      },
-      {
-        "question": "What was the Great Schism of 1054?",
-        "options": ["Protestant Reformation", "East-West Church split", "Papal exile to Avignon", "English church separation"],
-        "correct_answer": 1,
-        "explanation": "The Great Schism split Christianity into Roman Catholic and Eastern Orthodox churches over theological disputes."
-      },
-      {
-        "question": "Which Venetian merchant wrote about his travels to China?",
-        "options": ["Ibn Battuta", "Marco Polo", "Vasco da Gama", "Christopher Columbus"],
-        "correct_answer": 1,
-        "explanation": "Marco Polo traveled to China in the 13th century and wrote 'The Travels of Marco Polo' about Kublai Khan's court."
-      }
-    ]
-  },
-  "modern": {
-    "easy": [
-      {
-        "question": "Which revolution began in France in 1789?",
-        "options": ["Industrial Revolution", "French Revolution", "American Revolution", "Russian Revolution"],
-        "correct_answer": 1,
-        "explanation": "The French Revolution began with the storming of the Bastille and led to the end of the monarchy."
-      },
-      {
-        "question": "Who was the first President of the United States?",
-        "options": ["Thomas Jefferson", "John Adams", "George Washington", "Benjamin Franklin"],
+        "question": "The medieval philosophy of 'nominalism' was most associated with which thinker?",
+        "options": ["Thomas Aquinas", "Anselm of Canterbury", "William of Ockham", "Peter Abelard"],
         "correct_answer": 2,
-        "explanation": "George Washington served as the first U.S. President from 1789-1797."
+        "explanation": "Ockham argued that universal concepts (like 'humanity') are just names, not real things. His 'razor' principle and emphasis on individual particulars challenged scholastic orthodoxy and influenced later empiricism."
       },
       {
-        "question": "The Industrial Revolution began in which country?",
-        "options": ["France", "Germany", "United States", "Great Britain"],
-        "correct_answer": 3,
-        "explanation": "The Industrial Revolution began in Great Britain in the mid-18th century with textile manufacturing."
-      },
-      {
-        "question": "Who was the Emperor of France who was defeated at Waterloo?",
-        "options": ["Louis XIV", "Napoleon Bonaparte", "Charles de Gaulle", "Louis XVI"],
-        "correct_answer": 1,
-        "explanation": "Napoleon Bonaparte was defeated at Waterloo in 1815, ending his rule and the Napoleonic Wars."
-      },
-      {
-        "question": "Which American war was fought between the North and South from 1861-1865?",
-        "options": ["Revolutionary War", "War of 1812", "Civil War", "Mexican-American War"],
+        "question": "The Albigensian Crusade targeted which religious group in southern France?",
+        "options": ["Jews", "Muslims", "Cathars", "Waldensians"],
         "correct_answer": 2,
-        "explanation": "The American Civil War was fought over slavery and states' rights, ending with Union victory."
-      }
-    ],
-    "medium": [
-      {
-        "question": "What event triggered the start of World War I?",
-        "options": ["Sinking of Lusitania", "Assassination of Franz Ferdinand", "German invasion of Poland", "Russian Revolution"],
-        "correct_answer": 1,
-        "explanation": "The assassination of Archduke Franz Ferdinand in Sarajevo on June 28, 1914, triggered WWI."
+        "explanation": "The Cathars held dualist beliefs and rejected the material world as evil. Pope Innocent III launched a brutal crusade (1209-1229) that devastated Languedoc and established the papal inquisition."
       },
       {
-        "question": "Which country launched Sputnik, the first artificial satellite?",
-        "options": ["United States", "Soviet Union", "Germany", "China"],
-        "correct_answer": 1,
-        "explanation": "The Soviet Union launched Sputnik 1 on October 4, 1957, beginning the Space Age."
-      },
-      {
-        "question": "The Berlin Wall fell in which year?",
-        "options": ["1985", "1987", "1989", "1991"],
+        "question": "What was the 'filioque' controversy that divided Eastern and Western Christianity?",
+        "options": ["Authority of the Pope", "Use of icons in worship", "Whether the Holy Spirit proceeds from Father alone or Father and Son", "Date of Easter"],
         "correct_answer": 2,
-        "explanation": "The Berlin Wall fell on November 9, 1989, symbolizing the end of the Cold War division of Europe."
+        "explanation": "The Western church added 'filioque' (and the Son) to the Nicene Creed. The Eastern church considered this heretical and unauthorized, contributing to the Great Schism of 1054."
       },
       {
-        "question": "Who was the leader of the Indian independence movement known for nonviolent resistance?",
-        "options": ["Jawaharlal Nehru", "Mahatma Gandhi", "Subhas Chandra Bose", "Muhammad Ali Jinnah"],
+        "question": "The medieval economic practice of charging interest on loans was known as what, and was forbidden by the Church?",
+        "options": ["Simony", "Usury", "Indulgence", "Tithe"],
         "correct_answer": 1,
-        "explanation": "Mahatma Gandhi led India's independence movement using nonviolent civil disobedience."
+        "explanation": "Usury was considered sinful based on biblical prohibitions. This created opportunities for Jewish moneylenders and Italian bankers who found creative workarounds, funding much medieval commerce."
       },
       {
-        "question": "What was the name of the policy of racial segregation in South Africa?",
-        "options": ["Jim Crow", "Apartheid", "Segregation", "Color Bar"],
+        "question": "Which Byzantine Emperor's legal codification became the foundation of civil law in much of Europe?",
+        "options": ["Constantine I", "Justinian I", "Basil I", "Leo III"],
         "correct_answer": 1,
-        "explanation": "Apartheid was the system of institutionalized racial segregation in South Africa from 1948-1994."
-      }
-    ],
-    "hard": [
-      {
-        "question": "Which treaty ended World War I and imposed harsh terms on Germany?",
-        "options": ["Treaty of Paris", "Treaty of Versailles", "Treaty of Brest-Litovsk", "Treaty of Trianon"],
-        "correct_answer": 1,
-        "explanation": "The Treaty of Versailles (1919) imposed war guilt, reparations, and territorial losses on Germany."
+        "explanation": "Justinian's Corpus Juris Civilis (529-534 CE) systematized Roman law. Rediscovered in the 11th century, it became the basis for legal education at Bologna and influenced legal systems throughout Europe."
       },
       {
-        "question": "What was the name of Mao Zedong's campaign to rapidly industrialize China?",
-        "options": ["Cultural Revolution", "Great Leap Forward", "Long March", "Hundred Flowers Campaign"],
-        "correct_answer": 1,
-        "explanation": "The Great Leap Forward (1958-1962) was a failed industrialization campaign that caused widespread famine."
+        "question": "The 'Jacquerie' of 1358 was what type of medieval event?",
+        "options": ["Peasant uprising in France", "Italian banking crisis", "English succession dispute", "Church council"],
+        "correct_answer": 0,
+        "explanation": "Named pejoratively for 'Jacques' (common peasant name), this brutal revolt followed the Black Death and French defeats in the Hundred Years' War. Nobles crushed it violently, killing thousands."
       },
       {
-        "question": "Which 1884-1885 conference divided Africa among European powers?",
-        "options": ["Vienna Conference", "Berlin Conference", "Paris Conference", "London Conference"],
+        "question": "What was the significance of the Fourth Crusade's sack of Constantinople in 1204?",
+        "options": ["Unified Eastern and Western Christianity", "Fatally weakened the Byzantine Empire", "Recovered the True Cross", "Established lasting Latin rule in the Holy Land"],
         "correct_answer": 1,
-        "explanation": "The Berlin Conference established rules for European colonization of Africa without African representation."
+        "explanation": "Crusaders diverted to attack fellow Christians, plundering Constantinople's treasures. The Latin Empire they established lasted only until 1261, but Byzantium never fully recovered, falling to the Ottomans in 1453."
       },
       {
-        "question": "What was the doctrine of U.S. foreign policy to contain Soviet expansion?",
-        "options": ["Monroe Doctrine", "Truman Doctrine", "Eisenhower Doctrine", "Nixon Doctrine"],
+        "question": "The Defenestration of Prague in 1419 sparked which religious conflict?",
+        "options": ["Protestant Reformation", "Hussite Wars", "Thirty Years' War", "Wars of Religion"],
         "correct_answer": 1,
-        "explanation": "The Truman Doctrine (1947) pledged U.S. support for countries resisting communist expansion."
-      },
-      {
-        "question": "Which revolution in 1917 led to the creation of the Soviet Union?",
-        "options": ["February Revolution", "October Revolution", "Bolshevik Revolution", "Both B and C"],
-        "correct_answer": 3,
-        "explanation": "The October/Bolshevik Revolution of 1917 overthrew the Provisional Government and established communist rule."
+        "explanation": "Followers of Jan Hus (burned for heresy in 1415) threw Catholic councilors from windows. The resulting Hussite Wars (1419-1434) saw Czech proto-Protestants defeat multiple crusades through innovative wagon-fort tactics."
       }
     ]
   },
   "world-wars": {
     "easy": [
       {
-        "question": "In which year did World War I begin?",
-        "options": ["1912", "1914", "1916", "1918"],
+        "question": "Which country's invasion of Poland triggered the start of World War II?",
+        "options": ["Soviet Union", "Germany", "Italy", "Austria"],
         "correct_answer": 1,
-        "explanation": "World War I began on July 28, 1914, following the assassination of Archduke Franz Ferdinand."
+        "explanation": "Germany invaded Poland on September 1, 1939. Britain and France declared war two days later. The Soviet Union invaded from the east on September 17 under a secret pact with Germany."
       },
       {
-        "question": "Which country did Germany invade to start World War II in Europe?",
-        "options": ["France", "Poland", "Austria", "Czechoslovakia"],
+        "question": "The Western Front in World War I was characterized by what type of warfare?",
+        "options": ["Naval blockades", "Trench warfare", "Blitzkrieg", "Guerrilla tactics"],
         "correct_answer": 1,
-        "explanation": "Germany invaded Poland on September 1, 1939, prompting Britain and France to declare war."
+        "explanation": "Trenches stretched from Switzerland to the sea. Soldiers endured mud, rats, disease, and constant shelling. Attacks 'over the top' against machine guns produced horrific casualties for minimal gains."
       },
       {
-        "question": "What was the alliance of Germany, Italy, and Japan called in WWII?",
-        "options": ["Allies", "Central Powers", "Axis Powers", "Triple Entente"],
+        "question": "What does the 'D' in D-Day stand for?",
+        "options": ["Deliverance", "Decision", "Day (placeholder term)", "Dunkirk"],
         "correct_answer": 2,
-        "explanation": "The Axis Powers were the nations that fought against the Allied Powers in World War II."
+        "explanation": "D-Day simply means 'the day' of an operation, with D-1, D+1 indicating before and after. It was military planning terminology, not an abbreviation for anything specific."
       },
       {
-        "question": "What was D-Day?",
-        "options": ["End of WWI", "Pearl Harbor attack", "Allied invasion of Normandy", "German surrender"],
+        "question": "Which country suffered the highest number of total deaths (military and civilian) in World War II?",
+        "options": ["Germany", "Japan", "Soviet Union", "China"],
         "correct_answer": 2,
-        "explanation": "D-Day (June 6, 1944) was the Allied invasion of Nazi-occupied France at Normandy beaches."
+        "explanation": "The Soviet Union lost approximately 27 million people, including 8-10 million military deaths and 14+ million civilians. This represented about 14% of its prewar population."
       },
       {
-        "question": "Which event brought the United States into World War II?",
-        "options": ["Sinking of Lusitania", "Attack on Pearl Harbor", "German U-boat attacks", "Fall of France"],
+        "question": "The assassination that sparked World War I occurred in which city?",
+        "options": ["Vienna", "Sarajevo", "Belgrade", "Berlin"],
         "correct_answer": 1,
-        "explanation": "Japan's attack on Pearl Harbor on December 7, 1941, led the U.S. to declare war."
+        "explanation": "Archduke Franz Ferdinand was shot in Sarajevo on June 28, 1914, by Gavrilo Princip, a Bosnian Serb nationalist. Austria-Hungary's ultimatum to Serbia triggered the alliance system."
+      },
+      {
+        "question": "What was the name of the German air force during World War II?",
+        "options": ["Luftwaffe", "Bundeswehr", "Wehrmacht", "Kriegsmarine"],
+        "correct_answer": 0,
+        "explanation": "The Luftwaffe was rebuilt secretly after WWI and became central to German Blitzkrieg tactics. It failed to defeat the RAF in the Battle of Britain, preventing a German invasion."
+      },
+      {
+        "question": "The Treaty of Versailles held which country primarily responsible for World War I?",
+        "options": ["Austria-Hungary", "Serbia", "Germany", "Russia"],
+        "correct_answer": 2,
+        "explanation": "Article 231, the 'War Guilt Clause,' blamed Germany. Combined with reparations and territorial losses, German resentment of Versailles helped fuel Nazi rise to power."
+      },
+      {
+        "question": "What was the code name for the Allied invasion of Normandy on June 6, 1944?",
+        "options": ["Operation Torch", "Operation Overlord", "Operation Market Garden", "Operation Barbarossa"],
+        "correct_answer": 1,
+        "explanation": "Operation Overlord was the largest amphibious invasion in history, landing 156,000 troops across five beaches. It established the Western Front that would push into Germany."
       }
     ],
     "medium": [
       {
-        "question": "What was the name of Germany's failed strategy to quickly defeat France in WWI?",
-        "options": ["Blitzkrieg", "Schlieffen Plan", "Operation Barbarossa", "Fall Gelb"],
+        "question": "What was the primary purpose of the Schlieffen Plan?",
+        "options": ["Defend against Russian invasion", "Avoid a two-front war by quickly defeating France", "Capture British colonies", "Secure Romanian oil fields"],
         "correct_answer": 1,
-        "explanation": "The Schlieffen Plan aimed to defeat France in six weeks by attacking through Belgium."
+        "explanation": "Count von Schlieffen designed a plan to defeat France in six weeks via Belgium before Russia could mobilize. Its failure led to the stalemate that defined WWI."
       },
       {
-        "question": "Which battle is considered the turning point of WWII on the Eastern Front?",
-        "options": ["Battle of Moscow", "Battle of Stalingrad", "Battle of Kursk", "Siege of Leningrad"],
+        "question": "The Wannsee Conference of 1942 coordinated which Nazi program?",
+        "options": ["U-boat campaign", "Final Solution (Holocaust)", "V-2 rocket development", "Atlantic Wall construction"],
         "correct_answer": 1,
-        "explanation": "The Battle of Stalingrad (1942-1943) was a devastating German defeat that turned the tide."
+        "explanation": "Senior Nazi officials met near Berlin to coordinate the systematic murder of European Jews. The meeting discussed logistics of deportation to death camps, marking the bureaucratization of genocide."
       },
       {
-        "question": "What was the code name for the German invasion of the Soviet Union?",
-        "options": ["Operation Overlord", "Operation Barbarossa", "Operation Sea Lion", "Operation Torch"],
+        "question": "Which WWI battle saw approximately 1 million combined casualties over 10 months in 1916?",
+        "options": ["Battle of the Somme", "Battle of Verdun", "Battle of Ypres", "Battle of Tannenberg"],
         "correct_answer": 1,
-        "explanation": "Operation Barbarossa began on June 22, 1941, and was the largest military operation in history."
+        "explanation": "Verdun was a German attempt to 'bleed France white' by attacking a symbolically important fortress. Both sides suffered roughly equal losses in the longest single battle of WWI."
       },
       {
-        "question": "Which country suffered the most military deaths in World War II?",
-        "options": ["Germany", "Japan", "Soviet Union", "China"],
+        "question": "What was the significance of the Battle of Midway in the Pacific War?",
+        "options": ["First Allied offensive", "Turning point that ended Japanese expansion", "Liberation of the Philippines", "Japan's surrender"],
+        "correct_answer": 1,
+        "explanation": "In June 1942, American codebreakers anticipated the attack. The US sank four Japanese carriers, eliminating Japan's offensive capability and shifting the war's momentum."
+      },
+      {
+        "question": "The Zimmermann Telegram proposed an alliance between Germany and which country against the US?",
+        "options": ["Canada", "Cuba", "Mexico", "Japan"],
         "correct_answer": 2,
-        "explanation": "The Soviet Union lost approximately 8-10 million military personnel, the highest of any nation."
+        "explanation": "Germany promised Mexico the return of Texas, New Mexico, and Arizona. British intelligence intercepted and decoded the telegram, helping push the US toward declaring war in April 1917."
       },
       {
-        "question": "What was the systematic genocide of Jews by Nazi Germany called?",
-        "options": ["The Final Solution", "The Holocaust", "Kristallnacht", "The Purge"],
+        "question": "What strategy did Britain use to weaken Germany throughout both World Wars?",
+        "options": ["Aerial bombardment", "Naval blockade", "Submarine warfare", "Land invasion"],
         "correct_answer": 1,
-        "explanation": "The Holocaust resulted in the murder of approximately 6 million Jews by the Nazi regime."
+        "explanation": "The Royal Navy's blockade restricted food and supplies to Germany. In WWI, it contributed to civilian malnutrition and the November 1918 revolution. It was equally devastating in WWII."
+      },
+      {
+        "question": "The Nuremberg Trials established which legal precedent?",
+        "options": ["Sovereign immunity for heads of state", "Individual accountability for crimes against humanity", "War reparations formulas", "Prisoner exchange protocols"],
+        "correct_answer": 1,
+        "explanation": "For the first time, international tribunals held individuals criminally responsible for war crimes and crimes against humanity. 'Following orders' was rejected as a defense."
+      },
+      {
+        "question": "What was 'Operation Barbarossa' and why did it ultimately fail?",
+        "options": ["Italian invasion of Ethiopia; Ethiopian resistance", "Japanese attack on Pearl Harbor; US industrial power", "German invasion of USSR; overextension and winter", "Allied invasion of Italy; mountainous terrain"],
+        "correct_answer": 2,
+        "explanation": "Hitler's June 1941 invasion was the largest in history. Initial success stalled as supply lines stretched across vast distances, brutal winter set in, and Soviet resistance stiffened."
       }
     ],
     "hard": [
       {
-        "question": "Which WWI battle saw the first large-scale use of poison gas by Germany?",
-        "options": ["Battle of the Somme", "Battle of Verdun", "Second Battle of Ypres", "Battle of Passchendaele"],
+        "question": "Which battle is considered the largest tank engagement in history?",
+        "options": ["Battle of El Alamein", "Battle of Kursk", "Battle of the Bulge", "Battle of Brody"],
+        "correct_answer": 1,
+        "explanation": "The Battle of Kursk (July 1943) involved 6,000+ tanks and 2 million soldiers. The German offensive (Operation Citadel) failed, ending Germany's offensive capability on the Eastern Front."
+      },
+      {
+        "question": "The ULTRA secret in WWII referred to what?",
+        "options": ["Atomic bomb development", "Intelligence from broken German Enigma codes", "Double agent network", "Radar technology"],
+        "correct_answer": 1,
+        "explanation": "ULTRA was intelligence derived from Bletchley Park's breaking of Enigma. Churchill called it 'the goose that laid the golden egg but never cackled.' Its existence remained secret until 1974."
+      },
+      {
+        "question": "What was the 'stab-in-the-back' myth (Dolchstosslegende) in post-WWI Germany?",
+        "options": ["Blame placed on Austria for starting the war", "Belief that Jews and socialists betrayed the undefeated German army", "Theory that the Kaiser was assassinated", "Claim that Allies used biological weapons"],
+        "correct_answer": 1,
+        "explanation": "Right-wing Germans claimed the army was 'undefeated in the field' but betrayed by civilians. This false narrative, promoted by Hindenburg and Ludendorff, helped delegitimize the Weimar Republic and aided Nazi propaganda."
+      },
+      {
+        "question": "The Hague Conventions established early international laws regarding what aspects of warfare?",
+        "options": ["Only naval warfare", "Treatment of POWs, civilians, and prohibited weapons", "Economic sanctions", "War declarations only"],
+        "correct_answer": 1,
+        "explanation": "The 1899 and 1907 Hague Conventions codified rules on prisoners, hospital ships, prohibited weapons (like poison gas), and civilian protection. Both World Wars saw these rules violated."
+      },
+      {
+        "question": "Which Japanese military strategy at the war's end involved suicidal attacks by aircraft?",
+        "options": ["Banzai charges", "Kamikaze attacks", "Bushido tactics", "Kessen operations"],
+        "correct_answer": 1,
+        "explanation": "Kamikaze ('divine wind') attacks began in 1944. Over 3,800 pilots died in these missions, sinking or damaging hundreds of Allied ships. The tactic reflected Japan's desperate situation."
+      },
+      {
+        "question": "What was the 'Phoney War' or 'Sitzkrieg' of 1939-1940?",
+        "options": ["German deception before Poland invasion", "Period of inactivity on Western Front after Poland fell", "Fake peace negotiations", "British disinformation campaign"],
+        "correct_answer": 1,
+        "explanation": "After Poland's fall, the Western Front remained quiet for months. France sheltered behind the Maginot Line while Britain built forces. Germany used the time to prepare its western offensive."
+      },
+      {
+        "question": "The Molotov-Ribbentrop Pact included secret protocols dividing which regions?",
+        "options": ["Balkans", "Middle East", "Eastern Europe (Poland, Baltic states, Finland)", "Scandinavia"],
         "correct_answer": 2,
-        "explanation": "Germany used chlorine gas at the Second Battle of Ypres in April 1915."
+        "explanation": "The August 1939 Nazi-Soviet pact shocked the world. Secret protocols divided Poland and assigned Baltic states and Finland to Soviet sphere. Stalin was caught off-guard when Hitler invaded in 1941."
       },
       {
-        "question": "What was the name of the German code machine broken by Allied cryptographers?",
-        "options": ["Lorenz", "Enigma", "Purple", "Typex"],
+        "question": "What was the significance of the Doolittle Raid in April 1942?",
+        "options": ["First Allied victory in Europe", "Psychological boost after Pearl Harbor with limited military impact", "Destruction of Japanese carrier fleet", "Liberation of first Pacific island"],
         "correct_answer": 1,
-        "explanation": "The Enigma machine's codes were broken by Polish and British cryptographers, aiding Allied intelligence."
+        "explanation": "Sixteen B-25 bombers launched from USS Hornet hit Tokyo. Damage was minor, but it boosted American morale, embarrassed Japanese leadership, and prompted the overextension that led to Midway."
+      }
+    ]
+  },
+  "cold-war": {
+    "easy": [
+      {
+        "question": "The Cold War was primarily a conflict between which two superpowers?",
+        "options": ["USA and China", "USA and Soviet Union", "Britain and Soviet Union", "USA and Germany"],
+        "correct_answer": 1,
+        "explanation": "The Cold War (1947-1991) pitted American-led capitalism against Soviet communism. It was 'cold' because the two superpowers never directly fought each other, using proxy wars instead."
       },
       {
-        "question": "Which conference in 1945 divided post-war Europe into spheres of influence?",
-        "options": ["Tehran Conference", "Yalta Conference", "Potsdam Conference", "Casablanca Conference"],
+        "question": "What was the purpose of the Berlin Wall, built in 1961?",
+        "options": ["Protect against Allied invasion", "Prevent East Germans from fleeing to the West", "Divide military zones", "Control flooding"],
         "correct_answer": 1,
-        "explanation": "The Yalta Conference (February 1945) saw Roosevelt, Churchill, and Stalin plan post-war Europe."
+        "explanation": "By 1961, millions had fled communist East Germany through Berlin. The Wall stopped this 'brain drain' and became the Cold War's most powerful symbol of division."
       },
       {
-        "question": "What was the last major German offensive on the Western Front in WWII?",
-        "options": ["Operation Market Garden", "Battle of the Bulge", "Operation Nordwind", "Siege of Bastogne"],
+        "question": "The Cuban Missile Crisis of 1962 brought the world closest to what?",
+        "options": ["Economic collapse", "Nuclear war", "Communist revolution in the US", "Soviet invasion of Europe"],
         "correct_answer": 1,
-        "explanation": "The Battle of the Bulge (December 1944-January 1945) was Germany's final major offensive."
+        "explanation": "The US discovered Soviet nuclear missiles in Cuba, just 90 miles from Florida. For 13 days, Kennedy and Khrushchev negotiated while the world held its breath. The Soviets withdrew missiles in exchange for US promises."
       },
       {
-        "question": "Which two Japanese cities were atomic bombs dropped on?",
-        "options": ["Tokyo and Osaka", "Hiroshima and Nagasaki", "Kyoto and Kobe", "Yokohama and Nagoya"],
+        "question": "Which organization did the US and Western allies form for collective defense in 1949?",
+        "options": ["United Nations", "NATO", "Warsaw Pact", "European Union"],
         "correct_answer": 1,
-        "explanation": "Atomic bombs were dropped on Hiroshima (August 6) and Nagasaki (August 9) in 1945."
+        "explanation": "The North Atlantic Treaty Organization bound Western nations to mutual defense. An attack on one member would be treated as an attack on all, deterring Soviet aggression."
+      },
+      {
+        "question": "What was the 'Space Race' between the US and Soviet Union?",
+        "options": ["Competition to build the fastest aircraft", "Competition for achievements in space exploration", "Race to control Earth's orbit militarily", "Competition for satellite communications"],
+        "correct_answer": 1,
+        "explanation": "Beginning with Sputnik (1957), both nations competed for prestige through space achievements. It culminated in the US Moon landing (1969), demonstrating technological and ideological superiority."
+      },
+      {
+        "question": "The Korean War (1950-1953) resulted in what outcome?",
+        "options": ["Communist victory", "UN victory", "Division of Korea roughly along original lines", "Unification under democracy"],
+        "correct_answer": 2,
+        "explanation": "After North Korea invaded the South, UN forces intervened. China's entry pushed the front back. An armistice, not a peace treaty, established the DMZ near the 38th parallel, where Korea remains divided."
+      },
+      {
+        "question": "What did the 'Iron Curtain' refer to?",
+        "options": ["Soviet defense system", "Ideological divide between Western and Eastern Europe", "Nuclear weapon name", "Border wall technology"],
+        "correct_answer": 1,
+        "explanation": "Churchill used this term in 1946 to describe the division of Europe. Soviet-controlled Eastern Europe became isolated from the West, with limited travel, communication, and economic exchange."
+      },
+      {
+        "question": "The policy of 'containment' aimed to prevent the spread of what?",
+        "options": ["Nuclear weapons", "Communism", "American influence", "Colonial empires"],
+        "correct_answer": 1,
+        "explanation": "Articulated by George Kennan and implemented through the Truman Doctrine, containment sought to prevent communism from spreading beyond its existing borders without direct confrontation."
+      }
+    ],
+    "medium": [
+      {
+        "question": "The Marshall Plan provided what to Western European countries after WWII?",
+        "options": ["Military equipment", "Economic aid for reconstruction", "Political advisors", "Nuclear technology"],
+        "correct_answer": 1,
+        "explanation": "The US provided $13 billion (over $150 billion today) to rebuild Europe's economy. It prevented economic collapse that might lead to communist revolutions, while creating markets for American goods."
+      },
+      {
+        "question": "What was the policy of MAD (Mutually Assured Destruction)?",
+        "options": ["First strike doctrine", "Deterrence through guaranteed mutual annihilation", "Limited nuclear warfare", "Missile defense systems"],
+        "correct_answer": 1,
+        "explanation": "MAD held that nuclear war was unwinnable since both sides would be destroyed. This grim calculation paradoxically created stability, as neither side could 'win' by striking first."
+      },
+      {
+        "question": "The Suez Crisis of 1956 marked the decline of which colonial powers?",
+        "options": ["Portugal and Belgium", "Britain and France", "Netherlands and Spain", "Italy and Germany"],
+        "correct_answer": 1,
+        "explanation": "When Egypt nationalized the Suez Canal, Britain and France (with Israel) invaded. The US and USSR both opposed them, forcing withdrawal and demonstrating the superpowers' new dominance."
+      },
+      {
+        "question": "What was the 'domino theory' used to justify?",
+        "options": ["NATO expansion", "US intervention in Southeast Asia", "Nuclear proliferation", "Space exploration funding"],
+        "correct_answer": 1,
+        "explanation": "The theory held that if one country fell to communism, neighbors would follow like falling dominoes. This justified US involvement in Vietnam to prevent communism spreading throughout Asia."
+      },
+      {
+        "question": "The Prague Spring of 1968 was a period of political liberalization in which country, crushed by Soviet invasion?",
+        "options": ["Poland", "Hungary", "Czechoslovakia", "Romania"],
+        "correct_answer": 2,
+        "explanation": "Alexander Dubcek's 'socialism with a human face' allowed free speech and reduced censorship. The USSR invaded with 200,000 Warsaw Pact troops, demonstrating limits on Eastern Bloc reform."
+      },
+      {
+        "question": "What was 'detente' in the context of Cold War history?",
+        "options": ["Military confrontation", "Easing of tensions between superpowers", "Spy exchange program", "Nuclear testing freeze"],
+        "correct_answer": 1,
+        "explanation": "Detente (1960s-70s) saw arms control treaties (SALT I), increased trade, and cultural exchanges. It ended with the Soviet invasion of Afghanistan (1979) and Reagan's military buildup."
+      },
+      {
+        "question": "The Solidarity movement that challenged communist rule emerged in which country?",
+        "options": ["Hungary", "East Germany", "Poland", "Czechoslovakia"],
+        "correct_answer": 2,
+        "explanation": "Solidarity, led by Lech Walesa, was the first independent trade union in the Soviet bloc (1980). Despite martial law suppression, it resurged and won elections in 1989, beginning communism's collapse."
+      },
+      {
+        "question": "What role did Radio Free Europe play during the Cold War?",
+        "options": ["Soviet propaganda broadcast", "Western news and information broadcast into Eastern Bloc", "Military communications", "Entertainment programming"],
+        "correct_answer": 1,
+        "explanation": "Funded by the CIA (later openly by Congress), RFE broadcast uncensored news into communist countries. Despite jamming efforts, it provided alternative information to millions behind the Iron Curtain."
+      }
+    ],
+    "hard": [
+      {
+        "question": "The Soviet invasion of which country in 1979 is often called 'the USSR's Vietnam'?",
+        "options": ["Poland", "Czechoslovakia", "Afghanistan", "Angola"],
+        "correct_answer": 2,
+        "explanation": "The 10-year war killed 15,000 Soviet soldiers and over a million Afghans. US-backed mujahideen resistance, plus economic strain, contributed to Soviet collapse. Many fighters later formed the Taliban."
+      },
+      {
+        "question": "What was Operation Gladio?",
+        "options": ["Soviet spy network", "NATO secret armies to resist potential Soviet occupation", "Nuclear weapons program", "Berlin airlift operation"],
+        "correct_answer": 1,
+        "explanation": "CIA and MI6 established 'stay-behind' networks across Western Europe to conduct guerrilla warfare if Soviets invaded. Some networks became involved in controversial domestic operations and terrorism."
+      },
+      {
+        "question": "The 'missile gap' of the late 1950s was later revealed to be what?",
+        "options": ["Real Soviet advantage", "Exaggerated fear; US actually had superiority", "Equal balance of forces", "British propaganda"],
+        "correct_answer": 1,
+        "explanation": "Kennedy campaigned on the 'missile gap,' claiming Soviet ICBM superiority. After taking office, U-2 and satellite intelligence revealed the US had far more missiles. The myth had fueled the arms race."
+      },
+      {
+        "question": "The Brezhnev Doctrine asserted the Soviet right to do what?",
+        "options": ["Deploy nuclear weapons in Eastern Europe", "Intervene in socialist countries to prevent deviation from communism", "Control Middle Eastern oil", "Expand into Western Europe"],
+        "correct_answer": 1,
+        "explanation": "After invading Czechoslovakia (1968), Brezhnev declared limited sovereignty for socialist states. The USSR reserved the right to intervene against reforms threatening communist rule. Gorbachev's abandonment of this doctrine enabled 1989's revolutions."
+      },
+      {
+        "question": "What was the significance of the Able Archer 83 NATO exercise?",
+        "options": ["First joint US-Soviet military exercise", "Nearly triggered Soviet nuclear attack due to misperception", "Tested new missile defense systems", "Led to arms reduction talks"],
+        "correct_answer": 1,
+        "explanation": "Soviet leadership, paranoid after Reagan's 'Evil Empire' rhetoric, feared the exercise was cover for an actual first strike. They prepared nuclear forces. This near-catastrophe may have influenced Reagan's later moderation."
+      },
+      {
+        "question": "The Helsinki Accords of 1975 included provisions that unexpectedly aided which group?",
+        "options": ["Western businesses", "Human rights activists in Eastern Bloc", "Soviet military", "Nuclear scientists"],
+        "correct_answer": 1,
+        "explanation": "The USSR accepted human rights provisions for legitimacy. Dissenters used these to demand rights, forming 'Helsinki Watch' groups. This gave moral and legal ammunition to the movements that later ended communism."
+      },
+      {
+        "question": "What economic system did Yugoslavia practice that made it unique among communist states?",
+        "options": ["Pure capitalism", "Worker self-management and market socialism", "Soviet-style central planning", "Agricultural collectivization"],
+        "correct_answer": 1,
+        "explanation": "Tito broke with Stalin in 1948 and developed 'workers' self-management.' Enterprises were run by worker councils with more market freedom. Yugoslavia received Western aid and remained neutral between blocs."
+      },
+      {
+        "question": "The KAL 007 incident of 1983 involved what?",
+        "options": ["Soviet spy caught in US", "Soviet shootdown of Korean civilian airliner", "Nuclear submarine collision", "Defection of Soviet pilot"],
+        "correct_answer": 1,
+        "explanation": "A Korean airliner straying into Soviet airspace was shot down, killing 269. The USSR initially denied responsibility. The incident worsened US-Soviet relations and Reagan used it to justify military spending."
+      }
+    ]
+  },
+  "ancient-philosophy": {
+    "easy": [
+      {
+        "question": "Which Greek philosopher was sentenced to death by drinking hemlock?",
+        "options": ["Plato", "Aristotle", "Socrates", "Pythagoras"],
+        "correct_answer": 2,
+        "explanation": "Socrates was convicted of corrupting youth and impiety in 399 BCE. He refused escape, arguing that he must obey the city's laws. His death became a foundational moment in Western philosophy."
+      },
+      {
+        "question": "The phrase 'I think, therefore I am' is associated with which philosopher?",
+        "options": ["Plato", "Descartes", "Aristotle", "Spinoza"],
+        "correct_answer": 1,
+        "explanation": "Descartes' 'Cogito, ergo sum' was his foundation for knowledge. Even if everything else could be doubted, the act of thinking proved his existence as a thinking thing."
+      },
+      {
+        "question": "Plato founded which famous school in Athens?",
+        "options": ["The Lyceum", "The Academy", "The Stoa", "The Garden"],
+        "correct_answer": 1,
+        "explanation": "The Academy, named after the grove of Academus, operated for nearly 900 years until closed by Emperor Justinian in 529 CE. It's the origin of the word 'academic.'"
+      },
+      {
+        "question": "According to Aristotle, what is the highest human good?",
+        "options": ["Pleasure", "Wealth", "Eudaimonia (flourishing/happiness)", "Power"],
+        "correct_answer": 2,
+        "explanation": "Aristotle argued that eudaimonia, often translated as happiness or flourishing, is achieved through a life of virtue and reason. It's the ultimate goal that all other goods serve."
+      },
+      {
+        "question": "The Stoic philosophy taught that one should focus on what?",
+        "options": ["Maximizing pleasure", "What is within one's control", "Achieving political power", "Avoiding all emotion"],
+        "correct_answer": 1,
+        "explanation": "Stoics distinguished between what we can control (our judgments, actions) and what we cannot (others' actions, external events). Wisdom lay in focusing on the former and accepting the latter."
+      },
+      {
+        "question": "Which philosopher wrote 'The Republic,' describing an ideal state ruled by philosopher-kings?",
+        "options": ["Aristotle", "Socrates", "Plato", "Xenophon"],
+        "correct_answer": 2,
+        "explanation": "In The Republic, Plato argued that society needs rulers who understand the Form of the Good. The work also contains the famous 'Allegory of the Cave' about knowledge and reality."
+      },
+      {
+        "question": "The Epicurean philosophy taught that the goal of life was what?",
+        "options": ["Acquiring wealth", "Tranquil pleasure and absence of pain", "Political engagement", "Physical pleasure at all costs"],
+        "correct_answer": 1,
+        "explanation": "Epicurus defined pleasure as ataraxia (tranquility) and aponia (absence of pain). He advocated simple living, friendship, and philosophical contemplation rather than hedonistic excess."
+      },
+      {
+        "question": "Which philosopher is known for the 'Socratic method' of questioning?",
+        "options": ["Plato", "Socrates", "Aristotle", "Zeno"],
+        "correct_answer": 1,
+        "explanation": "Socrates used questioning to expose contradictions in others' beliefs and lead them toward truth. He claimed to know nothing, calling himself a 'midwife' for others' ideas."
+      }
+    ],
+    "medium": [
+      {
+        "question": "Plato's Theory of Forms proposes that physical objects are imperfect copies of what?",
+        "options": ["Divine thoughts", "Perfect eternal Forms or Ideas", "Earlier physical objects", "Mathematical equations"],
+        "correct_answer": 1,
+        "explanation": "Plato argued that things like 'beauty' or 'justice' exist as perfect, unchanging Forms in a realm beyond the physical world. Physical beautiful things merely 'participate' in the Form of Beauty."
+      },
+      {
+        "question": "What did the Pre-Socratic philosopher Heraclitus believe about the nature of reality?",
+        "options": ["Everything is water", "Everything is in constant flux", "Reality is an illusion", "The world is eternal and unchanging"],
+        "correct_answer": 1,
+        "explanation": "Heraclitus famously said 'you cannot step in the same river twice.' He saw fire as the fundamental element and believed reality is characterized by constant change and the unity of opposites."
+      },
+      {
+        "question": "Aristotle's concept of the 'Golden Mean' suggests that virtue lies where?",
+        "options": ["In following divine law", "Between extremes of excess and deficiency", "In maximizing pleasure", "In following social convention"],
+        "correct_answer": 1,
+        "explanation": "Courage, for example, is the mean between recklessness and cowardice. Each virtue is a balanced disposition between two vices. The mean is relative to the individual and situation."
+      },
+      {
+        "question": "Which Roman philosopher and emperor wrote 'Meditations,' a key Stoic text?",
+        "options": ["Nero", "Marcus Aurelius", "Hadrian", "Trajan"],
+        "correct_answer": 1,
+        "explanation": "Marcus Aurelius wrote these personal reflections while campaigning. They were never meant for publication. The work remains influential for its practical wisdom about facing life's challenges."
+      },
+      {
+        "question": "The Cynics were known for rejecting which aspects of conventional life?",
+        "options": ["Philosophy and learning", "Social conventions, wealth, and reputation", "Physical exercise", "Religious practices only"],
+        "correct_answer": 1,
+        "explanation": "Diogenes famously lived in a barrel and mocked social norms. Cynics sought virtue through living 'according to nature,' rejecting material possessions and social pretensions."
+      },
+      {
+        "question": "Parmenides argued that change and motion are what?",
+        "options": ["Fundamental to reality", "Illusions; reality is one, unchanging being", "Caused by the gods", "Only applicable to matter"],
+        "correct_answer": 1,
+        "explanation": "Parmenides reasoned that 'what is' cannot come from 'what is not.' Therefore, change is logically impossible and our senses deceive us. This paradox profoundly influenced later philosophy."
+      },
+      {
+        "question": "What was the main ethical teaching of Confucius?",
+        "options": ["Maximize personal pleasure", "Cultivate virtue through ritual, relationships, and self-improvement", "Withdraw from society", "Seek divine revelation"],
+        "correct_answer": 1,
+        "explanation": "Confucius emphasized ren (benevolence), li (ritual propriety), and harmonious social relationships. He taught that moral cultivation begins with the individual and extends to family and state."
+      },
+      {
+        "question": "The concept of 'Dao' in Daoism refers to what?",
+        "options": ["A personal god", "The natural way or flow of the universe", "Moral law code", "Political authority"],
+        "correct_answer": 1,
+        "explanation": "The Dao (Way) is the ineffable source and pattern of all things. Daoists advocate 'wu wei' (effortless action) and harmony with nature rather than forced human intervention."
+      }
+    ],
+    "hard": [
+      {
+        "question": "The ancient skeptic Pyrrho advocated what response to the impossibility of certain knowledge?",
+        "options": ["Nihilism and despair", "Suspension of judgment (epoché) leading to tranquility", "Dogmatic assertion", "Suicide"],
+        "correct_answer": 1,
+        "explanation": "Pyrrho argued that since we cannot know things' true nature, we should suspend judgment. This suspension paradoxically leads to ataraxia (tranquility) by freeing us from anxiety about truth."
+      },
+      {
+        "question": "Plotinus, founder of Neoplatonism, described reality as emanating from what ultimate principle?",
+        "options": ["The Demiurge", "The One (to hen)", "Prime Matter", "The World Soul"],
+        "correct_answer": 1,
+        "explanation": "The One is beyond being and thought, perfectly simple. Reality emanates from it like light from the sun: first Nous (Intellect), then Soul, then Matter. Return to the One through contemplation is the soul's goal."
+      },
+      {
+        "question": "The 'Unmoved Mover' in Aristotle's metaphysics is what?",
+        "options": ["A personal creator god", "An eternal actuality that causes motion by being desired", "The first physical cause", "A theoretical abstraction"],
+        "correct_answer": 1,
+        "explanation": "Aristotle's God doesn't create or act but eternally thinks upon itself. It causes motion not by pushing but by being the ultimate object of desire that everything strives toward."
+      },
+      {
+        "question": "What does 'apeiron' mean in Anaximander's cosmology?",
+        "options": ["Fire", "The boundless/indefinite", "Mind", "Atoms"],
+        "correct_answer": 1,
+        "explanation": "Anaximander proposed that the origin of all things is the apeiron, an unlimited, undefined substance. Definite things emerge from it through separation and return to it in dissolution."
+      },
+      {
+        "question": "The Buddhist concept of 'sunyata' (emptiness) refers to what?",
+        "options": ["Nihilism; nothing exists", "All phenomena lack inherent, independent existence", "The void before creation", "Mental blankness in meditation"],
+        "correct_answer": 1,
+        "explanation": "Sunyata doesn't mean nothing exists, but that things exist only interdependently, without fixed essence. Understanding this removes attachment to the illusion of permanent, independent selfhood."
+      },
+      {
+        "question": "Zeno's paradoxes (like Achilles and the Tortoise) were designed to support which philosopher's views?",
+        "options": ["Heraclitus", "Parmenides", "Democritus", "Thales"],
+        "correct_answer": 1,
+        "explanation": "Zeno defended Parmenides' view that motion is impossible. His paradoxes showed logical contradictions in the concept of motion and plurality, supporting the view that reality is one unchanging being."
+      },
+      {
+        "question": "What is the 'Euthyphro dilemma' that Socrates posed about piety and the gods?",
+        "options": ["Whether gods exist", "Whether pious is loved by gods because it is pious, or pious because loved by gods", "How to please multiple gods", "Whether prayer is effective"],
+        "correct_answer": 1,
+        "explanation": "This dilemma asks whether morality depends on divine will (making it arbitrary) or exists independently (making gods subject to external standards). It remains central to philosophy of religion."
+      },
+      {
+        "question": "The Mohist school in ancient China was unique for advocating what ethical position?",
+        "options": ["Filial piety above all", "Impartial care for all people equally", "Rule by force", "Withdrawal from society"],
+        "correct_answer": 1,
+        "explanation": "Mozi criticized Confucian partiality (favoring family/nation), arguing for 'jian ai' (universal love). He also developed logical methods and consequentialist ethics, but Mohism was later overshadowed by Confucianism."
+      }
+    ]
+  },
+  "revolutionary-periods": {
+    "easy": [
+      {
+        "question": "The storming of the Bastille on July 14, 1789 is celebrated as what?",
+        "options": ["End of the French Revolution", "France's national holiday marking revolution's start", "Napoleon's victory", "End of monarchy"],
+        "correct_answer": 1,
+        "explanation": "The Bastille fortress symbolized royal tyranny. Its fall marked popular rebellion against the king and is celebrated as Bastille Day. Only seven prisoners were inside, but its significance was symbolic."
+      },
+      {
+        "question": "Which document declared that 'all men are created equal' in the American Revolution?",
+        "options": ["The Constitution", "The Declaration of Independence", "The Bill of Rights", "Common Sense"],
+        "correct_answer": 1,
+        "explanation": "Thomas Jefferson drafted the Declaration in 1776. Its Enlightenment ideals influenced revolutions worldwide, though the new nation initially failed to extend equality to enslaved people or women."
+      },
+      {
+        "question": "The Russian Revolution of 1917 brought which political party to power?",
+        "options": ["Mensheviks", "Social Revolutionaries", "Bolsheviks", "Kadets"],
+        "correct_answer": 2,
+        "explanation": "Lenin's Bolsheviks seized power in the October Revolution, overthrowing the Provisional Government. They established the world's first communist state, triggering civil war and foreign intervention."
+      },
+      {
+        "question": "The Industrial Revolution began in which country in the mid-18th century?",
+        "options": ["France", "Germany", "United States", "Great Britain"],
+        "correct_answer": 3,
+        "explanation": "Britain's combination of coal, iron, capital, labor, and colonial markets sparked industrialization. Textile mills, steam engines, and factories transformed production, urbanization, and society."
+      },
+      {
+        "question": "Who was the leader of the Chinese Communist Revolution?",
+        "options": ["Sun Yat-sen", "Mao Zedong", "Chiang Kai-shek", "Deng Xiaoping"],
+        "correct_answer": 1,
+        "explanation": "Mao led the Communist Party to victory in 1949 after decades of civil war and Japanese invasion. He established the People's Republic of China and ruled until 1976."
+      },
+      {
+        "question": "The Haitian Revolution was unique because it was the only successful what?",
+        "options": ["Peaceful revolution", "Slave revolution leading to an independent nation", "Military coup", "Religious revolution"],
+        "correct_answer": 1,
+        "explanation": "Beginning in 1791, enslaved Haitians defeated French, Spanish, and British forces. Haiti declared independence in 1804, becoming the first free Black republic and second independent nation in the Americas."
+      },
+      {
+        "question": "Which invention is most associated with starting the Industrial Revolution in textiles?",
+        "options": ["Steam engine", "Spinning jenny", "Telegraph", "Cotton gin"],
+        "correct_answer": 1,
+        "explanation": "James Hargreaves' spinning jenny (1764) allowed one worker to operate multiple spindles. Combined with the water frame and power loom, it mechanized textile production and launched the factory system."
+      },
+      {
+        "question": "The 'Reign of Terror' during the French Revolution was led by which figure?",
+        "options": ["Napoleon Bonaparte", "Maximilien Robespierre", "King Louis XVI", "Marquis de Lafayette"],
+        "correct_answer": 1,
+        "explanation": "Robespierre and the Committee of Public Safety executed thousands deemed enemies of the Revolution (1793-94). The guillotine became the era's symbol. Eventually, Robespierre himself was executed."
+      }
+    ],
+    "medium": [
+      {
+        "question": "The slogan 'Liberty, Equality, Fraternity' emerged from which revolution?",
+        "options": ["American", "French", "Russian", "Haitian"],
+        "correct_answer": 1,
+        "explanation": "This motto encapsulated Enlightenment ideals. It became France's national motto and influenced revolutionary movements worldwide, though the French Revolution often violated these principles in practice."
+      },
+      {
+        "question": "Simon Bolivar is known as the 'Liberator' for his role in freeing which region from Spanish rule?",
+        "options": ["Central America", "Mexico", "South America", "Caribbean islands"],
+        "correct_answer": 2,
+        "explanation": "Bolivar led independence movements in Venezuela, Colombia, Ecuador, Peru, and Bolivia (named for him). He dreamed of a united South America but died disillusioned as nations fractured."
+      },
+      {
+        "question": "The Meiji Restoration (1868) transformed Japan from a feudal society into what?",
+        "options": ["A communist state", "A modern industrial and military power", "A democratic republic", "A European colony"],
+        "correct_answer": 1,
+        "explanation": "Japanese reformers restored imperial rule and rapidly adopted Western technology, military organization, and industry. Within decades, Japan became the first non-Western industrial power and defeated Russia in 1905."
+      },
+      {
+        "question": "What was the 'Great Fear' of 1789 in France?",
+        "options": ["Fear of foreign invasion", "Peasant panic about aristocratic plots, leading to attacks on manors", "Spread of plague", "Fear of Robespierre"],
+        "correct_answer": 1,
+        "explanation": "Rumors of aristocratic conspiracies swept rural France. Peasants attacked chateaux and burned feudal records. This rural upheaval pressured the National Assembly to abolish feudal privileges."
+      },
+      {
+        "question": "The Luddite movement during the Industrial Revolution opposed what?",
+        "options": ["Political reform", "Machinery threatening skilled workers' livelihoods", "Religious changes", "Colonial expansion"],
+        "correct_answer": 1,
+        "explanation": "Named for mythical 'Ned Ludd,' textile workers destroyed machinery (1811-16). They weren't anti-technology but protested the destruction of their craft skills and livelihoods by mechanization."
+      },
+      {
+        "question": "Who wrote 'The Communist Manifesto' with Friedrich Engels in 1848?",
+        "options": ["Vladimir Lenin", "Leon Trotsky", "Karl Marx", "Mikhail Bakunin"],
+        "correct_answer": 2,
+        "explanation": "Marx and Engels' pamphlet analyzed class struggle and predicted capitalism's overthrow by workers. Its influence grew after Marx's death, shaping socialist and communist movements globally."
+      },
+      {
+        "question": "The 1848 revolutions that swept Europe are often called what?",
+        "options": ["Industrial Revolutions", "Springtime of the Peoples", "Restoration Period", "Age of Reform"],
+        "correct_answer": 1,
+        "explanation": "Uprisings demanding constitutional government, national unification, and workers' rights erupted across Europe. Most were suppressed, but they reflected growing nationalist and liberal sentiment."
+      },
+      {
+        "question": "The Long March (1934-35) was a pivotal event in which revolution?",
+        "options": ["Russian", "French", "Chinese", "Cuban"],
+        "correct_answer": 2,
+        "explanation": "Fleeing Nationalist forces, 100,000 Communists marched 6,000 miles to Yan'an. Only 8,000 survived, but the march made Mao leader and became foundational to Communist mythology."
+      }
+    ],
+    "hard": [
+      {
+        "question": "The Tennis Court Oath in 1789 saw French representatives vow to do what?",
+        "options": ["Execute the king", "Not disperse until a constitution was established", "Declare war on Austria", "Abolish the Church"],
+        "correct_answer": 1,
+        "explanation": "Locked out of their meeting hall, Third Estate deputies gathered at a tennis court. Their oath not to separate until France had a constitution marked the National Assembly's defiance of royal authority."
+      },
+      {
+        "question": "What was the 'enclosure movement' and how did it contribute to industrialization?",
+        "options": ["Fencing of common lands, pushing peasants into factory labor", "Prison reform movement", "Colonial land claims", "Factory construction regulations"],
+        "correct_answer": 0,
+        "explanation": "Enclosure privatized common lands for efficient farming. Displaced rural workers migrated to cities, providing labor for factories. This social transformation was essential to industrialization."
+      },
+      {
+        "question": "The Vendee Uprising during the French Revolution was primarily motivated by what?",
+        "options": ["Radical republicanism", "Defense of Catholicism and monarchy", "Land reform demands", "Jacobin support"],
+        "correct_answer": 1,
+        "explanation": "Western French peasants revolted against the Revolution's anti-Church policies and military conscription. The government's brutal suppression killed hundreds of thousands, some calling it genocide."
+      },
+      {
+        "question": "What role did 'soviets' originally play in the Russian Revolution before becoming symbolic of the state?",
+        "options": ["Secret police", "Workers' and soldiers' councils", "Communist Party committees", "Land redistribution boards"],
+        "correct_answer": 1,
+        "explanation": "Soviets were democratic councils of workers, soldiers, and peasants that emerged in 1905 and 1917. 'All power to the soviets' was a Bolshevik slogan, though the Party eventually controlled them."
+      },
+      {
+        "question": "The concept of 'permanent revolution,' associated with which figure, argued that revolution couldn't succeed in one country alone?",
+        "options": ["Lenin", "Stalin", "Trotsky", "Mao"],
+        "correct_answer": 2,
+        "explanation": "Trotsky argued socialist revolution must spread internationally or be crushed by capitalist powers. Stalin's opposing 'socialism in one country' won, leading to Trotsky's exile and assassination."
+      },
+      {
+        "question": "The German Peasants' War of 1524-25 was influenced by which reformer's ideas, though he condemned the revolt?",
+        "options": ["John Calvin", "Martin Luther", "Ulrich Zwingli", "Thomas Muntzer"],
+        "correct_answer": 1,
+        "explanation": "Peasants invoked Luther's teachings on Christian freedom to demand economic and social rights. Luther, dependent on noble protection, denounced them. The revolt's brutal suppression killed 100,000."
+      },
+      {
+        "question": "What was the 'White Terror' that followed the French Revolution's Thermidorian Reaction?",
+        "options": ["Robespierre's executions", "Royalist revenge against Jacobins and republicans", "Napoleonic purges", "Counter-revolutionary foreign intervention"],
+        "correct_answer": 1,
+        "explanation": "After Robespierre's fall (1794), royalists and their allies murdered former revolutionaries, especially in southern France. It demonstrated that revolutionary violence could spark counter-revolutionary violence."
+      },
+      {
+        "question": "The phrase 'What is the Third Estate? Everything. What has it been until now? Nothing. What does it want to become? Something' comes from which pamphleteer?",
+        "options": ["Voltaire", "Rousseau", "Emmanuel Joseph Sieyes", "Mirabeau"],
+        "correct_answer": 2,
+        "explanation": "Sieyes' 1789 pamphlet galvanized the Third Estate (commoners, 97% of France) against aristocratic privilege. It argued the nation was the Third Estate, making nobility parasites on the social body."
       }
     ]
   }
