@@ -9,29 +9,63 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body class="results-page">
-    <div class="container">
+    <div class="results-container">
         <div class="results-card bounce-in">
+            <!-- Header with emoji and title -->
             <div class="results-header">
-                <h1 class="results-title" id="results-title">Great Job!</h1>
                 <div class="results-emoji" id="results-emoji">&#x1F389;</div>
+                <h1 class="results-title" id="results-title">Great Job!</h1>
+                <p class="results-subtitle" id="results-subtitle">You've completed the quiz!</p>
             </div>
 
-            <div class="score-circle" id="score-circle">
-                <div class="score-inner">
-                    <span class="final-score" id="final-score">0</span>
-                    <span class="score-divider">/</span>
-                    <span class="total-questions" id="total-questions">10</span>
+            <!-- Main Score Display -->
+            <div class="score-showcase">
+                <div class="score-ring" id="score-ring">
+                    <svg class="score-svg" viewBox="0 0 120 120">
+                        <circle class="score-bg-circle" cx="60" cy="60" r="54"/>
+                        <circle class="score-progress-circle" id="score-circle-progress" cx="60" cy="60" r="54"/>
+                    </svg>
+                    <div class="score-center">
+                        <span class="score-number" id="final-score">0</span>
+                        <span class="score-separator">/</span>
+                        <span class="score-total" id="total-questions">10</span>
+                    </div>
                 </div>
-                <span class="score-label">Questions Correct</span>
+                <div class="score-percentage" id="score-percentage">0%</div>
             </div>
 
-            <div class="score-message" id="score-message">
-                You're a history superstar!
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-icon">&#x2705;</div>
+                    <div class="stat-card-value" id="stat-correct">0</div>
+                    <div class="stat-card-label">Correct</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon">&#x274C;</div>
+                    <div class="stat-card-value" id="stat-wrong">0</div>
+                    <div class="stat-card-label">Wrong</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon">&#x1F525;</div>
+                    <div class="stat-card-value" id="stat-streak">0</div>
+                    <div class="stat-card-label">Best Streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon">&#x2764;&#xFE0F;</div>
+                    <div class="stat-card-value" id="stat-lives">0</div>
+                    <div class="stat-card-label">Lives Left</div>
+                </div>
+            </div>
+
+            <!-- Performance Message -->
+            <div class="performance-message" id="performance-message">
+                <p id="score-message">You're a history superstar!</p>
             </div>
 
             <!-- Save Score Form -->
             <div class="save-score-section" id="save-score-section">
-                <h3>Save Your Score!</h3>
+                <h3>Save Your Score</h3>
                 <form id="save-score-form" class="save-form">
                     <input
                         type="text"
@@ -40,9 +74,10 @@
                         maxlength="20"
                         required
                         class="name-input"
+                        autocomplete="off"
                     >
                     <button type="submit" class="save-button">
-                        <span>&#x1F4BE;</span> Save to Leaderboard
+                        Save to Leaderboard
                     </button>
                 </form>
             </div>
@@ -53,75 +88,98 @@
                 <span class="success-text" id="success-text">Score saved!</span>
             </div>
 
+            <!-- Action Buttons -->
             <div class="results-actions">
                 <a href="/play" class="action-button play-again">
-                    <span>&#x1F504;</span> Play Again
+                    <span>&#x1F504;</span>
+                    <span>Play Again</span>
                 </a>
                 <a href="/leaderboard" class="action-button view-leaderboard">
-                    <span>&#x1F3C6;</span> Leaderboard
+                    <span>&#x1F3C6;</span>
+                    <span>Leaderboard</span>
                 </a>
                 <a href="/" class="action-button go-home">
-                    <span>&#x1F3E0;</span> Home
+                    <span>&#x1F3E0;</span>
+                    <span>Home</span>
                 </a>
             </div>
         </div>
     </div>
 
     <script>
-        // Get score from URL params
+        // Get score data from URL params
         const urlParams = new URLSearchParams(window.location.search);
         const score = parseInt(urlParams.get('score')) || 0;
         const total = parseInt(urlParams.get('total')) || 10;
-        const percentage = (score / total) * 100;
+        const bestStreak = parseInt(urlParams.get('streak')) || 0;
+        const livesLeft = parseInt(urlParams.get('lives')) || 0;
+        const percentage = Math.round((score / total) * 100);
 
-        // Update display
+        // Update display elements
         document.getElementById('final-score').textContent = score;
         document.getElementById('total-questions').textContent = total;
+        document.getElementById('score-percentage').textContent = percentage + '%';
+
+        // Update stats
+        document.getElementById('stat-correct').textContent = score;
+        document.getElementById('stat-wrong').textContent = total - score;
+        document.getElementById('stat-streak').textContent = bestStreak;
+        document.getElementById('stat-lives').textContent = livesLeft;
+
+        // Animate the score ring
+        const progressCircle = document.getElementById('score-circle-progress');
+        const circumference = 2 * Math.PI * 54;
+        progressCircle.style.strokeDasharray = circumference;
+        progressCircle.style.strokeDashoffset = circumference;
+
+        setTimeout(() => {
+            const offset = circumference - (percentage / 100) * circumference;
+            progressCircle.style.strokeDashoffset = offset;
+        }, 100);
 
         // Set message and emoji based on score
         const resultsTitle = document.getElementById('results-title');
+        const resultsSubtitle = document.getElementById('results-subtitle');
         const resultsEmoji = document.getElementById('results-emoji');
         const scoreMessage = document.getElementById('score-message');
-        const scoreCircle = document.getElementById('score-circle');
+        const scoreRing = document.getElementById('score-ring');
 
         if (percentage === 100) {
-            resultsTitle.textContent = 'PERFECT SCORE!';
+            resultsTitle.textContent = 'PERFECT!';
+            resultsSubtitle.textContent = 'Flawless victory!';
             resultsEmoji.innerHTML = '&#x1F451;';
-            scoreMessage.textContent = "You're a history genius!";
-            scoreCircle.classList.add('perfect');
-            // Extra confetti for perfect score!
+            scoreMessage.textContent = "You're a true history genius! Not a single mistake!";
+            scoreRing.classList.add('perfect');
             setTimeout(() => {
                 confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+                setTimeout(() => confetti({ particleCount: 100, spread: 120, origin: { y: 0.5 } }), 300);
             }, 500);
         } else if (percentage >= 80) {
-            resultsTitle.textContent = 'Amazing!';
+            resultsTitle.textContent = 'Excellent!';
+            resultsSubtitle.textContent = 'Outstanding performance!';
             resultsEmoji.innerHTML = '&#x1F31F;';
-            scoreMessage.textContent = "You really know your history!";
-            scoreCircle.classList.add('great');
+            scoreMessage.textContent = "You really know your history! Almost perfect!";
+            scoreRing.classList.add('great');
+            setTimeout(() => confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }), 500);
         } else if (percentage >= 60) {
-            resultsTitle.textContent = 'Great Job!';
+            resultsTitle.textContent = 'Good Job!';
+            resultsSubtitle.textContent = 'Well done!';
             resultsEmoji.innerHTML = '&#x1F389;';
             scoreMessage.textContent = "You're on your way to becoming a history expert!";
-            scoreCircle.classList.add('good');
+            scoreRing.classList.add('good');
+            setTimeout(() => confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } }), 500);
         } else if (percentage >= 40) {
             resultsTitle.textContent = 'Nice Try!';
+            resultsSubtitle.textContent = 'Keep practicing!';
             resultsEmoji.innerHTML = '&#x1F44D;';
             scoreMessage.textContent = "Keep learning and you'll be a pro in no time!";
-            scoreCircle.classList.add('okay');
+            scoreRing.classList.add('okay');
         } else {
             resultsTitle.textContent = 'Keep Learning!';
+            resultsSubtitle.textContent = "Don't give up!";
             resultsEmoji.innerHTML = '&#x1F4DA;';
             scoreMessage.textContent = "History is full of surprises. Try again!";
-            scoreCircle.classList.add('learning');
-        }
-
-        // Confetti on load
-        if (percentage >= 60) {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
+            scoreRing.classList.add('learning');
         }
 
         // Handle save score form
@@ -130,6 +188,10 @@
             const playerName = document.getElementById('player-name').value.trim();
 
             if (!playerName) return;
+
+            const button = e.target.querySelector('button');
+            button.disabled = true;
+            button.textContent = 'Saving...';
 
             try {
                 const response = await fetch(`/api/save-score?player_name=${encodeURIComponent(playerName)}&score=${score}&total_questions=${total}`, {
@@ -143,13 +205,15 @@
 
                 if (data.made_leaderboard) {
                     document.getElementById('success-text').innerHTML =
-                        `Score saved! You made the leaderboard at #${data.rank}! &#x1F3C6;`;
+                        `You made the leaderboard at <strong>#${data.rank}</strong>! &#x1F3C6;`;
                     confetti({ particleCount: 50, spread: 60 });
                 } else {
-                    document.getElementById('success-text').textContent = 'Score saved!';
+                    document.getElementById('success-text').textContent = 'Score saved successfully!';
                 }
             } catch (error) {
                 console.error('Error saving score:', error);
+                button.disabled = false;
+                button.textContent = 'Save to Leaderboard';
                 alert('Could not save score. Please try again.');
             }
         });
