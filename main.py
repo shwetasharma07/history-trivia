@@ -17,7 +17,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
 from sqlalchemy.orm import Session
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Union
 import random
 import json
 
@@ -26,7 +26,9 @@ from models import Score
 import question_bank
 import leaderboard
 import rooms
+import auth
 from websocket_manager import manager
+from fastapi.responses import RedirectResponse
 
 # Store questions in memory for answer checking (keyed by session)
 # In production, you'd use a proper session store
@@ -42,6 +44,93 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 
+# ============================================
+# AUTHENTICATION ROUTES
+# ============================================
+
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request) -> HTMLResponse:
+    """Render the login/register page."""
+    session_token = request.cookies.get("session_token")
+    user = auth.get_user_from_session(session_token) if session_token else None
+    if user:
+        return RedirectResponse(url="/", status_code=302)
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
+@app.post("/api/auth/register")
+async def api_register(username: str, password: str, display_name: Optional[str] = None) -> dict:
+    """Register a new user account."""
+    result = auth.register_user(username, password, display_name)
+    if result["success"]:
+        # Auto-login after registration
+        login_result = auth.login_user(username, password)
+        return login_result
+    return result
+
+
+@app.post("/api/auth/login")
+async def api_login(username: str, password: str) -> dict:
+    """Authenticate user and create session."""
+    return auth.login_user(username, password)
+
+
+@app.post("/api/auth/logout")
+async def api_logout(request: Request) -> dict:
+    """Logout user and invalidate session."""
+    session_token = request.cookies.get("session_token")
+    if session_token:
+        auth.logout_user(session_token)
+    return {"success": True}
+
+
+@app.get("/api/auth/me")
+async def api_get_current_user(request: Request) -> dict:
+    """Get current logged-in user info."""
+    session_token = request.cookies.get("session_token")
+    user = auth.get_user_from_session(session_token) if session_token else None
+    if user:
+        return {"logged_in": True, "user": user}
+    return {"logged_in": False}
+
+
+@app.get("/api/auth/stats/{user_id}")
+async def api_get_user_stats(user_id: int) -> dict:
+    """Get detailed stats for a user."""
+    return auth.get_user_stats(user_id)
+
+
+@app.post("/api/auth/save-game")
+async def api_save_game_result(request: Request, result: dict) -> dict:
+    """Save game result for logged-in user."""
+    session_token = request.cookies.get("session_token")
+    user = auth.get_user_from_session(session_token) if session_token else None
+    if not user:
+        return {"success": False, "error": "Not logged in"}
+    return auth.save_game_result(user["id"], result)
+
+
+@app.get("/profile", response_class=HTMLResponse)
+async def profile_page(request: Request) -> HTMLResponse:
+    """Render the user profile page."""
+    session_token = request.cookies.get("session_token")
+    user = auth.get_user_from_session(session_token) if session_token else None
+    if not user:
+        return RedirectResponse(url="/login", status_code=302)
+    stats = auth.get_user_stats(user["id"])
+    rank_info = auth.get_user_rank(user["id"])
+    return templates.TemplateResponse("profile.html", {
+        "request": request,
+        "user": user,
+        "stats": stats,
+        "rank": rank_info
+    })
+
+
+# ============================================
+# MAIN PAGES
+# ============================================
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request) -> HTMLResponse:
     """
@@ -53,7 +142,9 @@ async def home(request: Request) -> HTMLResponse:
     Returns:
         HTMLResponse: The rendered index.html template.
     """
-    return templates.TemplateResponse("index.html", {"request": request})
+    session_token = request.cookies.get("session_token")
+    user = auth.get_user_from_session(session_token) if session_token else None
+    return templates.TemplateResponse("index.html", {"request": request, "user": user})
 
 
 @app.get("/play", response_class=HTMLResponse)
@@ -156,11 +247,11 @@ async def get_categories() -> dict[str, list[dict[str, str]]]:
 DIFFICULTY_POINTS = {"easy": 10, "medium": 20, "hard": 30}
 
 
-@app.post("/api/check-answer")
+@app.post("/api/check-answer", response_model=None)
 async def check_answer(
     question_id: int,
     answer: int
-) -> dict[str, Any] | JSONResponse:
+):
     """
     Validate a player's answer and return the result.
 
@@ -378,8 +469,8 @@ async def join_room(room_code: str, player_name: str) -> dict[str, Any]:
     return result
 
 
-@app.get("/api/rooms/{room_code}")
-async def get_room_info(room_code: str) -> dict[str, Any] | JSONResponse:
+@app.get("/api/rooms/{room_code}", response_model=None)
+async def get_room_info(room_code: str):
     """
     Retrieve information about a game room.
 
@@ -402,10 +493,10 @@ async def get_room_info(room_code: str) -> dict[str, Any] | JSONResponse:
     }
 
 
-@app.get("/api/rooms/{room_code}/questions")
+@app.get("/api/rooms/{room_code}/questions", response_model=None)
 async def get_room_questions(
     room_code: str
-) -> dict[str, list[dict[str, Any]]] | JSONResponse:
+):
     """
     Retrieve the questions for a room-based game.
 

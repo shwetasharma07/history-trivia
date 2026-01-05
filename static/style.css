@@ -3,6 +3,158 @@
    Redesigned for improved UX and visual appeal
    ============================================ */
 
+/* ============================================
+   USER BAR STYLES
+   ============================================ */
+
+.user-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background: rgba(10, 10, 26, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: white;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: white;
+}
+
+.user-stats-mini {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.guest-info {
+    gap: 10px;
+}
+
+.guest-icon {
+    font-size: 1.3rem;
+    opacity: 0.7;
+}
+
+.guest-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.user-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.user-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.profile-btn {
+    background: rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.profile-btn:hover {
+    background: rgba(99, 102, 241, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.logout-btn {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.logout-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    transform: translateY(-1px);
+}
+
+.login-btn {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+}
+
+/* Adjust container padding for user bar */
+.home-page .container {
+    padding-top: 80px;
+}
+
+@media (max-width: 600px) {
+    .user-bar {
+        padding: 10px 16px;
+    }
+
+    .user-details {
+        display: none;
+    }
+
+    .user-btn span:last-child {
+        display: none;
+    }
+
+    .user-btn {
+        padding: 8px 12px;
+    }
+
+    .home-page .container {
+        padding-top: 70px;
+    }
+}
+
 /* CSS Variables for theming */
 :root {
     /* Dark theme base */

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - BrainRace</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .profile-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            padding: 24px;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .profile-username {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .profile-rank {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 20px;
+            font-weight: 600;
+            color: #1a1a2e;
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        .recent-games {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            color: white;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .game-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .game-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .game-mode-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(99, 102, 241, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .game-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-mode {
+            font-weight: 600;
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        .game-date {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
+        }
+
+        .game-score {
+            text-align: right;
+        }
+
+        .game-points {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #a5b4fc;
+        }
+
+        .game-accuracy {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+        }
+
+        .no-games {
+            text-align: center;
+            padding: 40px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 600px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 2.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .profile-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="profile-page">
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">{{ user.display_name[0]|upper }}</div>
+            <div class="profile-info">
+                <h1 class="profile-name">{{ user.display_name }}</h1>
+                <p class="profile-username">@{{ user.username }}</p>
+                {% if rank.rank > 0 %}
+                <div class="profile-rank">
+                    {% if rank.rank == 1 %}&#x1F947;{% elif rank.rank == 2 %}&#x1F948;{% elif rank.rank == 3 %}&#x1F949;{% else %}#{% endif %}
+                    Rank {{ rank.rank }} of {{ rank.total_players }} players
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">&#x1F3AE;</div>
+                <div class="stat-value">{{ stats.total_games or 0 }}</div>
+                <div class="stat-label">Games Played</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#x1F3C6;</div>
+                <div class="stat-value">{{ stats.highest_score or 0 }}</div>
+                <div class="stat-label">Highest Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#x1F4AF;</div>
+                <div class="stat-value">{{ stats.accuracy or 0 }}%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#x1F525;</div>
+                <div class="stat-value">{{ stats.best_streak or 0 }}</div>
+                <div class="stat-label">Best Streak</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#x2705;</div>
+                <div class="stat-value">{{ stats.total_correct or 0 }}</div>
+                <div class="stat-label">Correct Answers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">&#x1F4B0;</div>
+                <div class="stat-value">{{ stats.total_score or 0 }}</div>
+                <div class="stat-label">Total Points</div>
+            </div>
+        </div>
+
+        <div class="recent-games">
+            <h2 class="section-title">
+                <span>&#x1F4C5;</span> Recent Games
+            </h2>
+            {% if stats.recent_games %}
+            <div class="game-list">
+                {% for game in stats.recent_games %}
+                <div class="game-item">
+                    <div class="game-info">
+                        <div class="game-mode-icon">
+                            {% if game.game_mode == 'solo' %}&#x1F464;{% elif game.game_mode == 'local' %}&#x1F465;{% else %}&#x1F310;{% endif %}
+                        </div>
+                        <div class="game-details">
+                            <span class="game-mode">{{ game.game_mode|title }} {% if game.timed_mode %}&#x26A1;{% endif %}</span>
+                            <span class="game-date">{{ game.played_at }}</span>
+                        </div>
+                    </div>
+                    <div class="game-score">
+                        <div class="game-points">{{ game.score }} pts</div>
+                        <div class="game-accuracy">{{ game.correct_answers }}/{{ game.total_questions }} correct</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-games">
+                <p>No games played yet. Start your first game!</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="profile-actions">
+            <a href="/" class="action-btn play-btn">
+                <span>&#x1F680;</span> Play Now
+            </a>
+            <a href="/leaderboard" class="action-btn home-btn">
+                <span>&#x1F3C6;</span> Leaderboard
+            </a>
+            <a href="/" class="action-btn home-btn">
+                <span>&#x1F3E0;</span> Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>

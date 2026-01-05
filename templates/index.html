@@ -6,490 +6,1251 @@
     <title>BrainRace - Test Your Knowledge!</title>
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        /* ========================================
+           ANIMATED BACKGROUND
+           ======================================== */
+        .game-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .floating-emoji {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.15;
+            animation: floatUp 15s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.15; }
+            90% { opacity: 0.15; }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+
+        .glow-orb.purple {
+            width: 400px;
+            height: 400px;
+            background: #8b5cf6;
+            top: 10%;
+            left: 10%;
+        }
+
+        .glow-orb.pink {
+            width: 300px;
+            height: 300px;
+            background: #ec4899;
+            bottom: 20%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        .glow-orb.blue {
+            width: 350px;
+            height: 350px;
+            background: #3b82f6;
+            top: 50%;
+            right: 30%;
+            animation-delay: -5s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.9); }
+            75% { transform: translate(20px, 10px) scale(1.05); }
+        }
+
+        /* ========================================
+           MAIN CONTAINER
+           ======================================== */
+        .flow-container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-top: 30px;
+            padding-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========================================
+           HEADER WITH CHARACTER
+           ======================================== */
+        .header-section {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .mascot {
+            font-size: 4rem;
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .mascot:hover {
+            animation: wiggle 0.5s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+
+        .logo-text .brain {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text .race {
+            background: linear-gradient(135deg, #f472b6, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        /* ========================================
+           STEP CARDS
+           ======================================== */
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .step-card:hover::before {
+            opacity: 1;
+        }
+
+        .step-card.completed {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .step-card.completed::before {
+            background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.5), transparent);
+            opacity: 1;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .step-card.completed .step-number {
+            background: linear-gradient(135deg, #22c55e, #4ade80);
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .step-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: white;
+            flex: 1;
+        }
+
+        .step-check {
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .step-card.completed .step-check {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ========================================
+           STEP 1: IDENTITY
+           ======================================== */
+        .identity-logged-in {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .identity-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+            animation: avatarGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes avatarGlow {
+            0%, 100% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+        }
+
+        .identity-info {
+            flex: 1;
+        }
+
+        .identity-name {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .identity-stats {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 2px;
+        }
+
+        .identity-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .identity-btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .identity-btn.stats {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+        }
+
+        .identity-btn.logout {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .identity-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Guest input */
+        .guest-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .name-input {
+            flex: 1;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .name-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .signin-link {
+            color: #a5b4fc;
+            font-size: 0.9rem;
+            text-decoration: none;
+            white-space: nowrap;
+            padding: 8px;
+        }
+
+        .signin-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ========================================
+           STEP 2: GAME MODES
+           ======================================== */
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .mode-card {
+            position: relative;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            text-decoration: none;
+            overflow: hidden;
+        }
+
+        .mode-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--mode-color, #6366f1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--mode-color, rgba(255, 255, 255, 0.2));
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .mode-card.selected {
+            border-color: var(--mode-color, #6366f1);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .mode-card.selected::before {
+            opacity: 0.15;
+        }
+
+        .mode-card.solo { --mode-color: #6366f1; }
+        .mode-card.local { --mode-color: #f472b6; }
+        .mode-card.online { --mode-color: #3b82f6; }
+        .mode-card.live { --mode-color: #ef4444; }
+
+        .mode-icon {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .mode-card:hover .mode-icon {
+            transform: scale(1.15);
+        }
+
+        .mode-card.selected .mode-icon {
+            animation: iconBounce 0.5s ease;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        .mode-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mode-desc {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .live-badge {
+            display: inline-block;
+            background: #ef4444;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 4px;
+            animation: pulse 1.5s infinite;
+            vertical-align: middle;
+        }
+
+        /* Local multiplayer setup */
+        .local-setup {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .local-setup.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .player-count-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .player-count-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .count-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .count-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            background: transparent;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .count-btn:hover {
+            border-color: #f472b6;
+        }
+
+        .count-btn.active {
+            background: #f472b6;
+            border-color: #f472b6;
+            animation: popIn 0.2s ease;
+        }
+
+        .player-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .player-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .player-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .player-input {
+            flex: 1;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .player-input:focus {
+            outline: none;
+            border-color: #f472b6;
+            box-shadow: 0 0 15px rgba(244, 114, 182, 0.2);
+        }
+
+        /* ========================================
+           STEP 3: CATEGORIES
+           ======================================== */
+        .categories-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cat-tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        .cat-tag:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .cat-tag.selected {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.5);
+            animation: tagPop 0.25s ease;
+        }
+
+        @keyframes tagPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        .cat-tag input { display: none; }
+
+        .cat-emoji {
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .cat-tag:hover .cat-emoji {
+            transform: scale(1.2);
+        }
+
+        .cat-tag.selected .cat-emoji {
+            animation: emojiWiggle 0.4s ease;
+        }
+
+        @keyframes emojiWiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            75% { transform: rotate(15deg); }
+        }
+
+        .cat-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .cat-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .toggle-all-btn {
+            font-size: 0.85rem;
+            color: #a5b4fc;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .toggle-all-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .cat-count {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* ========================================
+           STEP 4: SETTINGS
+           ======================================== */
+        .settings-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .setting-group h4 {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .setting-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .setting-pill {
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .setting-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .setting-pill.selected {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .setting-pill input { display: none; }
+
+        /* ========================================
+           LAUNCH SECTION
+           ======================================== */
+        .launch-section {
+            margin-top: 28px;
+            text-align: center;
+        }
+
+        .launch-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 56px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 18px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+            overflow: hidden;
+        }
+
+        .launch-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .launch-btn:hover:not(:disabled) {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(99, 102, 241, 0.5);
+        }
+
+        .launch-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .launch-btn:disabled::before {
+            display: none;
+        }
+
+        .launch-btn.ready {
+            animation: readyPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes readyPulse {
+            0%, 100% { box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 10px 60px rgba(99, 102, 241, 0.6), 0 0 30px rgba(139, 92, 246, 0.3); }
+        }
+
+        .rocket {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .launch-btn:hover:not(:disabled) .rocket {
+            animation: rocketShake 0.5s ease infinite;
+        }
+
+        @keyframes rocketShake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(2px, -2px) rotate(5deg); }
+            50% { transform: translate(-1px, -3px) rotate(-3deg); }
+            75% { transform: translate(1px, -1px) rotate(3deg); }
+        }
+
+        .launch-btn.launching .rocket {
+            animation: rocketLaunch 0.6s ease forwards;
+        }
+
+        @keyframes rocketLaunch {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, -100px) scale(0); }
+        }
+
+        /* Secondary links */
+        .secondary-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .sec-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .sec-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* ========================================
+           MOBILE
+           ======================================== */
+        @media (max-width: 600px) {
+            .mode-grid { grid-template-columns: 1fr; }
+            .settings-row { grid-template-columns: 1fr; }
+            .player-inputs { grid-template-columns: 1fr; }
+            .identity-logged-in { flex-wrap: wrap; }
+            .identity-actions { width: 100%; justify-content: flex-end; }
+            .launch-btn { padding: 18px 40px; font-size: 1.1rem; }
+        }
+    </style>
 </head>
-<body class="home-page">
+<body>
     <!-- Animated Background -->
-    <div class="animated-bg">
-        <div class="floating-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
-            <div class="shape shape-4"></div>
-            <div class="shape shape-5"></div>
-        </div>
-        <div class="grid-overlay"></div>
+    <div class="game-bg">
+        <div class="glow-orb purple"></div>
+        <div class="glow-orb pink"></div>
+        <div class="glow-orb blue"></div>
     </div>
 
-    <div class="container">
-        <!-- Hero Section -->
-        <div class="hero-section">
-            <div class="logo-container">
-                <div class="logo-glow"></div>
-                <h1 class="game-logo">
-                    <span class="logo-icon pulse-glow">&#x1F9E0;</span>
-                    <span class="logo-text">
-                        <span class="letter" style="--i:1">B</span>
-                        <span class="letter" style="--i:2">r</span>
-                        <span class="letter" style="--i:3">a</span>
-                        <span class="letter" style="--i:4">i</span>
-                        <span class="letter" style="--i:5">n</span>
-                        <span class="letter accent" style="--i:6">R</span>
-                        <span class="letter accent" style="--i:7">a</span>
-                        <span class="letter accent" style="--i:8">c</span>
-                        <span class="letter accent" style="--i:9">e</span>
-                    </span>
-                    <span class="logo-icon pulse-glow">&#x1F3C1;</span>
-                </h1>
-                <p class="tagline">
-                    <span class="tagline-word">Challenge</span>
-                    <span class="tagline-dot">&#x2022;</span>
-                    <span class="tagline-word">Compete</span>
-                    <span class="tagline-dot">&#x2022;</span>
-                    <span class="tagline-word">Conquer</span>
-                </p>
-            </div>
-
-            <!-- Stats Bar -->
-            <div class="stats-bar">
-                <div class="stat-pill">
-                    <span class="stat-icon">&#x1F4DA;</span>
-                    <span class="stat-value">7</span>
-                    <span class="stat-label">Categories</span>
-                </div>
-                <div class="stat-pill">
-                    <span class="stat-icon">&#x2753;</span>
-                    <span class="stat-value">100+</span>
-                    <span class="stat-label">Questions</span>
-                </div>
-                <div class="stat-pill">
-                    <span class="stat-icon">&#x1F3AE;</span>
-                    <span class="stat-value">4</span>
-                    <span class="stat-label">Game Modes</span>
-                </div>
-            </div>
+    <div class="flow-container">
+        <!-- Header -->
+        <div class="header-section">
+            <div class="mascot" id="mascot">🧠</div>
+            <h1 class="logo-text">
+                <span class="brain">Brain</span><span class="race">Race</span>
+            </h1>
+            <p class="tagline">Challenge your mind, race to victory!</p>
         </div>
 
-        <!-- Game Mode Selection -->
-        <div class="mode-section">
-            <h2 class="section-title">
-                <span class="title-icon">&#x1F3AF;</span>
-                Choose Your Battle
-            </h2>
+        <!-- Step 1: Identity -->
+        <div class="step-card" id="step-1">
+            <div class="step-header">
+                <span class="step-number">1</span>
+                <span class="step-title">Who's Playing?</span>
+                <span class="step-check">✓</span>
+            </div>
+
+            {% if user %}
+            <div class="identity-logged-in">
+                <div class="identity-avatar">{{ user.display_name[0]|upper }}</div>
+                <div class="identity-info">
+                    <div class="identity-name">{{ user.display_name }}</div>
+                    <div class="identity-stats">🎮 {{ user.total_games }} games · 🏆 Best: {{ user.highest_score }} pts</div>
+                </div>
+                <div class="identity-actions">
+                    <a href="/profile" class="identity-btn stats">📊 Stats</a>
+                    <button class="identity-btn logout" id="logout-btn">Logout</button>
+                </div>
+            </div>
+            {% else %}
+            <div class="guest-input-wrapper">
+                <input type="text" id="username" class="name-input" placeholder="What's your name, challenger?" maxlength="20" autocomplete="off">
+                <a href="/login" class="signin-link">Sign In →</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Step 2: Game Mode -->
+        <div class="step-card" id="step-2">
+            <div class="step-header">
+                <span class="step-number">2</span>
+                <span class="step-title">Choose Your Battle</span>
+                <span class="step-check">✓</span>
+            </div>
+
             <div class="mode-grid">
-                <label class="mode-card-wrapper">
-                    <input type="radio" name="gameMode" value="solo" checked>
-                    <div class="mode-card solo-mode">
-                        <div class="mode-card-bg"></div>
-                        <div class="mode-card-content">
-                            <div class="mode-icon-wrapper">
-                                <span class="mode-icon">&#x1F464;</span>
-                                <div class="mode-icon-ring"></div>
-                            </div>
-                            <h3 class="mode-title">Solo Quest</h3>
-                            <p class="mode-desc">Test your limits alone</p>
-                            <div class="mode-features">
-                                <span class="feature-tag">3 Lives</span>
-                                <span class="feature-tag">Streaks</span>
-                            </div>
-                        </div>
-                        <div class="mode-shine"></div>
-                    </div>
-                </label>
-
-                <label class="mode-card-wrapper">
-                    <input type="radio" name="gameMode" value="local">
-                    <div class="mode-card local-mode">
-                        <div class="mode-card-bg"></div>
-                        <div class="mode-card-content">
-                            <div class="mode-icon-wrapper">
-                                <span class="mode-icon">&#x1F465;</span>
-                                <div class="mode-icon-ring"></div>
-                            </div>
-                            <h3 class="mode-title">Couch Party</h3>
-                            <p class="mode-desc">Play with friends nearby</p>
-                            <div class="mode-features">
-                                <span class="feature-tag">2-4 Players</span>
-                                <span class="feature-tag">Hot Seat</span>
-                            </div>
-                        </div>
-                        <div class="mode-shine"></div>
-                    </div>
-                </label>
-
-                <a href="/lobby" class="mode-card-wrapper mode-link">
-                    <div class="mode-card room-mode">
-                        <div class="mode-card-bg"></div>
-                        <div class="mode-card-content">
-                            <div class="mode-icon-wrapper">
-                                <span class="mode-icon">&#x1F310;</span>
-                                <div class="mode-icon-ring"></div>
-                            </div>
-                            <h3 class="mode-title">Online Rooms</h3>
-                            <p class="mode-desc">Play at your own pace</p>
-                            <div class="mode-features">
-                                <span class="feature-tag">Async</span>
-                                <span class="feature-tag">Share Code</span>
-                            </div>
-                        </div>
-                        <div class="mode-shine"></div>
-                    </div>
+                <div class="mode-card solo selected" data-mode="solo">
+                    <span class="mode-icon">🎯</span>
+                    <span class="mode-name">Solo Quest</span>
+                    <span class="mode-desc">3 lives · Beat your best</span>
+                </div>
+                <div class="mode-card local" data-mode="local">
+                    <span class="mode-icon">🎉</span>
+                    <span class="mode-name">Party Mode</span>
+                    <span class="mode-desc">2-4 players · Same device</span>
+                </div>
+                <a href="/lobby" class="mode-card online">
+                    <span class="mode-icon">🌐</span>
+                    <span class="mode-name">Online Room</span>
+                    <span class="mode-desc">Share code · Play anytime</span>
                 </a>
-
-                <a href="/realtime" class="mode-card-wrapper mode-link">
-                    <div class="mode-card live-mode">
-                        <div class="mode-card-bg"></div>
-                        <div class="mode-card-content">
-                            <div class="mode-icon-wrapper">
-                                <span class="mode-icon">&#x26A1;</span>
-                                <div class="mode-icon-ring"></div>
-                            </div>
-                            <h3 class="mode-title">Live Battle</h3>
-                            <p class="mode-desc">Real-time competition</p>
-                            <div class="mode-features">
-                                <span class="feature-tag live-tag">LIVE</span>
-                                <span class="feature-tag">Sync Play</span>
-                            </div>
-                        </div>
-                        <div class="mode-shine"></div>
-                        <div class="live-pulse"></div>
-                    </div>
+                <a href="/realtime" class="mode-card live">
+                    <span class="mode-icon">⚡</span>
+                    <span class="mode-name">Live Battle <span class="live-badge">LIVE</span></span>
+                    <span class="mode-desc">Real-time showdown</span>
                 </a>
             </div>
-        </div>
 
-        <!-- Player Setup -->
-        <div id="player-setup-section" class="setup-section">
-            <div id="solo-setup" class="player-setup glass-panel">
-                <div class="setup-header">
-                    <span class="setup-icon">&#x1F464;</span>
-                    <h3>Enter the Arena</h3>
-                </div>
-                <div class="input-wrapper">
-                    <input type="text" id="username" class="neon-input" placeholder="Your legendary name..." maxlength="20">
-                    <div class="input-glow"></div>
-                </div>
-            </div>
-
-            <div id="multiplayer-setup" class="player-setup glass-panel" style="display: none;">
-                <div class="setup-header">
-                    <span class="setup-icon">&#x1F465;</span>
-                    <h3>Assemble Your Team</h3>
-                </div>
-                <div class="player-count-selector">
-                    <span class="count-label">Players:</span>
-                    <div class="count-buttons">
-                        <button type="button" class="count-btn active" data-count="2">2</button>
-                        <button type="button" class="count-btn" data-count="3">3</button>
-                        <button type="button" class="count-btn" data-count="4">4</button>
+            <div class="local-setup" id="local-setup">
+                <div class="player-count-row">
+                    <span class="player-count-label">How many challengers?</span>
+                    <div class="count-btns">
+                        <button class="count-btn active" data-count="2">2</button>
+                        <button class="count-btn" data-count="3">3</button>
+                        <button class="count-btn" data-count="4">4</button>
                     </div>
                 </div>
-                <div class="player-inputs-grid">
-                    <div class="player-input-wrapper">
-                        <span class="player-badge" style="--player-color: #f472b6;">P1</span>
-                        <input type="text" class="neon-input player-input" data-player="1" placeholder="Player 1" maxlength="15">
+                <div class="player-inputs">
+                    <div class="player-row">
+                        <span class="player-badge" style="background: linear-gradient(135deg, #f472b6, #ec4899);">P1</span>
+                        <input type="text" class="player-input" data-player="1" placeholder="Player 1" maxlength="15">
                     </div>
-                    <div class="player-input-wrapper">
-                        <span class="player-badge" style="--player-color: #60a5fa;">P2</span>
-                        <input type="text" class="neon-input player-input" data-player="2" placeholder="Player 2" maxlength="15">
+                    <div class="player-row">
+                        <span class="player-badge" style="background: linear-gradient(135deg, #60a5fa, #3b82f6);">P2</span>
+                        <input type="text" class="player-input" data-player="2" placeholder="Player 2" maxlength="15">
                     </div>
-                    <div class="player-input-wrapper" data-for="3" style="display: none;">
-                        <span class="player-badge" style="--player-color: #34d399;">P3</span>
-                        <input type="text" class="neon-input player-input" data-player="3" placeholder="Player 3" maxlength="15">
+                    <div class="player-row" data-for="3" style="display: none;">
+                        <span class="player-badge" style="background: linear-gradient(135deg, #4ade80, #22c55e);">P3</span>
+                        <input type="text" class="player-input" data-player="3" placeholder="Player 3" maxlength="15">
                     </div>
-                    <div class="player-input-wrapper" data-for="4" style="display: none;">
-                        <span class="player-badge" style="--player-color: #fbbf24;">P4</span>
-                        <input type="text" class="neon-input player-input" data-player="4" placeholder="Player 4" maxlength="15">
+                    <div class="player-row" data-for="4" style="display: none;">
+                        <span class="player-badge" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">P4</span>
+                        <input type="text" class="player-input" data-player="4" placeholder="Player 4" maxlength="15">
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Category Selection -->
-        <div class="category-section">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <span class="title-icon">&#x1F4DA;</span>
-                    Pick Your Topics
-                </h2>
-                <label class="toggle-all">
-                    <input type="checkbox" id="select-all" checked>
-                    <span class="toggle-slider"></span>
-                    <span class="toggle-label">All</span>
-                </label>
+        <!-- Step 3: Categories -->
+        <div class="step-card" id="step-3">
+            <div class="step-header">
+                <span class="step-number">3</span>
+                <span class="step-title">Pick Your Arena</span>
+                <span class="step-check">✓</span>
             </div>
-            <div class="category-grid">
-                <label class="category-chip">
+
+            <div class="categories-wrap">
+                <label class="cat-tag selected">
                     <input type="checkbox" name="category" value="ancient-civilizations" checked>
-                    <span class="chip-content">
-                        <span class="chip-emoji">&#x1F3FA;</span>
-                        <span class="chip-text">Ancient Civilizations</span>
-                    </span>
+                    <span class="cat-emoji">🏺</span>
+                    <span class="cat-name">Ancient</span>
                 </label>
-                <label class="category-chip">
+                <label class="cat-tag selected">
                     <input type="checkbox" name="category" value="medieval-europe" checked>
-                    <span class="chip-content">
-                        <span class="chip-emoji">&#x2694;</span>
-                        <span class="chip-text">Medieval Europe</span>
-                    </span>
+                    <span class="cat-emoji">⚔️</span>
+                    <span class="cat-name">Medieval</span>
                 </label>
-                <label class="category-chip">
+                <label class="cat-tag selected">
                     <input type="checkbox" name="category" value="world-wars" checked>
-                    <span class="chip-content">
-                        <span class="chip-emoji">&#x1F3C6;</span>
-                        <span class="chip-text">World Wars</span>
-                    </span>
+                    <span class="cat-emoji">🎖️</span>
+                    <span class="cat-name">World Wars</span>
                 </label>
-                <label class="category-chip">
+                <label class="cat-tag selected">
                     <input type="checkbox" name="category" value="cold-war" checked>
-                    <span class="chip-content">
-                        <span class="chip-emoji">&#x2744;</span>
-                        <span class="chip-text">Cold War</span>
-                    </span>
+                    <span class="cat-emoji">❄️</span>
+                    <span class="cat-name">Cold War</span>
                 </label>
-                <label class="category-chip">
+                <label class="cat-tag selected">
                     <input type="checkbox" name="category" value="ancient-philosophy" checked>
-                    <span class="chip-content">
-                        <span class="chip-emoji">&#x1F4DC;</span>
-                        <span class="chip-text">Philosophy</span>
-                    </span>
+                    <span class="cat-emoji">📜</span>
+                    <span class="cat-name">Philosophy</span>
                 </label>
-                <label class="category-chip">
+                <label class="cat-tag selected">
                     <input type="checkbox" name="category" value="revolutionary-periods" checked>
-                    <span class="chip-content">
-                        <span class="chip-emoji">&#x1F525;</span>
-                        <span class="chip-text">Revolutions</span>
-                    </span>
+                    <span class="cat-emoji">🔥</span>
+                    <span class="cat-name">Revolutions</span>
                 </label>
-                <label class="category-chip">
+                <label class="cat-tag selected">
                     <input type="checkbox" name="category" value="science" checked>
-                    <span class="chip-content">
-                        <span class="chip-emoji">&#x1F52C;</span>
-                        <span class="chip-text">Science</span>
-                    </span>
+                    <span class="cat-emoji">🔬</span>
+                    <span class="cat-name">Science</span>
                 </label>
             </div>
-            <div class="category-counter">
-                <span id="category-count">7</span>/7 selected
+
+            <div class="cat-actions">
+                <button class="toggle-all-btn" id="toggle-all">Deselect All</button>
+                <span class="cat-count"><span id="cat-count">7</span>/7 topics</span>
             </div>
         </div>
 
-        <!-- Game Settings -->
-        <div class="settings-section">
+        <!-- Step 4: Settings -->
+        <div class="step-card" id="step-4">
+            <div class="step-header">
+                <span class="step-number">4</span>
+                <span class="step-title">Fine-tune Your Challenge</span>
+                <span class="step-check">✓</span>
+            </div>
+
             <div class="settings-row">
-                <!-- Difficulty -->
                 <div class="setting-group">
-                    <h3 class="setting-title">
-                        <span>&#x1F4AA;</span> Difficulty
-                    </h3>
-                    <div class="pill-selector">
-                        <label class="pill-option">
+                    <h4>Difficulty</h4>
+                    <div class="setting-pills">
+                        <label class="setting-pill selected">
                             <input type="radio" name="difficulty" value="progressive" checked>
-                            <span class="pill">&#x1F4C8; Progressive</span>
+                            📈 Progressive
                         </label>
-                        <label class="pill-option">
+                        <label class="setting-pill">
                             <input type="radio" name="difficulty" value="easy">
-                            <span class="pill easy">&#x1F7E2; Easy</span>
+                            🟢 Easy
                         </label>
-                        <label class="pill-option">
+                        <label class="setting-pill">
                             <input type="radio" name="difficulty" value="medium">
-                            <span class="pill medium">&#x1F7E1; Medium</span>
+                            🟡 Medium
                         </label>
-                        <label class="pill-option">
+                        <label class="setting-pill">
                             <input type="radio" name="difficulty" value="hard">
-                            <span class="pill hard">&#x1F534; Hard</span>
-                        </label>
-                        <label class="pill-option">
-                            <input type="radio" name="difficulty" value="mixed">
-                            <span class="pill">&#x1F500; Mixed</span>
+                            🔴 Hard
                         </label>
                     </div>
                 </div>
 
-                <!-- Time Mode -->
                 <div class="setting-group">
-                    <h3 class="setting-title">
-                        <span>&#x23F1;</span> Time Mode
-                    </h3>
-                    <div class="toggle-cards">
-                        <label class="toggle-card">
-                            <input type="radio" name="timedMode" value="classic" checked>
-                            <div class="toggle-card-content">
-                                <span class="toggle-icon">&#x1F3AE;</span>
-                                <span class="toggle-name">Classic</span>
-                                <span class="toggle-info">No timer</span>
-                            </div>
+                    <h4>Timer</h4>
+                    <div class="setting-pills">
+                        <label class="setting-pill selected">
+                            <input type="radio" name="timer" value="classic" checked>
+                            🎮 Classic
                         </label>
-                        <label class="toggle-card">
-                            <input type="radio" name="timedMode" value="timed">
-                            <div class="toggle-card-content">
-                                <span class="toggle-icon">&#x26A1;</span>
-                                <span class="toggle-name">Speed Run</span>
-                                <span class="toggle-info">15s + bonus</span>
-                            </div>
+                        <label class="setting-pill">
+                            <input type="radio" name="timer" value="timed">
+                            ⚡ Speed (15s)
                         </label>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Start Button -->
+        <!-- Launch -->
         <div class="launch-section">
-            <button id="start-game" class="launch-button">
-                <span class="launch-bg"></span>
-                <span class="launch-content">
-                    <span class="launch-text">Launch Game</span>
-                    <span class="launch-icon">&#x1F680;</span>
-                </span>
-                <span class="launch-particles">
-                    <span class="particle"></span>
-                    <span class="particle"></span>
-                    <span class="particle"></span>
-                </span>
+            <button id="launch-btn" class="launch-btn" disabled>
+                <span class="btn-text">Start Your Quest</span>
+                <span class="rocket">🚀</span>
             </button>
-            <a href="/leaderboard" class="leaderboard-btn">
-                <span>&#x1F3C6;</span>
-                <span>Hall of Fame</span>
-            </a>
-        </div>
 
-        <!-- Footer -->
-        <div class="footer-section">
-            <div class="power-ups-preview">
-                <span class="preview-label">Power-ups available:</span>
-                <div class="preview-icons">
-                    <span class="preview-icon" title="50/50">&#x2702;</span>
-                    <span class="preview-icon" title="Skip">&#x23ED;</span>
-                    <span class="preview-icon" title="2x Points">&#xD7;2</span>
-                    <span class="preview-icon" title="Hint">&#x1F4A1;</span>
-                </div>
+            <div class="secondary-links">
+                <a href="/leaderboard" class="sec-link">🏅 Leaderboard</a>
+                {% if user %}
+                <a href="/profile" class="sec-link">📊 My Stats</a>
+                {% endif %}
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const selectAll = document.getElementById('select-all');
-            const categoryCheckboxes = document.querySelectorAll('input[name="category"]');
-            const categoryCount = document.getElementById('category-count');
-            const startButton = document.getElementById('start-game');
+            // === ELEMENTS ===
+            const mascot = document.getElementById('mascot');
             const usernameInput = document.getElementById('username');
-            const gameModeInputs = document.querySelectorAll('input[name="gameMode"]');
-            const soloSetup = document.getElementById('solo-setup');
-            const multiplayerSetup = document.getElementById('multiplayer-setup');
+            const modeCards = document.querySelectorAll('.mode-card[data-mode]');
+            const localSetup = document.getElementById('local-setup');
             const countBtns = document.querySelectorAll('.count-btn');
             const playerInputs = document.querySelectorAll('.player-input');
-            const modeCards = document.querySelectorAll('.mode-card-wrapper:not(.mode-link)');
+            const catTags = document.querySelectorAll('.cat-tag');
+            const toggleAllBtn = document.getElementById('toggle-all');
+            const catCount = document.getElementById('cat-count');
+            const settingPills = document.querySelectorAll('.setting-pill');
+            const launchBtn = document.getElementById('launch-btn');
+            const logoutBtn = document.getElementById('logout-btn');
 
-            let playerCount = 2;
             let gameMode = 'solo';
+            let playerCount = 2;
 
-            // Load saved username
-            const savedUsername = sessionStorage.getItem('username');
-            if (savedUsername) {
-                usernameInput.value = savedUsername;
+            const isLoggedIn = {{ 'true' if user else 'false' }};
+            const loggedInUsername = '{{ user.display_name if user else "" }}';
+
+            // === FLOATING EMOJIS ===
+            const emojis = ['🧠', '💡', '⚡', '🎯', '🏆', '🔥', '✨', '📚'];
+            function createFloatingEmoji() {
+                const emoji = document.createElement('div');
+                emoji.className = 'floating-emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.animationDuration = (12 + Math.random() * 8) + 's';
+                emoji.style.animationDelay = Math.random() * 2 + 's';
+                document.querySelector('.game-bg').appendChild(emoji);
+                setTimeout(() => emoji.remove(), 20000);
+            }
+            setInterval(createFloatingEmoji, 2000);
+            for (let i = 0; i < 5; i++) setTimeout(createFloatingEmoji, i * 400);
+
+            // === MASCOT INTERACTION ===
+            const mascotEmojis = ['🧠', '🤓', '😎', '🤯', '🎓', '💪'];
+            let mascotIndex = 0;
+            mascot.addEventListener('click', () => {
+                mascotIndex = (mascotIndex + 1) % mascotEmojis.length;
+                mascot.textContent = mascotEmojis[mascotIndex];
+                mascot.style.animation = 'none';
+                setTimeout(() => mascot.style.animation = 'wiggle 0.5s ease-in-out', 10);
+            });
+
+            // === USERNAME ===
+            if (usernameInput) {
+                const saved = sessionStorage.getItem('username');
+                if (saved) usernameInput.value = saved;
+                usernameInput.addEventListener('input', validateAndUpdate);
             }
 
-            // Mode card animations
+            // === LOGOUT ===
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    await fetch('/api/auth/logout', { method: 'POST' });
+                    document.cookie = 'session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                    sessionStorage.clear();
+                    window.location.reload();
+                });
+            }
+
+            // === GAME MODE ===
             modeCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.querySelector('.mode-card').classList.add('hovered');
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.querySelector('.mode-card').classList.remove('hovered');
-                });
-            });
-
-            // Game mode switching
-            gameModeInputs.forEach(input => {
-                input.addEventListener('change', function() {
-                    gameMode = this.value;
-                    if (gameMode === 'solo') {
-                        soloSetup.style.display = 'block';
-                        multiplayerSetup.style.display = 'none';
-                    } else {
-                        soloSetup.style.display = 'none';
-                        multiplayerSetup.style.display = 'block';
-                    }
-                    validateForm();
+                card.addEventListener('click', (e) => {
+                    if (card.tagName === 'A') return; // Let links work
+                    e.preventDefault();
+                    modeCards.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    gameMode = card.dataset.mode;
+                    localSetup.classList.toggle('show', gameMode === 'local');
+                    validateAndUpdate();
                 });
             });
 
-            // Player count selection
+            // === PLAYER COUNT ===
             countBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', () => {
                     countBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    playerCount = parseInt(this.dataset.count);
-
+                    btn.classList.add('active');
+                    playerCount = parseInt(btn.dataset.count);
                     document.querySelector('[data-for="3"]').style.display = playerCount >= 3 ? 'flex' : 'none';
                     document.querySelector('[data-for="4"]').style.display = playerCount >= 4 ? 'flex' : 'none';
-                    validateForm();
+                    validateAndUpdate();
                 });
             });
 
-            playerInputs.forEach(input => {
-                input.addEventListener('input', validateForm);
+            playerInputs.forEach(input => input.addEventListener('input', validateAndUpdate));
+
+            // === CATEGORIES ===
+            catTags.forEach(tag => {
+                tag.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const cb = tag.querySelector('input');
+                    cb.checked = !cb.checked;
+                    tag.classList.toggle('selected', cb.checked);
+                    updateCatCount();
+                    validateAndUpdate();
+                });
             });
 
-            function updateCount() {
-                const checked = document.querySelectorAll('input[name="category"]:checked').length;
-                categoryCount.textContent = checked;
-                validateForm();
+            toggleAllBtn.addEventListener('click', () => {
+                const allSelected = document.querySelectorAll('.cat-tag.selected').length === catTags.length;
+                catTags.forEach(tag => {
+                    tag.querySelector('input').checked = !allSelected;
+                    tag.classList.toggle('selected', !allSelected);
+                });
+                updateCatCount();
+                validateAndUpdate();
+            });
+
+            function updateCatCount() {
+                const count = document.querySelectorAll('.cat-tag.selected').length;
+                catCount.textContent = count;
+                toggleAllBtn.textContent = count === catTags.length ? 'Deselect All' : 'Select All';
             }
 
-            function validateForm() {
-                const hasCategories = document.querySelectorAll('input[name="category"]:checked').length > 0;
+            // === SETTINGS ===
+            settingPills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    const name = pill.querySelector('input').name;
+                    document.querySelectorAll(`input[name="${name}"]`).forEach(inp => {
+                        inp.closest('.setting-pill').classList.remove('selected');
+                    });
+                    pill.classList.add('selected');
+                    pill.querySelector('input').checked = true;
+                });
+            });
+
+            // === VALIDATION & STEP COMPLETION ===
+            function validateAndUpdate() {
+                const hasCategories = document.querySelectorAll('.cat-tag.selected').length > 0;
+                let hasIdentity = false;
                 let hasPlayers = false;
 
                 if (gameMode === 'solo') {
-                    hasPlayers = usernameInput.value.trim().length > 0;
-                } else {
-                    const visibleInputs = Array.from(playerInputs).slice(0, playerCount);
-                    hasPlayers = visibleInputs.every(input => input.value.trim().length > 0);
+                    hasIdentity = isLoggedIn || (usernameInput && usernameInput.value.trim().length > 0);
+                    hasPlayers = true;
+                } else if (gameMode === 'local') {
+                    hasIdentity = true;
+                    const visible = Array.from(playerInputs).filter((_, i) => i < playerCount);
+                    hasPlayers = visible.every(inp => inp.value.trim().length > 0);
                 }
 
-                startButton.disabled = !hasCategories || !hasPlayers;
-                startButton.classList.toggle('ready', hasCategories && hasPlayers);
+                // Update step completion visual
+                document.getElementById('step-1').classList.toggle('completed', hasIdentity);
+                document.getElementById('step-2').classList.toggle('completed', true);
+                document.getElementById('step-3').classList.toggle('completed', hasCategories);
+                document.getElementById('step-4').classList.toggle('completed', true);
+
+                const canLaunch = hasIdentity && hasPlayers && hasCategories;
+                launchBtn.disabled = !canLaunch;
+                launchBtn.classList.toggle('ready', canLaunch);
             }
 
-            function updateSelectAll() {
-                const total = categoryCheckboxes.length;
-                const checked = document.querySelectorAll('input[name="category"]:checked').length;
-                selectAll.checked = checked === total;
-                selectAll.indeterminate = checked > 0 && checked < total;
-            }
+            // === LAUNCH ===
+            launchBtn.addEventListener('click', () => {
+                if (launchBtn.disabled) return;
 
-            usernameInput.addEventListener('input', validateForm);
-
-            selectAll.addEventListener('change', function() {
-                categoryCheckboxes.forEach(cb => cb.checked = this.checked);
-                updateCount();
-            });
-
-            categoryCheckboxes.forEach(cb => {
-                cb.addEventListener('change', function() {
-                    updateSelectAll();
-                    updateCount();
+                // Confetti!
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
                 });
-            });
 
-            startButton.addEventListener('click', function() {
-                if (this.disabled) return;
+                launchBtn.classList.add('launching');
 
-                const selected = Array.from(document.querySelectorAll('input[name="category"]:checked'))
-                    .map(cb => cb.value);
-
+                const categories = Array.from(document.querySelectorAll('.cat-tag.selected input')).map(cb => cb.value);
                 const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
-                const timedMode = document.querySelector('input[name="timedMode"]:checked').value;
+                const timer = document.querySelector('input[name="timer"]:checked').value;
 
-                sessionStorage.setItem('selectedCategories', selected.join(','));
+                sessionStorage.setItem('selectedCategories', categories.join(','));
                 sessionStorage.setItem('difficulty', difficulty);
-                sessionStorage.setItem('timedMode', timedMode);
+                sessionStorage.setItem('timedMode', timer);
                 sessionStorage.setItem('gameMode', gameMode);
 
                 if (gameMode === 'solo') {
-                    sessionStorage.setItem('username', usernameInput.value.trim());
-                    sessionStorage.removeItem('players');
+                    const name = isLoggedIn ? loggedInUsername : usernameInput.value.trim();
+                    sessionStorage.setItem('username', name);
                 } else {
                     const players = [];
                     for (let i = 1; i <= playerCount; i++) {
@@ -497,29 +1258,13 @@
                     }
                     sessionStorage.setItem('players', JSON.stringify(players));
                     sessionStorage.setItem('playerCount', playerCount);
-                    sessionStorage.removeItem('username');
                 }
 
-                // Launch animation
-                this.classList.add('launching');
-                setTimeout(() => {
-                    window.location.href = '/play';
-                }, 400);
+                setTimeout(() => window.location.href = '/play', 600);
             });
 
-            validateForm();
-
-            // Floating shapes parallax effect
-            document.addEventListener('mousemove', (e) => {
-                const shapes = document.querySelectorAll('.shape');
-                const x = e.clientX / window.innerWidth;
-                const y = e.clientY / window.innerHeight;
-
-                shapes.forEach((shape, i) => {
-                    const speed = (i + 1) * 20;
-                    shape.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
-                });
-            });
+            // Initial validation
+            validateAndUpdate();
         });
     </script>
 </body>
