@@ -3471,3 +3471,307 @@ h1, h2, h3, h4, h5, h6 {
         justify-content: center;
     }
 }
+
+/* ============================================
+   POWER-UPS & TIMER STYLES
+   ============================================ */
+
+/* Power-ups Row */
+.powerups-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.powerup-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: var(--bg-glass);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    min-width: 70px;
+    cursor: pointer;
+    transition: all var(--transition-smooth);
+    position: relative;
+}
+
+.powerup-btn:hover:not(:disabled) {
+    background: var(--bg-glass-hover);
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.powerup-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.powerup-btn.active {
+    border-color: var(--success-color);
+    background: rgba(34, 197, 94, 0.2);
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+}
+
+.powerup-icon {
+    font-size: 1.3rem;
+}
+
+.powerup-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.powerup-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--accent-gradient);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.powerup-btn:disabled .powerup-count {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.hint-btn {
+    border-color: rgba(251, 191, 36, 0.3);
+    background: rgba(251, 191, 36, 0.1);
+}
+
+.hint-btn:hover:not(:disabled) {
+    border-color: var(--warning-color);
+    background: rgba(251, 191, 36, 0.2);
+}
+
+/* Timer Container */
+.timer-container {
+    background: var(--bg-card-solid);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.timer-container.hidden {
+    display: none;
+}
+
+.timer-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.timer-fill {
+    height: 100%;
+    background: var(--success-gradient);
+    border-radius: var(--radius-full);
+    transition: width 0.3s linear, background 0.3s ease;
+    width: 100%;
+}
+
+.timer-fill.warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+}
+
+.timer-fill.danger {
+    background: var(--error-gradient);
+    animation: pulse 0.5s ease-in-out infinite;
+}
+
+.timer-text {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    min-width: 50px;
+}
+
+.timer-icon {
+    font-size: 1rem;
+}
+
+.timer-value {
+    color: var(--success-light);
+}
+
+.timer-container:has(.timer-fill.warning) .timer-value {
+    color: var(--warning-light);
+}
+
+.timer-container:has(.timer-fill.danger) .timer-value {
+    color: var(--error-light);
+}
+
+/* Power-up Feedback Toast */
+.powerup-feedback {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent-gradient);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    z-index: 1000;
+    animation: popIn 0.3s ease-out;
+}
+
+.powerup-feedback.fade-out {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+    transition: all 0.5s ease-out;
+}
+
+/* Eliminated choices (50/50 power-up) */
+.choice-button.eliminated {
+    opacity: 0.3;
+    text-decoration: line-through;
+    pointer-events: none;
+    transform: scale(0.95);
+}
+
+/* Timed Mode Selector on Index Page */
+.timed-mode-selector {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.timed-mode-selector h3 {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.timed-mode-options {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.timed-option {
+    cursor: pointer;
+}
+
+.timed-option input {
+    display: none;
+}
+
+.timed-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg-glass);
+    padding: 16px 24px;
+    border-radius: var(--radius-lg);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--transition-smooth);
+    min-width: 140px;
+}
+
+.timed-option:hover .timed-card {
+    transform: translateY(-2px);
+    background: var(--bg-glass-hover);
+}
+
+.timed-option input:checked + .timed-card {
+    border-color: var(--accent-primary);
+    background: rgba(99, 102, 241, 0.15);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+}
+
+.timed-icon {
+    font-size: 1.8rem;
+}
+
+.timed-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.timed-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.timed-option input:checked + .timed-card .timed-name {
+    color: var(--accent-primary-light);
+}
+
+/* Responsive adjustments for power-ups */
+@media (max-width: 480px) {
+    .powerups-row {
+        gap: 6px;
+    }
+
+    .powerup-btn {
+        padding: 6px 10px;
+        min-width: 60px;
+    }
+
+    .powerup-icon {
+        font-size: 1.1rem;
+    }
+
+    .powerup-label {
+        font-size: 0.6rem;
+    }
+
+    .timer-container {
+        padding: 10px 12px;
+    }
+
+    .timer-text {
+        font-size: 1rem;
+    }
+
+    .timed-mode-options {
+        gap: 10px;
+    }
+
+    .timed-card {
+        padding: 12px 16px;
+        min-width: 120px;
+    }
+
+    .timed-icon {
+        font-size: 1.5rem;
+    }
+
+    .timed-name {
+        font-size: 0.9rem;
+    }
+}

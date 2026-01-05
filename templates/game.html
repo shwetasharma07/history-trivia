@@ -41,6 +41,41 @@
                 </div>
             </div>
 
+            <!-- Timer Display (Timed Mode) -->
+            <div class="timer-container hidden" id="timer-container">
+                <div class="timer-bar">
+                    <div class="timer-fill" id="timer-fill"></div>
+                </div>
+                <div class="timer-text">
+                    <span class="timer-icon">&#x23F1;</span>
+                    <span class="timer-value" id="timer-display">15</span>s
+                </div>
+            </div>
+
+            <!-- Power-ups Row -->
+            <div class="powerups-row">
+                <button class="powerup-btn" id="powerup-5050" title="50/50 - Remove 2 wrong answers">
+                    <span class="powerup-icon">&#x2702;</span>
+                    <span class="powerup-label">50/50</span>
+                    <span class="powerup-count">1</span>
+                </button>
+                <button class="powerup-btn" id="powerup-skip" title="Skip - Skip without losing a life">
+                    <span class="powerup-icon">&#x23ED;</span>
+                    <span class="powerup-label">Skip</span>
+                    <span class="powerup-count">1</span>
+                </button>
+                <button class="powerup-btn" id="powerup-double" title="Double Points - 2x points for next correct answer">
+                    <span class="powerup-icon">&#xD7;2</span>
+                    <span class="powerup-label">Double</span>
+                    <span class="powerup-count">1</span>
+                </button>
+                <button class="powerup-btn hint-btn" id="hint-button" title="Hint - Show explanation (50% point penalty)">
+                    <span class="powerup-icon">&#x1F4A1;</span>
+                    <span class="powerup-label">Hint</span>
+                    <span class="powerup-count">2</span>
+                </button>
+            </div>
+
             <div class="progress-row">
                 <div class="era-badge" id="era-badge">
                     <span class="era-icon">&#x1F3DB;</span>

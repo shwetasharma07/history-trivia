@@ -1,6 +1,7 @@
 // ============================================
 // BRAINRACE - Enhanced Game Logic
 // Supports Solo and Local Multiplayer
+// With Power-ups, Hints, and Timed Mode
 // ============================================
 
 class BrainRaceGame {
@@ -12,6 +13,25 @@ class BrainRaceGame {
         // Game mode
         this.gameMode = sessionStorage.getItem('gameMode') || 'solo';
         this.isMultiplayer = this.gameMode === 'local';
+
+        // Timed mode
+        this.timedMode = sessionStorage.getItem('timedMode') === 'timed';
+        this.timePerQuestion = 15;
+        this.timeRemaining = this.timePerQuestion;
+        this.timerInterval = null;
+        this.questionStartTime = null;
+
+        // Power-ups state
+        this.powerUps = {
+            fiftyFifty: 1,
+            skip: 1,
+            doublePoints: 1
+        };
+        this.doublePointsActive = false;
+
+        // Hints state
+        this.hintsRemaining = 2;
+        this.hintUsedThisQuestion = false;
 
         // Player management
         if (this.isMultiplayer) {
@@ -49,6 +69,14 @@ class BrainRaceGame {
         this.streakPopup = document.getElementById('streak-popup');
         this.streakPopupText = document.getElementById('streak-popup-text');
 
+        // Power-up and timer DOM elements
+        this.timerDisplay = document.getElementById('timer-display');
+        this.timerFill = document.getElementById('timer-fill');
+        this.fiftyFiftyBtn = document.getElementById('powerup-5050');
+        this.skipBtn = document.getElementById('powerup-skip');
+        this.doublePointsBtn = document.getElementById('powerup-double');
+        this.hintBtn = document.getElementById('hint-button');
+
         this.init();
     }
 
@@ -63,9 +91,239 @@ class BrainRaceGame {
     async init() {
         await this.loadQuestions();
         this.setupMultiplayerUI();
+        this.setupTimedModeUI();
+        this.setupPowerUpListeners();
         this.displayQuestion();
         this.setupEventListeners();
         this.updateLivesDisplay();
+        this.updatePowerUpButtons();
+    }
+
+    setupTimedModeUI() {
+        const timerContainer = document.getElementById('timer-container');
+        if (timerContainer) {
+            if (this.timedMode) {
+                timerContainer.classList.remove('hidden');
+            } else {
+                timerContainer.classList.add('hidden');
+            }
+        }
+    }
+
+    setupPowerUpListeners() {
+        if (this.fiftyFiftyBtn) {
+            this.fiftyFiftyBtn.addEventListener('click', () => this.useFiftyFifty());
+        }
+        if (this.skipBtn) {
+            this.skipBtn.addEventListener('click', () => this.useSkip());
+        }
+        if (this.doublePointsBtn) {
+            this.doublePointsBtn.addEventListener('click', () => this.useDoublePoints());
+        }
+        if (this.hintBtn) {
+            this.hintBtn.addEventListener('click', () => this.useHint());
+        }
+    }
+
+    updatePowerUpButtons() {
+        if (this.fiftyFiftyBtn) {
+            this.fiftyFiftyBtn.disabled = this.powerUps.fiftyFifty <= 0 || this.answered;
+            this.fiftyFiftyBtn.querySelector('.powerup-count').textContent = this.powerUps.fiftyFifty;
+        }
+        if (this.skipBtn) {
+            this.skipBtn.disabled = this.powerUps.skip <= 0 || this.answered;
+            this.skipBtn.querySelector('.powerup-count').textContent = this.powerUps.skip;
+        }
+        if (this.doublePointsBtn) {
+            this.doublePointsBtn.disabled = this.powerUps.doublePoints <= 0 || this.answered || this.doublePointsActive;
+            this.doublePointsBtn.querySelector('.powerup-count').textContent = this.powerUps.doublePoints;
+            if (this.doublePointsActive) {
+                this.doublePointsBtn.classList.add('active');
+            } else {
+                this.doublePointsBtn.classList.remove('active');
+            }
+        }
+        if (this.hintBtn) {
+            this.hintBtn.disabled = this.hintsRemaining <= 0 || this.answered || this.hintUsedThisQuestion;
+            this.hintBtn.querySelector('.powerup-count').textContent = this.hintsRemaining;
+        }
+    }
+
+    useFiftyFifty() {
+        if (this.powerUps.fiftyFifty <= 0 || this.answered) return;
+
+        const question = this.questions[this.currentQuestionIndex];
+        const correctIndex = question.answer;
+        const buttons = this.choicesContainer.querySelectorAll('.choice-button');
+
+        // Find wrong answers
+        const wrongIndices = [];
+        buttons.forEach((btn, index) => {
+            if (index !== correctIndex && !btn.classList.contains('eliminated')) {
+                wrongIndices.push(index);
+            }
+        });
+
+        // Remove 2 wrong answers
+        const toRemove = wrongIndices.sort(() => Math.random() - 0.5).slice(0, 2);
+        toRemove.forEach(index => {
+            buttons[index].classList.add('eliminated');
+            buttons[index].disabled = true;
+        });
+
+        this.powerUps.fiftyFifty--;
+        this.updatePowerUpButtons();
+    }
+
+    useSkip() {
+        if (this.powerUps.skip <= 0 || this.answered) return;
+
+        this.powerUps.skip--;
+        this.stopTimer();
+        this.updatePowerUpButtons();
+
+        // Skip without losing life
+        if (this.currentQuestionIndex < this.questions.length - 1) {
+            this.currentQuestionIndex++;
+            this.displayQuestion();
+        } else {
+            this.finishGame();
+        }
+    }
+
+    useDoublePoints() {
+        if (this.powerUps.doublePoints <= 0 || this.answered || this.doublePointsActive) return;
+
+        this.doublePointsActive = true;
+        this.powerUps.doublePoints--;
+        this.updatePowerUpButtons();
+
+        // Show activation feedback
+        this.showPowerUpFeedback('2x Points Active!');
+    }
+
+    useHint() {
+        if (this.hintsRemaining <= 0 || this.answered || this.hintUsedThisQuestion) return;
+
+        this.hintsRemaining--;
+        this.hintUsedThisQuestion = true;
+        this.updatePowerUpButtons();
+
+        // Show the fun fact/explanation early (costs 50% points)
+        const question = this.questions[this.currentQuestionIndex];
+        this.funFactText.textContent = question.fun_fact || 'Think carefully about this one!';
+        this.funFactContainer.classList.remove('hidden');
+
+        // Mark that hint was used (for point reduction)
+        this.showPowerUpFeedback('Hint used! (50% point penalty)');
+    }
+
+    showPowerUpFeedback(message) {
+        const feedback = document.createElement('div');
+        feedback.className = 'powerup-feedback';
+        feedback.textContent = message;
+        document.body.appendChild(feedback);
+
+        setTimeout(() => {
+            feedback.classList.add('fade-out');
+            setTimeout(() => feedback.remove(), 500);
+        }, 1500);
+    }
+
+    startTimer() {
+        if (!this.timedMode) return;
+
+        this.timeRemaining = this.timePerQuestion;
+        this.questionStartTime = Date.now();
+        this.updateTimerDisplay();
+
+        this.timerInterval = setInterval(() => {
+            this.timeRemaining--;
+            this.updateTimerDisplay();
+
+            if (this.timeRemaining <= 0) {
+                this.stopTimer();
+                this.handleTimeUp();
+            }
+        }, 1000);
+    }
+
+    stopTimer() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+            this.timerInterval = null;
+        }
+    }
+
+    updateTimerDisplay() {
+        if (!this.timerDisplay || !this.timerFill) return;
+
+        this.timerDisplay.textContent = this.timeRemaining;
+        const percentage = (this.timeRemaining / this.timePerQuestion) * 100;
+        this.timerFill.style.width = `${percentage}%`;
+
+        // Change color based on time remaining
+        if (this.timeRemaining <= 5) {
+            this.timerFill.classList.add('danger');
+            this.timerFill.classList.remove('warning');
+        } else if (this.timeRemaining <= 10) {
+            this.timerFill.classList.add('warning');
+            this.timerFill.classList.remove('danger');
+        } else {
+            this.timerFill.classList.remove('warning', 'danger');
+        }
+    }
+
+    handleTimeUp() {
+        if (this.answered) return;
+        this.answered = true;
+
+        const question = this.questions[this.currentQuestionIndex];
+        const buttons = this.choicesContainer.querySelectorAll('.choice-button');
+
+        buttons.forEach(btn => btn.disabled = true);
+        buttons[question.answer].classList.add('correct');
+
+        const playerScore = this.currentPlayerScore;
+        playerScore.streak = 0;
+        this.streakDisplay.textContent = playerScore.streak;
+
+        if (!this.isMultiplayer) {
+            this.loseLife();
+        }
+
+        this.showFeedback(false);
+        this.showAnswerResult(false, true); // true = timeout
+
+        if (this.isMultiplayer) {
+            this.updateScoreboard();
+        }
+
+        this.funFactText.textContent = question.fun_fact || 'Time ran out!';
+        this.funFactContainer.classList.remove('hidden');
+
+        const nextText = this.nextButton.querySelector('.next-text');
+        const nextArrow = this.nextButton.querySelector('.next-arrow');
+
+        if (this.currentQuestionIndex < this.questions.length - 1) {
+            nextText.textContent = 'Next Question';
+            nextArrow.innerHTML = '\u2192';
+        } else {
+            nextText.textContent = 'See Results';
+            nextArrow.innerHTML = '\u{1F3C6}';
+            this.nextButton.classList.add('finish');
+        }
+        this.nextButton.classList.remove('hidden');
+    }
+
+    calculateTimeBonus() {
+        if (!this.timedMode || !this.questionStartTime) return 0;
+
+        const timeTaken = (Date.now() - this.questionStartTime) / 1000;
+        if (timeTaken < 5) {
+            return 5; // Bonus for fast answers
+        }
+        return 0;
     }
 
     setupMultiplayerUI() {
@@ -144,6 +402,11 @@ class BrainRaceGame {
         if (!question) return;
 
         this.answered = false;
+        this.hintUsedThisQuestion = false;
+
+        // Stop any existing timer and start new one
+        this.stopTimer();
+        this.startTimer();
 
         // Update player indicator for multiplayer
         if (this.isMultiplayer) {
@@ -175,6 +438,9 @@ class BrainRaceGame {
         // Update score display for current player
         this.scoreDisplay.textContent = this.currentPlayerScore.score;
         this.streakDisplay.textContent = this.currentPlayerScore.streak;
+
+        // Update power-up buttons
+        this.updatePowerUpButtons();
 
         // Animate question card
         const questionCard = document.getElementById('question-card');
@@ -261,6 +527,9 @@ class BrainRaceGame {
         if (this.answered) return;
         this.answered = true;
 
+        // Stop the timer
+        this.stopTimer();
+
         const selectedButton = event.currentTarget;
         const selectedIndex = parseInt(selectedButton.dataset.index);
         const question = this.questions[this.currentQuestionIndex];
@@ -269,6 +538,9 @@ class BrainRaceGame {
 
         const buttons = this.choicesContainer.querySelectorAll('.choice-button');
         buttons.forEach(btn => btn.disabled = true);
+
+        // Disable power-ups after answering
+        this.updatePowerUpButtons();
 
         try {
             const response = await fetch(`/api/check-answer?question_id=${question.id}&answer=${selectedIndex}`, {
@@ -284,7 +556,27 @@ class BrainRaceGame {
 
             if (result.correct) {
                 selectedButton.classList.add('correct');
-                const points = result.points || 10;
+                let points = result.points || 10;
+
+                // Apply hint penalty (50% reduction)
+                if (this.hintUsedThisQuestion) {
+                    points = Math.floor(points * 0.5);
+                }
+
+                // Apply double points
+                if (this.doublePointsActive) {
+                    points *= 2;
+                    this.doublePointsActive = false;
+                    this.updatePowerUpButtons();
+                }
+
+                // Add time bonus for fast answers
+                const timeBonus = this.calculateTimeBonus();
+                if (timeBonus > 0) {
+                    points += timeBonus;
+                    this.showPowerUpFeedback(`+${timeBonus} Speed Bonus!`);
+                }
+
                 playerScore.score += points;
                 playerScore.streak++;
                 playerScore.correct++;
@@ -311,6 +603,13 @@ class BrainRaceGame {
                 buttons[result.correct_answer].classList.add('correct');
                 playerScore.streak = 0;
                 this.streakDisplay.textContent = playerScore.streak;
+
+                // Reset double points if answer was wrong
+                if (this.doublePointsActive) {
+                    this.doublePointsActive = false;
+                    this.updatePowerUpButtons();
+                }
+
                 if (!this.isMultiplayer) {
                     this.loseLife();
                 }
@@ -350,7 +649,7 @@ class BrainRaceGame {
         }
     }
 
-    showAnswerResult(correct) {
+    showAnswerResult(correct, timeout = false) {
         this.answerResult.classList.remove('hidden', 'correct', 'wrong');
         this.answerResult.classList.add(correct ? 'correct' : 'wrong');
 
@@ -363,8 +662,12 @@ class BrainRaceGame {
                 this.resultText.textContent = this.isMultiplayer ? `${this.currentPlayer} got it!` : 'Correct!';
             }
         } else {
-            this.resultIcon.innerHTML = '\u274C';
-            this.resultText.textContent = this.isMultiplayer ? `${this.currentPlayer} missed it!` : 'Not quite!';
+            this.resultIcon.innerHTML = timeout ? '\u23F0' : '\u274C';
+            if (timeout) {
+                this.resultText.textContent = this.isMultiplayer ? `${this.currentPlayer} ran out of time!` : 'Time\'s up!';
+            } else {
+                this.resultText.textContent = this.isMultiplayer ? `${this.currentPlayer} missed it!` : 'Not quite!';
+            }
         }
     }
 

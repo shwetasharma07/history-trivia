@@ -193,6 +193,28 @@
                 </div>
             </div>
 
+            <div class="timed-mode-selector fade-in-delay-2">
+                <h3>Time Mode</h3>
+                <div class="timed-mode-options">
+                    <label class="timed-option">
+                        <input type="radio" name="timedMode" value="classic" checked>
+                        <span class="timed-card">
+                            <span class="timed-icon">&#x1F3AE;</span>
+                            <span class="timed-name">Classic</span>
+                            <span class="timed-desc">No time limit</span>
+                        </span>
+                    </label>
+                    <label class="timed-option">
+                        <input type="radio" name="timedMode" value="timed">
+                        <span class="timed-card">
+                            <span class="timed-icon">&#x23F1;</span>
+                            <span class="timed-name">Timed</span>
+                            <span class="timed-desc">15 sec per question, +5 speed bonus</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+
             <div class="start-section fade-in-delay-2">
                 <button id="start-game" class="play-button pulse">
                     <span class="button-text">Start Adventure!</span>
@@ -311,10 +333,12 @@
                 }
 
                 const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
+                const timedMode = document.querySelector('input[name="timedMode"]:checked').value;
 
                 // Store common settings
                 sessionStorage.setItem('selectedCategories', selected.join(','));
                 sessionStorage.setItem('difficulty', difficulty);
+                sessionStorage.setItem('timedMode', timedMode);
                 sessionStorage.setItem('gameMode', gameMode);
 
                 if (gameMode === 'solo') {
