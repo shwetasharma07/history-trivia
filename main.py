@@ -3,12 +3,13 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 import random
 
 from database import engine, get_db, Base
 from models import Score
 from questions import QUESTIONS, get_random_questions
+import leaderboard
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -68,9 +69,12 @@ async def save_score(
     player_name: str,
     score: int,
     total_questions: int,
+    category: Optional[str] = None,
+    difficulty: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
     """Save a player's score to the leaderboard"""
+    # Save to legacy database for backwards compatibility
     new_score = Score(
         player_name=player_name,
         score=score,
@@ -78,41 +82,29 @@ async def save_score(
     )
     db.add(new_score)
     db.commit()
-    db.refresh(new_score)
 
-    # Check if player made top 10
-    top_scores = db.query(Score).order_by(Score.score.desc()).limit(10).all()
-    made_leaderboard = any(s.id == new_score.id for s in top_scores)
-
-    return {
-        "success": True,
-        "made_leaderboard": made_leaderboard,
-        "rank": next((i + 1 for i, s in enumerate(top_scores) if s.id == new_score.id), None)
-    }
+    # Save to new leaderboard module
+    result = leaderboard.save_score(
+        player_name=player_name,
+        score=score,
+        category=category,
+        difficulty=difficulty,
+        total_questions=total_questions
+    )
+    return result
 
 
 @app.get("/api/leaderboard")
-async def get_leaderboard(db: Session = Depends(get_db)):
+async def get_leaderboard():
     """Get top 10 scores"""
-    scores = db.query(Score).order_by(Score.score.desc()).limit(10).all()
-    return {
-        "scores": [
-            {
-                "rank": i + 1,
-                "player_name": s.player_name,
-                "score": s.score,
-                "total_questions": s.total_questions,
-                "date": s.created_at.strftime("%Y-%m-%d")
-            }
-            for i, s in enumerate(scores)
-        ]
-    }
+    scores = leaderboard.get_top_scores(10)
+    return {"scores": scores}
 
 
 @app.get("/leaderboard", response_class=HTMLResponse)
-async def leaderboard_page(request: Request, db: Session = Depends(get_db)):
+async def leaderboard_page(request: Request):
     """Leaderboard page"""
-    scores = db.query(Score).order_by(Score.score.desc()).limit(10).all()
+    scores = leaderboard.get_top_scores(10)
     return templates.TemplateResponse(
         "leaderboard.html",
         {"request": request, "scores": scores}
