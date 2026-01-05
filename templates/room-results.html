@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Results - BrainRace</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="results-page">
+    <div class="results-container">
+        <div class="results-card bounce-in">
+            <!-- Header -->
+            <div class="results-header">
+                <div class="room-badge-large">
+                    <span>&#x1F310;</span> Room: <strong>{{ room_code }}</strong>
+                </div>
+                <div class="results-emoji" id="results-emoji">&#x1F3C6;</div>
+                <h1 class="results-title" id="results-title">Room Leaderboard</h1>
+                <p class="results-subtitle" id="results-subtitle">See how everyone did!</p>
+            </div>
+
+            <!-- Your Result (if just finished) -->
+            <div class="your-result hidden" id="your-result">
+                <h3>Your Score</h3>
+                <div class="your-score-display">
+                    <span class="your-score-value" id="your-score">0</span>
+                    <span class="your-score-label">points</span>
+                </div>
+                <div class="your-stats">
+                    <span class="your-stat">
+                        <span class="stat-icon">&#x2705;</span>
+                        <span id="your-correct">0</span> correct
+                    </span>
+                    <span class="your-stat">
+                        <span class="stat-icon">&#x1F525;</span>
+                        <span id="your-streak">0</span> best streak
+                    </span>
+                </div>
+            </div>
+
+            <!-- Room Standings -->
+            <div class="room-standings">
+                <h3 class="standings-title">
+                    <span>&#x1F3C6;</span> Standings
+                </h3>
+                <div class="standings-list" id="standings-list">
+                    {% for player in players %}
+                    <div class="standing-row {{ 'first' if loop.index == 1 else '' }} {{ 'current-player' if player.player_name == request.cookies.get('username', '') else '' }}">
+                        <span class="standing-rank">
+                            {% if loop.index == 1 %}&#x1F947;
+                            {% elif loop.index == 2 %}&#x1F948;
+                            {% elif loop.index == 3 %}&#x1F949;
+                            {% else %}{{ loop.index }}
+                            {% endif %}
+                        </span>
+                        <div class="standing-player">
+                            <span class="standing-avatar">{{ player.player_name[0]|upper }}</span>
+                            <span class="standing-name">{{ player.player_name }}</span>
+                        </div>
+                        <div class="standing-stats">
+                            {% if player.completed %}
+                            <span class="standing-score">{{ player.score }} pts</span>
+                            <span class="standing-correct">{{ player.correct_count }}/{{ room.question_ids|length if room else '?' }}</span>
+                            {% else %}
+                            <span class="standing-waiting">&#x23F3; Playing...</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="standings-note">
+                    <span>&#x1F504;</span> Standings auto-refresh every 10 seconds
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="results-actions">
+                <a href="/room/{{ room_code }}/play" class="action-button play-again">
+                    <span>&#x1F504;</span>
+                    <span>Play Again</span>
+                </a>
+                <a href="/room/{{ room_code }}" class="action-button view-leaderboard">
+                    <span>&#x1F465;</span>
+                    <span>Room Lobby</span>
+                </a>
+                <a href="/lobby" class="action-button go-home">
+                    <span>&#x1F310;</span>
+                    <span>New Room</span>
+                </a>
+                <a href="/" class="action-button go-home">
+                    <span>&#x1F3E0;</span>
+                    <span>Home</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const roomCode = '{{ room_code }}';
+        const playerName = sessionStorage.getItem('username');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we just finished a game
+            const gameResult = sessionStorage.getItem('roomGameResult');
+            if (gameResult) {
+                const result = JSON.parse(gameResult);
+                const yourResultDiv = document.getElementById('your-result');
+                yourResultDiv.classList.remove('hidden');
+
+                document.getElementById('your-score').textContent = result.score;
+                document.getElementById('your-correct').textContent = result.correctCount;
+                document.getElementById('your-streak').textContent = result.bestStreak;
+
+                // Show confetti if ranked well
+                if (result.rank && result.rank <= 3) {
+                    setTimeout(() => {
+                        confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+                    }, 500);
+                }
+
+                // Clear the stored result
+                sessionStorage.removeItem('roomGameResult');
+            }
+
+            // Highlight current player
+            highlightCurrentPlayer();
+
+            // Auto-refresh standings
+            setInterval(refreshStandings, 10000);
+        });
+
+        function highlightCurrentPlayer() {
+            const rows = document.querySelectorAll('.standing-row');
+            rows.forEach(row => {
+                const nameEl = row.querySelector('.standing-name');
+                if (nameEl && nameEl.textContent === playerName) {
+                    row.classList.add('current-player');
+                }
+            });
+        }
+
+        async function refreshStandings() {
+            try {
+                const response = await fetch(`/api/rooms/${roomCode}`);
+                const data = await response.json();
+
+                if (data.players) {
+                    updateStandings(data.players, data.question_count);
+                }
+            } catch (error) {
+                console.error('Error refreshing standings:', error);
+            }
+        }
+
+        function updateStandings(players, questionCount) {
+            const standingsList = document.getElementById('standings-list');
+
+            standingsList.innerHTML = players.map((player, idx) => {
+                const rank = idx + 1;
+                const rankEmoji = rank === 1 ? '&#x1F947;' : rank === 2 ? '&#x1F948;' : rank === 3 ? '&#x1F949;' : rank;
+                const isCurrentPlayer = player.player_name === playerName;
+
+                return `
+                    <div class="standing-row ${rank === 1 ? 'first' : ''} ${isCurrentPlayer ? 'current-player' : ''}">
+                        <span class="standing-rank">${rankEmoji}</span>
+                        <div class="standing-player">
+                            <span class="standing-avatar">${player.player_name[0].toUpperCase()}</span>
+                            <span class="standing-name">${player.player_name}</span>
+                        </div>
+                        <div class="standing-stats">
+                            ${player.completed
+                                ? `<span class="standing-score">${player.score} pts</span>
+                                   <span class="standing-correct">${player.correct_count}/${questionCount}</span>`
+                                : `<span class="standing-waiting">&#x23F3; Playing...</span>`
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+</html>

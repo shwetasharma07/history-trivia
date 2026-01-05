@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room {{ room.room_code }} - BrainRace</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="room-page">
+    <div class="room-container">
+        <div class="room-card bounce-in">
+            <div class="room-header">
+                <div class="room-code-display">
+                    <span class="room-label">Room Code</span>
+                    <div class="room-code-box">
+                        <span class="room-code" id="room-code">{{ room.room_code }}</span>
+                        <button class="copy-btn" id="copy-btn" title="Copy code">
+                            &#x1F4CB;
+                        </button>
+                    </div>
+                    <p class="share-hint">Share this code with friends!</p>
+                </div>
+            </div>
+
+            <div class="room-info">
+                <div class="info-item">
+                    <span class="info-icon">&#x1F3AE;</span>
+                    <span class="info-text">{{ room.question_ids|length }} Questions</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">&#x1F4CA;</span>
+                    <span class="info-text">{{ room.difficulty|title }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">&#x23F0;</span>
+                    <span class="info-text">Expires in 24h</span>
+                </div>
+            </div>
+
+            <div class="players-section">
+                <h3 class="players-title">
+                    <span>&#x1F465;</span>
+                    Players (<span id="player-count">{{ players|length }}</span>)
+                </h3>
+                <div class="players-list" id="players-list">
+                    {% for player in players %}
+                    <div class="player-item {{ 'completed' if player.completed else 'waiting' }}">
+                        <span class="player-avatar">{{ player.player_name[0]|upper }}</span>
+                        <span class="player-name">{{ player.player_name }}</span>
+                        <span class="player-status">
+                            {% if player.completed %}
+                            <span class="status-badge completed">&#x2705; {{ player.score }} pts</span>
+                            {% else %}
+                            <span class="status-badge waiting">&#x23F3; Waiting</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="room-actions">
+                <button class="play-btn" id="play-btn">
+                    <span>&#x1F3AE;</span>
+                    <span>Start Playing</span>
+                </button>
+                <button class="results-btn" id="results-btn">
+                    <span>&#x1F3C6;</span>
+                    <span>View Results</span>
+                </button>
+            </div>
+
+            <div class="room-footer">
+                <a href="/lobby" class="back-link">&#x2190; Leave Room</a>
+                <button class="refresh-btn" id="refresh-btn">&#x1F504; Refresh</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-toast hidden" id="copy-toast">
+        Code copied to clipboard!
+    </div>
+
+    <script>
+        const roomCode = '{{ room.room_code }}';
+        const playerName = sessionStorage.getItem('username');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyBtn = document.getElementById('copy-btn');
+            const copyToast = document.getElementById('copy-toast');
+            const playBtn = document.getElementById('play-btn');
+            const resultsBtn = document.getElementById('results-btn');
+            const refreshBtn = document.getElementById('refresh-btn');
+
+            // Copy room code
+            copyBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(roomCode);
+                    copyToast.classList.remove('hidden');
+                    setTimeout(() => copyToast.classList.add('hidden'), 2000);
+                } catch (err) {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = roomCode;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    copyToast.classList.remove('hidden');
+                    setTimeout(() => copyToast.classList.add('hidden'), 2000);
+                }
+            });
+
+            // Start playing
+            playBtn.addEventListener('click', () => {
+                sessionStorage.setItem('roomCode', roomCode);
+                sessionStorage.setItem('gameMode', 'room');
+                window.location.href = `/room/${roomCode}/play`;
+            });
+
+            // View results
+            resultsBtn.addEventListener('click', () => {
+                window.location.href = `/room/${roomCode}/results`;
+            });
+
+            // Refresh player list
+            refreshBtn.addEventListener('click', async () => {
+                refreshBtn.disabled = true;
+                refreshBtn.textContent = '&#x23F3; Loading...';
+
+                try {
+                    const response = await fetch(`/api/rooms/${roomCode}`);
+                    const data = await response.json();
+
+                    if (data.players) {
+                        updatePlayersList(data.players);
+                    }
+                } catch (error) {
+                    console.error('Error refreshing:', error);
+                }
+
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '&#x1F504; Refresh';
+            });
+
+            function updatePlayersList(players) {
+                const playersList = document.getElementById('players-list');
+                const playerCount = document.getElementById('player-count');
+
+                playerCount.textContent = players.length;
+
+                playersList.innerHTML = players.map(player => `
+                    <div class="player-item ${player.completed ? 'completed' : 'waiting'}">
+                        <span class="player-avatar">${player.player_name[0].toUpperCase()}</span>
+                        <span class="player-name">${player.player_name}</span>
+                        <span class="player-status">
+                            ${player.completed
+                                ? `<span class="status-badge completed">&#x2705; ${player.score} pts</span>`
+                                : `<span class="status-badge waiting">&#x23F3; Waiting</span>`
+                            }
+                        </span>
+                    </div>
+                `).join('');
+            }
+
+            // Auto-refresh every 10 seconds
+            setInterval(async () => {
+                try {
+                    const response = await fetch(`/api/rooms/${roomCode}`);
+                    const data = await response.json();
+                    if (data.players) {
+                        updatePlayersList(data.players);
+                    }
+                } catch (error) {
+                    // Silently fail
+                }
+            }, 10000);
+        });
+    </script>
+</body>
+</html>

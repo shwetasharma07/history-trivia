@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>History Trivia - Time Travel Through History!</title>
+    <title>BrainRace - Test Your Knowledge!</title>
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -12,53 +12,342 @@
         <div class="hero">
             <div class="title-wrapper">
                 <h1 class="main-title bounce-in">
-                    <span class="emoji">&#x1F3DB;</span>
-                    History Trivia
-                    <span class="emoji">&#x1F680;</span>
+                    <span class="emoji">&#x1F9E0;</span>
+                    BrainRace
+                    <span class="emoji">&#x1F3C1;</span>
                 </h1>
-                <p class="subtitle fade-in">Travel Through Time & Test Your Knowledge!</p>
+                <p class="subtitle fade-in">Race to prove your knowledge!</p>
             </div>
 
-            <div class="era-icons fade-in-delay">
-                <div class="era-card ancient">
-                    <span class="era-emoji">&#x1F3FA;</span>
-                    <span class="era-name">Ancient</span>
+            <div class="game-mode-selector fade-in-delay">
+                <h3>Game Mode</h3>
+                <div class="mode-options">
+                    <label class="mode-option">
+                        <input type="radio" name="gameMode" value="solo" checked>
+                        <span class="mode-card">
+                            <span class="mode-icon">&#x1F464;</span>
+                            <span class="mode-name">Solo</span>
+                        </span>
+                    </label>
+                    <label class="mode-option">
+                        <input type="radio" name="gameMode" value="local">
+                        <span class="mode-card">
+                            <span class="mode-icon">&#x1F465;</span>
+                            <span class="mode-name">Local Multiplayer</span>
+                        </span>
+                    </label>
+                    <a href="/lobby" class="mode-option mode-link">
+                        <span class="mode-card">
+                            <span class="mode-icon">&#x1F310;</span>
+                            <span class="mode-name">Online Rooms</span>
+                        </span>
+                    </a>
+                    <a href="/realtime" class="mode-option mode-link realtime-link">
+                        <span class="mode-card">
+                            <span class="mode-icon">&#x26A1;</span>
+                            <span class="mode-name">Live Battle</span>
+                        </span>
+                    </a>
                 </div>
-                <div class="era-card medieval">
-                    <span class="era-emoji">&#x2694;</span>
-                    <span class="era-name">Medieval</span>
+            </div>
+
+            <div id="solo-setup" class="player-setup fade-in-delay">
+                <label for="username" class="username-label">Your Name</label>
+                <input type="text" id="username" class="username-input" placeholder="Enter your name..." maxlength="20">
+            </div>
+
+            <div id="multiplayer-setup" class="player-setup fade-in-delay" style="display: none;">
+                <div class="player-count-selector">
+                    <label>Number of Players</label>
+                    <div class="player-count-options">
+                        <button type="button" class="count-btn active" data-count="2">2</button>
+                        <button type="button" class="count-btn" data-count="3">3</button>
+                        <button type="button" class="count-btn" data-count="4">4</button>
+                    </div>
                 </div>
-                <div class="era-card modern">
-                    <span class="era-emoji">&#x1F680;</span>
-                    <span class="era-name">Modern</span>
+                <div class="player-names">
+                    <div class="player-name-input">
+                        <label>Player 1</label>
+                        <input type="text" class="username-input player-input" data-player="1" placeholder="Name..." maxlength="15">
+                    </div>
+                    <div class="player-name-input">
+                        <label>Player 2</label>
+                        <input type="text" class="username-input player-input" data-player="2" placeholder="Name..." maxlength="15">
+                    </div>
+                    <div class="player-name-input" data-for="3" style="display: none;">
+                        <label>Player 3</label>
+                        <input type="text" class="username-input player-input" data-player="3" placeholder="Name..." maxlength="15">
+                    </div>
+                    <div class="player-name-input" data-for="4" style="display: none;">
+                        <label>Player 4</label>
+                        <input type="text" class="username-input player-input" data-player="4" placeholder="Name..." maxlength="15">
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-selector fade-in-delay">
+                <div class="selector-header">
+                    <h3>Choose Your Categories</h3>
+                    <label class="select-all-toggle">
+                        <input type="checkbox" id="select-all" checked>
+                        <span>Select All</span>
+                    </label>
+                </div>
+                <div class="category-grid">
+                    <label class="category-option">
+                        <input type="checkbox" name="category" value="ancient-civilizations" checked>
+                        <span class="category-card">
+                            <span class="category-emoji">&#x1F3FA;</span>
+                            <span class="category-name">Ancient Civilizations</span>
+                        </span>
+                    </label>
+                    <label class="category-option">
+                        <input type="checkbox" name="category" value="medieval-europe" checked>
+                        <span class="category-card">
+                            <span class="category-emoji">&#x2694;</span>
+                            <span class="category-name">Medieval Europe</span>
+                        </span>
+                    </label>
+                    <label class="category-option">
+                        <input type="checkbox" name="category" value="world-wars" checked>
+                        <span class="category-card">
+                            <span class="category-emoji">&#x1F3C6;</span>
+                            <span class="category-name">World Wars</span>
+                        </span>
+                    </label>
+                    <label class="category-option">
+                        <input type="checkbox" name="category" value="cold-war" checked>
+                        <span class="category-card">
+                            <span class="category-emoji">&#x2744;</span>
+                            <span class="category-name">Cold War</span>
+                        </span>
+                    </label>
+                    <label class="category-option">
+                        <input type="checkbox" name="category" value="ancient-philosophy" checked>
+                        <span class="category-card">
+                            <span class="category-emoji">&#x1F4DC;</span>
+                            <span class="category-name">Ancient Philosophy</span>
+                        </span>
+                    </label>
+                    <label class="category-option">
+                        <input type="checkbox" name="category" value="revolutionary-periods" checked>
+                        <span class="category-card">
+                            <span class="category-emoji">&#x1F525;</span>
+                            <span class="category-name">Revolutionary Periods</span>
+                        </span>
+                    </label>
+                    <label class="category-option">
+                        <input type="checkbox" name="category" value="science" checked>
+                        <span class="category-card">
+                            <span class="category-emoji">&#x1F52C;</span>
+                            <span class="category-name">Science</span>
+                        </span>
+                    </label>
+                </div>
+                <p class="selected-count"><span id="category-count">7</span> categories selected</p>
+            </div>
+
+            <div class="difficulty-selector fade-in-delay-2">
+                <h3>Difficulty Mode</h3>
+                <div class="difficulty-options">
+                    <label class="difficulty-option">
+                        <input type="radio" name="difficulty" value="progressive" checked>
+                        <span class="difficulty-card">
+                            <span class="diff-icon">&#x1F4C8;</span>
+                            <span class="diff-name">Progressive</span>
+                            <span class="diff-desc">Starts easy, gets harder</span>
+                        </span>
+                    </label>
+                    <label class="difficulty-option">
+                        <input type="radio" name="difficulty" value="easy">
+                        <span class="difficulty-card">
+                            <span class="diff-icon">&#x1F7E2;</span>
+                            <span class="diff-name">Easy</span>
+                            <span class="diff-desc">Beginner friendly</span>
+                        </span>
+                    </label>
+                    <label class="difficulty-option">
+                        <input type="radio" name="difficulty" value="medium">
+                        <span class="difficulty-card">
+                            <span class="diff-icon">&#x1F7E1;</span>
+                            <span class="diff-name">Medium</span>
+                            <span class="diff-desc">Moderate challenge</span>
+                        </span>
+                    </label>
+                    <label class="difficulty-option">
+                        <input type="radio" name="difficulty" value="hard">
+                        <span class="difficulty-card">
+                            <span class="diff-icon">&#x1F534;</span>
+                            <span class="diff-name">Hard</span>
+                            <span class="diff-desc">Expert level</span>
+                        </span>
+                    </label>
+                    <label class="difficulty-option">
+                        <input type="radio" name="difficulty" value="mixed">
+                        <span class="difficulty-card">
+                            <span class="diff-icon">&#x1F500;</span>
+                            <span class="diff-name">Mixed</span>
+                            <span class="diff-desc">Random difficulty</span>
+                        </span>
+                    </label>
                 </div>
             </div>
 
             <div class="start-section fade-in-delay-2">
-                <a href="/play" class="play-button pulse">
+                <button id="start-game" class="play-button pulse">
                     <span class="button-text">Start Adventure!</span>
                     <span class="button-emoji">&#x1F3AE;</span>
-                </a>
+                </button>
                 <a href="/leaderboard" class="leaderboard-link">
                     <span>&#x1F3C6;</span> View Leaderboard
                 </a>
             </div>
-
-            <div class="features fade-in-delay-3">
-                <div class="feature">
-                    <span class="feature-icon">&#x2753;</span>
-                    <span>Fun Questions</span>
-                </div>
-                <div class="feature">
-                    <span class="feature-icon">&#x1F4A1;</span>
-                    <span>Cool Facts</span>
-                </div>
-                <div class="feature">
-                    <span class="feature-icon">&#x1F3C6;</span>
-                    <span>High Scores</span>
-                </div>
-            </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAll = document.getElementById('select-all');
+            const categoryCheckboxes = document.querySelectorAll('input[name="category"]');
+            const categoryCount = document.getElementById('category-count');
+            const startButton = document.getElementById('start-game');
+            const usernameInput = document.getElementById('username');
+            const gameModeInputs = document.querySelectorAll('input[name="gameMode"]');
+            const soloSetup = document.getElementById('solo-setup');
+            const multiplayerSetup = document.getElementById('multiplayer-setup');
+            const countBtns = document.querySelectorAll('.count-btn');
+            const playerInputs = document.querySelectorAll('.player-input');
+
+            let playerCount = 2;
+            let gameMode = 'solo';
+
+            // Load saved username if exists
+            const savedUsername = sessionStorage.getItem('username');
+            if (savedUsername) {
+                usernameInput.value = savedUsername;
+            }
+
+            // Game mode switching
+            gameModeInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    gameMode = this.value;
+                    if (gameMode === 'solo') {
+                        soloSetup.style.display = 'block';
+                        multiplayerSetup.style.display = 'none';
+                    } else {
+                        soloSetup.style.display = 'none';
+                        multiplayerSetup.style.display = 'block';
+                    }
+                    validateForm();
+                });
+            });
+
+            // Player count selection
+            countBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    countBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    playerCount = parseInt(this.dataset.count);
+
+                    // Show/hide player inputs
+                    document.querySelector('[data-for="3"]').style.display = playerCount >= 3 ? 'block' : 'none';
+                    document.querySelector('[data-for="4"]').style.display = playerCount >= 4 ? 'block' : 'none';
+                    validateForm();
+                });
+            });
+
+            // Validate on player input
+            playerInputs.forEach(input => {
+                input.addEventListener('input', validateForm);
+            });
+
+            function updateCount() {
+                const checked = document.querySelectorAll('input[name="category"]:checked').length;
+                categoryCount.textContent = checked;
+                validateForm();
+            }
+
+            function validateForm() {
+                const hasCategories = document.querySelectorAll('input[name="category"]:checked').length > 0;
+
+                let hasPlayers = false;
+                if (gameMode === 'solo') {
+                    hasPlayers = usernameInput.value.trim().length > 0;
+                } else {
+                    // Check all visible player inputs have names
+                    const visibleInputs = Array.from(playerInputs).slice(0, playerCount);
+                    hasPlayers = visibleInputs.every(input => input.value.trim().length > 0);
+                }
+
+                startButton.disabled = !hasCategories || !hasPlayers;
+            }
+
+            function updateSelectAll() {
+                const total = categoryCheckboxes.length;
+                const checked = document.querySelectorAll('input[name="category"]:checked').length;
+                selectAll.checked = checked === total;
+                selectAll.indeterminate = checked > 0 && checked < total;
+            }
+
+            usernameInput.addEventListener('input', validateForm);
+
+            selectAll.addEventListener('change', function() {
+                categoryCheckboxes.forEach(cb => cb.checked = this.checked);
+                updateCount();
+            });
+
+            categoryCheckboxes.forEach(cb => {
+                cb.addEventListener('change', function() {
+                    updateSelectAll();
+                    updateCount();
+                });
+            });
+
+            startButton.addEventListener('click', function() {
+                const selected = Array.from(document.querySelectorAll('input[name="category"]:checked'))
+                    .map(cb => cb.value);
+                if (selected.length === 0) {
+                    alert('Please select at least one category!');
+                    return;
+                }
+
+                const difficulty = document.querySelector('input[name="difficulty"]:checked').value;
+
+                // Store common settings
+                sessionStorage.setItem('selectedCategories', selected.join(','));
+                sessionStorage.setItem('difficulty', difficulty);
+                sessionStorage.setItem('gameMode', gameMode);
+
+                if (gameMode === 'solo') {
+                    const username = usernameInput.value.trim();
+                    if (!username) {
+                        alert('Please enter your name!');
+                        usernameInput.focus();
+                        return;
+                    }
+                    sessionStorage.setItem('username', username);
+                    sessionStorage.removeItem('players');
+                } else {
+                    // Get player names
+                    const players = [];
+                    for (let i = 1; i <= playerCount; i++) {
+                        const name = document.querySelector(`[data-player="${i}"]`).value.trim();
+                        if (!name) {
+                            alert(`Please enter name for Player ${i}!`);
+                            return;
+                        }
+                        players.push(name);
+                    }
+                    sessionStorage.setItem('players', JSON.stringify(players));
+                    sessionStorage.setItem('playerCount', playerCount);
+                    sessionStorage.removeItem('username');
+                }
+
+                window.location.href = '/play';
+            });
+
+            // Initial validation
+            validateForm();
+        });
+    </script>
 </body>
 </html>

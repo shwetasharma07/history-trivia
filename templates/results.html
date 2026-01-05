@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Results - History Trivia</title>
+    <title>Results - BrainRace</title>
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -109,114 +109,170 @@
     <script>
         // Get score data from URL params
         const urlParams = new URLSearchParams(window.location.search);
-        const score = parseInt(urlParams.get('score')) || 0;
-        const total = parseInt(urlParams.get('total')) || 10;
-        const bestStreak = parseInt(urlParams.get('streak')) || 0;
-        const livesLeft = parseInt(urlParams.get('lives')) || 0;
-        const percentage = Math.round((score / total) * 100);
+        const isMultiplayer = urlParams.get('mode') === 'multiplayer';
 
-        // Update display elements
-        document.getElementById('final-score').textContent = score;
-        document.getElementById('total-questions').textContent = total;
-        document.getElementById('score-percentage').textContent = percentage + '%';
+        if (isMultiplayer) {
+            // Handle multiplayer results
+            const results = JSON.parse(sessionStorage.getItem('multiplayerResults') || '[]');
+            const totalQuestions = parseInt(sessionStorage.getItem('totalQuestions')) || 10;
+            const winner = results[0];
 
-        // Update stats
-        document.getElementById('stat-correct').textContent = score;
-        document.getElementById('stat-wrong').textContent = total - score;
-        document.getElementById('stat-streak').textContent = bestStreak;
-        document.getElementById('stat-lives').textContent = livesLeft;
+            // Hide solo-specific elements
+            document.querySelector('.score-showcase').style.display = 'none';
+            document.querySelector('.stats-grid').style.display = 'none';
+            document.getElementById('save-score-section').style.display = 'none';
 
-        // Animate the score ring
-        const progressCircle = document.getElementById('score-circle-progress');
-        const circumference = 2 * Math.PI * 54;
-        progressCircle.style.strokeDasharray = circumference;
-        progressCircle.style.strokeDashoffset = circumference;
+            // Update header
+            document.getElementById('results-emoji').innerHTML = '&#x1F3C6;';
+            document.getElementById('results-title').textContent = winner ? `${winner.name} Wins!` : 'Game Over!';
+            document.getElementById('results-subtitle').textContent = 'Final Standings';
 
-        setTimeout(() => {
-            const offset = circumference - (percentage / 100) * circumference;
-            progressCircle.style.strokeDashoffset = offset;
-        }, 100);
+            // Create multiplayer leaderboard
+            const performanceDiv = document.getElementById('performance-message');
+            performanceDiv.innerHTML = `
+                <div class="multiplayer-results">
+                    <div class="mp-standings">
+                        ${results.map((player, idx) => `
+                            <div class="mp-player-row ${idx === 0 ? 'winner' : ''}">
+                                <span class="mp-rank">${idx === 0 ? '&#x1F947;' : idx === 1 ? '&#x1F948;' : idx === 2 ? '&#x1F949;' : idx + 1}</span>
+                                <span class="mp-name">${player.name}</span>
+                                <div class="mp-stats">
+                                    <span class="mp-score">${player.score} pts</span>
+                                    <span class="mp-correct">${player.correct}/${Math.ceil(totalQuestions / results.length)} correct</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
 
-        // Set message and emoji based on score
-        const resultsTitle = document.getElementById('results-title');
-        const resultsSubtitle = document.getElementById('results-subtitle');
-        const resultsEmoji = document.getElementById('results-emoji');
-        const scoreMessage = document.getElementById('score-message');
-        const scoreRing = document.getElementById('score-ring');
-
-        if (percentage === 100) {
-            resultsTitle.textContent = 'PERFECT!';
-            resultsSubtitle.textContent = 'Flawless victory!';
-            resultsEmoji.innerHTML = '&#x1F451;';
-            scoreMessage.textContent = "You're a true history genius! Not a single mistake!";
-            scoreRing.classList.add('perfect');
+            // Confetti for winner
             setTimeout(() => {
-                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
-                setTimeout(() => confetti({ particleCount: 100, spread: 120, origin: { y: 0.5 } }), 300);
+                confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
             }, 500);
-        } else if (percentage >= 80) {
-            resultsTitle.textContent = 'Excellent!';
-            resultsSubtitle.textContent = 'Outstanding performance!';
-            resultsEmoji.innerHTML = '&#x1F31F;';
-            scoreMessage.textContent = "You really know your history! Almost perfect!";
-            scoreRing.classList.add('great');
-            setTimeout(() => confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }), 500);
-        } else if (percentage >= 60) {
-            resultsTitle.textContent = 'Good Job!';
-            resultsSubtitle.textContent = 'Well done!';
-            resultsEmoji.innerHTML = '&#x1F389;';
-            scoreMessage.textContent = "You're on your way to becoming a history expert!";
-            scoreRing.classList.add('good');
-            setTimeout(() => confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } }), 500);
-        } else if (percentage >= 40) {
-            resultsTitle.textContent = 'Nice Try!';
-            resultsSubtitle.textContent = 'Keep practicing!';
-            resultsEmoji.innerHTML = '&#x1F44D;';
-            scoreMessage.textContent = "Keep learning and you'll be a pro in no time!";
-            scoreRing.classList.add('okay');
         } else {
-            resultsTitle.textContent = 'Keep Learning!';
-            resultsSubtitle.textContent = "Don't give up!";
-            resultsEmoji.innerHTML = '&#x1F4DA;';
-            scoreMessage.textContent = "History is full of surprises. Try again!";
-            scoreRing.classList.add('learning');
+            // Solo mode
+            const score = parseInt(urlParams.get('score')) || 0;
+            const total = parseInt(urlParams.get('total')) || 10;
+            const bestStreak = parseInt(urlParams.get('streak')) || 0;
+            const livesLeft = parseInt(urlParams.get('lives')) || 0;
+
+            // Pre-fill username from sessionStorage
+            const savedUsername = sessionStorage.getItem('username');
+            if (savedUsername) {
+                document.getElementById('player-name').value = savedUsername;
+            }
+
+            initSoloResults(score, total, bestStreak, livesLeft);
         }
 
-        // Handle save score form
-        document.getElementById('save-score-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const playerName = document.getElementById('player-name').value.trim();
+        function initSoloResults(score, total, bestStreak, livesLeft) {
+            const percentage = Math.min(100, Math.round((score / (total * 20)) * 100)); // Normalize to percentage
 
-            if (!playerName) return;
+            // Update display elements
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('total-questions').textContent = total * 20; // Max possible score
+            document.getElementById('score-percentage').textContent = percentage + '%';
 
-            const button = e.target.querySelector('button');
-            button.disabled = true;
-            button.textContent = 'Saving...';
+            // Update stats - for points-based scoring
+            const correctCount = Math.round(score / 15); // Estimate based on avg points
+            document.getElementById('stat-correct').textContent = correctCount;
+            document.getElementById('stat-wrong').textContent = Math.max(0, total - correctCount);
+            document.getElementById('stat-streak').textContent = bestStreak;
+            document.getElementById('stat-lives').textContent = livesLeft;
 
-            try {
-                const response = await fetch(`/api/save-score?player_name=${encodeURIComponent(playerName)}&score=${score}&total_questions=${total}`, {
-                    method: 'POST'
-                });
-                const data = await response.json();
+            // Animate the score ring
+            const progressCircle = document.getElementById('score-circle-progress');
+            const circumference = 2 * Math.PI * 54;
+            progressCircle.style.strokeDasharray = circumference;
+            progressCircle.style.strokeDashoffset = circumference;
 
-                document.getElementById('save-score-section').classList.add('hidden');
-                const successDiv = document.getElementById('save-success');
-                successDiv.classList.remove('hidden');
+            setTimeout(() => {
+                const offset = circumference - (percentage / 100) * circumference;
+                progressCircle.style.strokeDashoffset = offset;
+            }, 100);
 
-                if (data.made_leaderboard) {
-                    document.getElementById('success-text').innerHTML =
-                        `You made the leaderboard at <strong>#${data.rank}</strong>! &#x1F3C6;`;
-                    confetti({ particleCount: 50, spread: 60 });
-                } else {
-                    document.getElementById('success-text').textContent = 'Score saved successfully!';
-                }
-            } catch (error) {
-                console.error('Error saving score:', error);
-                button.disabled = false;
-                button.textContent = 'Save to Leaderboard';
-                alert('Could not save score. Please try again.');
+            // Set message and emoji based on score
+            const resultsTitle = document.getElementById('results-title');
+            const resultsSubtitle = document.getElementById('results-subtitle');
+            const resultsEmoji = document.getElementById('results-emoji');
+            const scoreMessage = document.getElementById('score-message');
+            const scoreRing = document.getElementById('score-ring');
+
+            if (percentage >= 90) {
+                resultsTitle.textContent = 'AMAZING!';
+                resultsSubtitle.textContent = 'Outstanding performance!';
+                resultsEmoji.innerHTML = '&#x1F451;';
+                scoreMessage.textContent = "You're a true knowledge champion!";
+                scoreRing.classList.add('perfect');
+                setTimeout(() => {
+                    confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+                    setTimeout(() => confetti({ particleCount: 100, spread: 120, origin: { y: 0.5 } }), 300);
+                }, 500);
+            } else if (percentage >= 70) {
+                resultsTitle.textContent = 'Excellent!';
+                resultsSubtitle.textContent = 'Great job!';
+                resultsEmoji.innerHTML = '&#x1F31F;';
+                scoreMessage.textContent = "You really know your stuff!";
+                scoreRing.classList.add('great');
+                setTimeout(() => confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } }), 500);
+            } else if (percentage >= 50) {
+                resultsTitle.textContent = 'Good Job!';
+                resultsSubtitle.textContent = 'Well done!';
+                resultsEmoji.innerHTML = '&#x1F389;';
+                scoreMessage.textContent = "You're on your way to becoming an expert!";
+                scoreRing.classList.add('good');
+                setTimeout(() => confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } }), 500);
+            } else if (percentage >= 30) {
+                resultsTitle.textContent = 'Nice Try!';
+                resultsSubtitle.textContent = 'Keep practicing!';
+                resultsEmoji.innerHTML = '&#x1F44D;';
+                scoreMessage.textContent = "Keep learning and you'll be a pro in no time!";
+                scoreRing.classList.add('okay');
+            } else {
+                resultsTitle.textContent = 'Keep Learning!';
+                resultsSubtitle.textContent = "Don't give up!";
+                resultsEmoji.innerHTML = '&#x1F4DA;';
+                scoreMessage.textContent = "Every expert was once a beginner. Try again!";
+                scoreRing.classList.add('learning');
             }
-        });
+
+            // Handle save score form
+            document.getElementById('save-score-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const playerName = document.getElementById('player-name').value.trim();
+
+                if (!playerName) return;
+
+                const button = e.target.querySelector('button');
+                button.disabled = true;
+                button.textContent = 'Saving...';
+
+                try {
+                    const response = await fetch(`/api/save-score?player_name=${encodeURIComponent(playerName)}&score=${score}&total_questions=${total}`, {
+                        method: 'POST'
+                    });
+                    const data = await response.json();
+
+                    document.getElementById('save-score-section').classList.add('hidden');
+                    const successDiv = document.getElementById('save-success');
+                    successDiv.classList.remove('hidden');
+
+                    if (data.made_leaderboard) {
+                        document.getElementById('success-text').innerHTML =
+                            `You made the leaderboard at <strong>#${data.rank}</strong>! &#x1F3C6;`;
+                        confetti({ particleCount: 50, spread: 60 });
+                    } else {
+                        document.getElementById('success-text').textContent = 'Score saved successfully!';
+                    }
+                } catch (error) {
+                    console.error('Error saving score:', error);
+                    button.disabled = false;
+                    button.textContent = 'Save to Leaderboard';
+                    alert('Could not save score. Please try again.');
+                }
+            });
+        }
     </script>
 </body>
 </html>

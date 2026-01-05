@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playing - BrainRace</title>
+    <title>Room Game - BrainRace</title>
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="game-page">
     <div class="game-container">
+        <!-- Room Header -->
+        <div class="room-game-header">
+            <span class="room-badge">&#x1F310; Room: <strong id="room-code-display">{{ room_code }}</strong></span>
+        </div>
+
         <!-- Stats Bar -->
         <header class="game-header">
             <div class="stats-row">
@@ -20,23 +25,19 @@
                     </div>
                 </div>
 
-                <div class="stat-item stat-lives">
-                    <div class="stat-icon">&#x2764;&#xFE0F;</div>
-                    <div class="stat-content">
-                        <span class="stat-label">Lives</span>
-                        <div class="lives-display" id="lives-display">
-                            <span class="life-heart active">&#x2764;</span>
-                            <span class="life-heart active">&#x2764;</span>
-                            <span class="life-heart active">&#x2764;</span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="stat-item stat-streak">
                     <div class="stat-icon">&#x1F525;</div>
                     <div class="stat-content">
                         <span class="stat-label">Streak</span>
                         <span class="stat-value" id="streak">0</span>
+                    </div>
+                </div>
+
+                <div class="stat-item stat-correct">
+                    <div class="stat-icon">&#x2705;</div>
+                    <div class="stat-content">
+                        <span class="stat-label">Correct</span>
+                        <span class="stat-value" id="correct-count">0</span>
                     </div>
                 </div>
             </div>
@@ -107,6 +108,9 @@
         </div>
     </div>
 
-    <script src="/static/game.js"></script>
+    <script>
+        const ROOM_CODE = '{{ room_code }}';
+    </script>
+    <script src="/static/room-game.js"></script>
 </body>
 </html>

@@ -1,37 +1,26 @@
 // ============================================
-// BRAINRACE - Enhanced Game Logic
-// Supports Solo and Local Multiplayer
+// BRAINRACE - Room-Based Game Logic
+// For async multiplayer room play
 // ============================================
 
-class BrainRaceGame {
-    constructor() {
+class RoomGame {
+    constructor(roomCode) {
+        this.roomCode = roomCode;
+        this.playerName = sessionStorage.getItem('username') || 'Player';
         this.questions = [];
         this.currentQuestionIndex = 0;
         this.answered = false;
 
-        // Game mode
-        this.gameMode = sessionStorage.getItem('gameMode') || 'solo';
-        this.isMultiplayer = this.gameMode === 'local';
-
-        // Player management
-        if (this.isMultiplayer) {
-            this.players = JSON.parse(sessionStorage.getItem('players') || '[]');
-            this.playerCount = this.players.length;
-            this.currentPlayerIndex = 0;
-            this.playerScores = this.players.map(() => ({ score: 0, streak: 0, bestStreak: 0, correct: 0 }));
-        } else {
-            this.players = [sessionStorage.getItem('username') || 'Player'];
-            this.playerCount = 1;
-            this.currentPlayerIndex = 0;
-            this.playerScores = [{ score: 0, streak: 0, bestStreak: 0, correct: 0 }];
-        }
-
-        this.lives = 3;
+        // Score tracking
+        this.score = 0;
+        this.streak = 0;
+        this.bestStreak = 0;
+        this.correctCount = 0;
 
         // DOM Elements
         this.scoreDisplay = document.getElementById('score');
-        this.livesDisplay = document.getElementById('lives-display');
         this.streakDisplay = document.getElementById('streak');
+        this.correctDisplay = document.getElementById('correct-count');
         this.progressFill = document.getElementById('progress-fill');
         this.progressText = document.getElementById('progress-text');
         this.eraBadge = document.getElementById('era-badge');
@@ -52,81 +41,15 @@ class BrainRaceGame {
         this.init();
     }
 
-    get currentPlayer() {
-        return this.players[this.currentPlayerIndex];
-    }
-
-    get currentPlayerScore() {
-        return this.playerScores[this.currentPlayerIndex];
-    }
-
     async init() {
         await this.loadQuestions();
-        this.setupMultiplayerUI();
         this.displayQuestion();
         this.setupEventListeners();
-        this.updateLivesDisplay();
-    }
-
-    setupMultiplayerUI() {
-        if (this.isMultiplayer) {
-            // Add player indicator to the header
-            const header = document.querySelector('.game-header');
-            const playerIndicator = document.createElement('div');
-            playerIndicator.id = 'player-indicator';
-            playerIndicator.className = 'player-indicator';
-            header.insertBefore(playerIndicator, header.firstChild);
-
-            // Add scoreboard
-            const scoreboard = document.createElement('div');
-            scoreboard.id = 'multiplayer-scoreboard';
-            scoreboard.className = 'multiplayer-scoreboard';
-            header.parentNode.insertBefore(scoreboard, header.nextSibling);
-
-            this.updatePlayerIndicator();
-            this.updateScoreboard();
-        }
-    }
-
-    updatePlayerIndicator() {
-        if (!this.isMultiplayer) return;
-        const indicator = document.getElementById('player-indicator');
-        if (indicator) {
-            indicator.innerHTML = `
-                <span class="current-player-label">Current Turn:</span>
-                <span class="current-player-name">${this.currentPlayer}</span>
-            `;
-        }
-    }
-
-    updateScoreboard() {
-        if (!this.isMultiplayer) return;
-        const scoreboard = document.getElementById('multiplayer-scoreboard');
-        if (scoreboard) {
-            scoreboard.innerHTML = this.players.map((player, idx) => `
-                <div class="scoreboard-player ${idx === this.currentPlayerIndex ? 'active' : ''}">
-                    <span class="player-name">${player}</span>
-                    <span class="player-score">${this.playerScores[idx].score}</span>
-                </div>
-            `).join('');
-        }
     }
 
     async loadQuestions() {
         try {
-            const categories = sessionStorage.getItem('selectedCategories') || '';
-            const difficulty = sessionStorage.getItem('difficulty') || 'progressive';
-
-            // For multiplayer, get more questions (questionsPerPlayer * playerCount)
-            const questionCount = this.isMultiplayer ? Math.min(this.playerCount * 5, 20) : 10;
-
-            let url = `/api/questions?count=${questionCount}`;
-            if (categories) {
-                url += `&categories=${encodeURIComponent(categories)}`;
-            }
-            url += `&difficulty=${encodeURIComponent(difficulty)}`;
-
-            const response = await fetch(url);
+            const response = await fetch(`/api/rooms/${this.roomCode}/questions`);
             const data = await response.json();
             this.questions = data.questions;
         } catch (error) {
@@ -144,11 +67,6 @@ class BrainRaceGame {
         if (!question) return;
 
         this.answered = false;
-
-        // Update player indicator for multiplayer
-        if (this.isMultiplayer) {
-            this.updatePlayerIndicator();
-        }
 
         // Update question number and text
         this.questionNumber.textContent = `Question ${this.currentQuestionIndex + 1}`;
@@ -171,10 +89,6 @@ class BrainRaceGame {
         this.funFactContainer.classList.add('hidden');
         this.nextButton.classList.add('hidden');
         this.nextButton.classList.remove('finish');
-
-        // Update score display for current player
-        this.scoreDisplay.textContent = this.currentPlayerScore.score;
-        this.streakDisplay.textContent = this.currentPlayerScore.streak;
 
         // Animate question card
         const questionCard = document.getElementById('question-card');
@@ -218,30 +132,6 @@ class BrainRaceGame {
         `;
     }
 
-    updateLivesDisplay() {
-        const hearts = this.livesDisplay.querySelectorAll('.life-heart');
-        hearts.forEach((heart, index) => {
-            if (index < this.lives) {
-                heart.classList.remove('lost');
-            } else {
-                heart.classList.add('lost');
-            }
-        });
-    }
-
-    loseLife() {
-        const hearts = this.livesDisplay.querySelectorAll('.life-heart');
-        const heartToLose = hearts[this.lives - 1];
-        if (heartToLose) {
-            heartToLose.classList.add('losing');
-            setTimeout(() => {
-                heartToLose.classList.remove('losing');
-                heartToLose.classList.add('lost');
-            }, 400);
-        }
-        this.lives--;
-    }
-
     generateChoices(choices) {
         const letters = ['A', 'B', 'C', 'D'];
         this.choicesContainer.innerHTML = choices.map((choice, index) => `
@@ -280,28 +170,21 @@ class BrainRaceGame {
 
             selectedButton.classList.remove('selected');
 
-            const playerScore = this.currentPlayerScore;
-
             if (result.correct) {
                 selectedButton.classList.add('correct');
                 const points = result.points || 10;
-                playerScore.score += points;
-                playerScore.streak++;
-                playerScore.correct++;
-                if (playerScore.streak > playerScore.bestStreak) {
-                    playerScore.bestStreak = playerScore.streak;
+                this.score += points;
+                this.streak++;
+                this.correctCount++;
+                if (this.streak > this.bestStreak) {
+                    this.bestStreak = this.streak;
                 }
-                this.scoreDisplay.textContent = playerScore.score;
-                this.streakDisplay.textContent = playerScore.streak;
+                this.scoreDisplay.textContent = this.score;
+                this.streakDisplay.textContent = this.streak;
+                this.correctDisplay.textContent = this.correctCount;
 
-                const streakItem = document.querySelector('.stat-streak');
-                if (playerScore.streak >= 2) {
-                    streakItem.classList.add('on-fire');
-                    setTimeout(() => streakItem.classList.remove('on-fire'), 500);
-                }
-
-                if (playerScore.streak === 3 || playerScore.streak === 5 || playerScore.streak === 7 || playerScore.streak === 10) {
-                    this.showStreakPopup(playerScore.streak);
+                if (this.streak === 3 || this.streak === 5 || this.streak === 7 || this.streak === 10) {
+                    this.showStreakPopup(this.streak);
                 }
 
                 this.showFeedback(true);
@@ -309,18 +192,10 @@ class BrainRaceGame {
             } else {
                 selectedButton.classList.add('wrong');
                 buttons[result.correct_answer].classList.add('correct');
-                playerScore.streak = 0;
-                this.streakDisplay.textContent = playerScore.streak;
-                if (!this.isMultiplayer) {
-                    this.loseLife();
-                }
+                this.streak = 0;
+                this.streakDisplay.textContent = this.streak;
                 this.showFeedback(false);
                 this.showAnswerResult(false);
-            }
-
-            // Update scoreboard
-            if (this.isMultiplayer) {
-                this.updateScoreboard();
             }
 
             buttons.forEach((btn, index) => {
@@ -354,17 +229,16 @@ class BrainRaceGame {
         this.answerResult.classList.remove('hidden', 'correct', 'wrong');
         this.answerResult.classList.add(correct ? 'correct' : 'wrong');
 
-        const playerScore = this.currentPlayerScore;
         if (correct) {
             this.resultIcon.innerHTML = '\u2705';
-            if (playerScore.streak >= 3) {
-                this.resultText.textContent = `Correct! ${playerScore.streak} in a row!`;
+            if (this.streak >= 3) {
+                this.resultText.textContent = `Correct! ${this.streak} in a row!`;
             } else {
-                this.resultText.textContent = this.isMultiplayer ? `${this.currentPlayer} got it!` : 'Correct!';
+                this.resultText.textContent = 'Correct!';
             }
         } else {
             this.resultIcon.innerHTML = '\u274C';
-            this.resultText.textContent = this.isMultiplayer ? `${this.currentPlayer} missed it!` : 'Not quite!';
+            this.resultText.textContent = 'Not quite!';
         }
     }
 
@@ -386,8 +260,7 @@ class BrainRaceGame {
             10: 'PERFECT 10!'
         };
 
-        const prefix = this.isMultiplayer ? `${this.currentPlayer}: ` : '';
-        this.streakPopupText.textContent = prefix + (messages[streak] || `${streak} in a row!`);
+        this.streakPopupText.textContent = messages[streak] || `${streak} in a row!`;
         this.streakPopup.classList.remove('hidden');
 
         this.streakPopup.style.animation = 'none';
@@ -400,11 +273,6 @@ class BrainRaceGame {
     }
 
     nextQuestion() {
-        // Rotate to next player in multiplayer
-        if (this.isMultiplayer) {
-            this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playerCount;
-        }
-
         if (this.currentQuestionIndex < this.questions.length - 1) {
             this.currentQuestionIndex++;
             this.displayQuestion();
@@ -413,33 +281,34 @@ class BrainRaceGame {
         }
     }
 
-    finishGame() {
-        if (this.isMultiplayer) {
-            // Store multiplayer results
-            const results = this.players.map((player, idx) => ({
-                name: player,
-                score: this.playerScores[idx].score,
-                correct: this.playerScores[idx].correct,
-                bestStreak: this.playerScores[idx].bestStreak
-            }));
-            // Sort by score descending
-            results.sort((a, b) => b.score - a.score);
-            sessionStorage.setItem('multiplayerResults', JSON.stringify(results));
-            sessionStorage.setItem('totalQuestions', this.questions.length);
-            window.location.href = '/results?mode=multiplayer';
-        } else {
-            const params = new URLSearchParams({
-                score: this.playerScores[0].score,
-                total: this.questions.length,
-                streak: this.playerScores[0].bestStreak,
-                lives: this.lives
+    async finishGame() {
+        // Save score to room
+        try {
+            const response = await fetch(`/api/rooms/${this.roomCode}/score?player_name=${encodeURIComponent(this.playerName)}&score=${this.score}&correct_count=${this.correctCount}&best_streak=${this.bestStreak}`, {
+                method: 'POST'
             });
-            window.location.href = `/results?${params.toString()}`;
+            const data = await response.json();
+
+            // Store result info for results page
+            sessionStorage.setItem('roomGameResult', JSON.stringify({
+                score: this.score,
+                correctCount: this.correctCount,
+                bestStreak: this.bestStreak,
+                totalQuestions: this.questions.length,
+                rank: data.rank
+            }));
+
+            // Redirect to room results
+            window.location.href = `/room/${this.roomCode}/results`;
+        } catch (error) {
+            console.error('Error saving score:', error);
+            // Still redirect to results
+            window.location.href = `/room/${this.roomCode}/results`;
         }
     }
 }
 
 // Initialize game when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    new BrainRaceGame();
+    new RoomGame(ROOM_CODE);
 });

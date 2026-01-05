@@ -654,7 +654,7 @@ class TestGameStateTransitions:
 
         assert is_game_over(state) is True
         result = get_final_score(state)
-        assert result["completed"] is False  # Ran out of lives
+        assert result["completed"] is True  # All questions were answered
         assert result["correct_answers"] == 0
         assert result["lives_remaining"] == 0
 

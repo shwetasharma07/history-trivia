@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Multiplayer - BrainRace</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="lobby-page">
+    <div class="lobby-container">
+        <div class="lobby-card bounce-in">
+            <div class="lobby-header">
+                <a href="/" class="back-link">&#x2190; Back</a>
+                <h1 class="lobby-title">
+                    <span>&#x1F310;</span>
+                    Online Multiplayer
+                </h1>
+                <p class="lobby-subtitle">Create a room or join with a code</p>
+            </div>
+
+            {% if error %}
+            <div class="error-message">
+                <span>&#x26A0;&#xFE0F;</span> {{ error }}
+            </div>
+            {% endif %}
+
+            <!-- Tab Selector -->
+            <div class="lobby-tabs">
+                <button class="tab-btn active" data-tab="create">Create Room</button>
+                <button class="tab-btn" data-tab="join">Join Room</button>
+            </div>
+
+            <!-- Create Room Tab -->
+            <div class="tab-content active" id="create-tab">
+                <form id="create-form" class="lobby-form">
+                    <div class="form-group">
+                        <label for="host-name">Your Name</label>
+                        <input type="text" id="host-name" placeholder="Enter your name..." maxlength="20" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categories</label>
+                        <div class="category-chips">
+                            <label class="chip">
+                                <input type="checkbox" name="category" value="ancient-civilizations" checked>
+                                <span>&#x1F3FA; Ancient</span>
+                            </label>
+                            <label class="chip">
+                                <input type="checkbox" name="category" value="medieval-europe" checked>
+                                <span>&#x2694;&#xFE0F; Medieval</span>
+                            </label>
+                            <label class="chip">
+                                <input type="checkbox" name="category" value="world-wars" checked>
+                                <span>&#x1F3C6; World Wars</span>
+                            </label>
+                            <label class="chip">
+                                <input type="checkbox" name="category" value="cold-war" checked>
+                                <span>&#x2744;&#xFE0F; Cold War</span>
+                            </label>
+                            <label class="chip">
+                                <input type="checkbox" name="category" value="ancient-philosophy" checked>
+                                <span>&#x1F4DC; Philosophy</span>
+                            </label>
+                            <label class="chip">
+                                <input type="checkbox" name="category" value="revolutionary-periods" checked>
+                                <span>&#x1F525; Revolution</span>
+                            </label>
+                            <label class="chip">
+                                <input type="checkbox" name="category" value="science" checked>
+                                <span>&#x1F52C; Science</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Difficulty</label>
+                        <div class="difficulty-chips">
+                            <label class="chip">
+                                <input type="radio" name="difficulty" value="progressive" checked>
+                                <span>&#x1F4C8; Progressive</span>
+                            </label>
+                            <label class="chip">
+                                <input type="radio" name="difficulty" value="easy">
+                                <span>&#x1F7E2; Easy</span>
+                            </label>
+                            <label class="chip">
+                                <input type="radio" name="difficulty" value="medium">
+                                <span>&#x1F7E1; Medium</span>
+                            </label>
+                            <label class="chip">
+                                <input type="radio" name="difficulty" value="hard">
+                                <span>&#x1F534; Hard</span>
+                            </label>
+                            <label class="chip">
+                                <input type="radio" name="difficulty" value="mixed">
+                                <span>&#x1F500; Mixed</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="create-btn">
+                        <span>&#x1F680;</span> Create Room
+                    </button>
+                </form>
+            </div>
+
+            <!-- Join Room Tab -->
+            <div class="tab-content" id="join-tab">
+                <form id="join-form" class="lobby-form">
+                    <div class="form-group">
+                        <label for="player-name">Your Name</label>
+                        <input type="text" id="player-name" placeholder="Enter your name..." maxlength="20" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="room-code">Room Code</label>
+                        <input type="text" id="room-code" placeholder="Enter 6-letter code..." maxlength="6" class="code-input" required>
+                    </div>
+
+                    <button type="submit" class="join-btn">
+                        <span>&#x1F465;</span> Join Room
+                    </button>
+                </form>
+            </div>
+
+            <div class="lobby-footer">
+                <a href="/" class="home-link">&#x1F3E0; Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const createForm = document.getElementById('create-form');
+            const joinForm = document.getElementById('join-form');
+            const roomCodeInput = document.getElementById('room-code');
+
+            // Load saved username
+            const savedUsername = sessionStorage.getItem('username');
+            if (savedUsername) {
+                document.getElementById('host-name').value = savedUsername;
+                document.getElementById('player-name').value = savedUsername;
+            }
+
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+                });
+            });
+
+            // Room code formatting
+            roomCodeInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            });
+
+            // Create room
+            createForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const hostName = document.getElementById('host-name').value.trim();
+                const categories = Array.from(document.querySelectorAll('#create-tab input[name="category"]:checked'))
+                    .map(cb => cb.value).join(',');
+                const difficulty = document.querySelector('#create-tab input[name="difficulty"]:checked').value;
+
+                if (!hostName) {
+                    alert('Please enter your name');
+                    return;
+                }
+
+                if (!categories) {
+                    alert('Please select at least one category');
+                    return;
+                }
+
+                const btn = createForm.querySelector('button');
+                btn.disabled = true;
+                btn.innerHTML = '<span>&#x23F3;</span> Creating...';
+
+                try {
+                    const response = await fetch(`/api/rooms/create?host_name=${encodeURIComponent(hostName)}&categories=${encodeURIComponent(categories)}&difficulty=${difficulty}`, {
+                        method: 'POST'
+                    });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        sessionStorage.setItem('username', hostName);
+                        sessionStorage.setItem('roomCode', data.room_code);
+                        window.location.href = `/room/${data.room_code}`;
+                    } else {
+                        alert(data.error || 'Failed to create room');
+                        btn.disabled = false;
+                        btn.innerHTML = '<span>&#x1F680;</span> Create Room';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to create room. Please try again.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>&#x1F680;</span> Create Room';
+                }
+            });
+
+            // Join room
+            joinForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const playerName = document.getElementById('player-name').value.trim();
+                const roomCode = roomCodeInput.value.trim();
+
+                if (!playerName) {
+                    alert('Please enter your name');
+                    return;
+                }
+
+                if (roomCode.length !== 6) {
+                    alert('Please enter a valid 6-character room code');
+                    return;
+                }
+
+                const btn = joinForm.querySelector('button');
+                btn.disabled = true;
+                btn.innerHTML = '<span>&#x23F3;</span> Joining...';
+
+                try {
+                    const response = await fetch(`/api/rooms/join?room_code=${roomCode}&player_name=${encodeURIComponent(playerName)}`, {
+                        method: 'POST'
+                    });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        sessionStorage.setItem('username', playerName);
+                        sessionStorage.setItem('roomCode', roomCode);
+                        window.location.href = `/room/${roomCode}`;
+                    } else {
+                        alert(data.error || 'Failed to join room');
+                        btn.disabled = false;
+                        btn.innerHTML = '<span>&#x1F465;</span> Join Room';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Room not found or expired. Please check the code.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>&#x1F465;</span> Join Room';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

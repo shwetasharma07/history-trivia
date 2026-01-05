@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Game - BrainRace</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="realtime-page">
+    <div class="realtime-container">
+        <!-- Waiting Room -->
+        <div class="waiting-room" id="waiting-room">
+            <div class="waiting-card bounce-in">
+                <div class="waiting-header">
+                    <div class="room-code-display">
+                        <span class="room-label">Room Code</span>
+                        <div class="room-code-box large">
+                            <span class="room-code" id="display-room-code">-----</span>
+                            <button class="copy-btn" id="copy-btn">&#x1F4CB;</button>
+                        </div>
+                        <p class="share-hint">Share this code with friends!</p>
+                    </div>
+                </div>
+
+                <div class="players-waiting">
+                    <h3>&#x1F465; Players (<span id="player-count">0</span>)</h3>
+                    <div class="player-list" id="player-list">
+                        <!-- Players will be added here -->
+                    </div>
+                </div>
+
+                <div class="waiting-actions" id="host-actions">
+                    <button class="start-game-btn" id="start-btn" disabled>
+                        <span>&#x26A1;</span>
+                        <span>Start Game</span>
+                    </button>
+                    <p class="min-players-hint">Need at least 2 players to start</p>
+                </div>
+
+                <div class="waiting-actions guest-notice" id="guest-notice" style="display: none;">
+                    <p>&#x23F3; Waiting for host to start the game...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Countdown Overlay -->
+        <div class="countdown-overlay hidden" id="countdown-overlay">
+            <div class="countdown-number" id="countdown-number">3</div>
+        </div>
+
+        <!-- Game Area -->
+        <div class="game-area hidden" id="game-area">
+            <!-- Live Scoreboard -->
+            <div class="live-scoreboard" id="live-scoreboard">
+                <!-- Scores will be updated here -->
+            </div>
+
+            <!-- Timer -->
+            <div class="timer-bar">
+                <div class="timer-fill" id="timer-fill"></div>
+                <span class="timer-text" id="timer-text">15</span>
+            </div>
+
+            <!-- Question Card -->
+            <div class="rt-question-card" id="question-card">
+                <div class="rt-question-header">
+                    <span class="rt-question-number" id="question-number">Question 1/10</span>
+                    <span class="rt-difficulty" id="difficulty-badge">Easy</span>
+                </div>
+                <h2 class="rt-question-text" id="question-text">Loading...</h2>
+
+                <div class="rt-choices" id="choices-container">
+                    <!-- Choices will be added here -->
+                </div>
+            </div>
+
+            <!-- Answer Result -->
+            <div class="answer-overlay hidden" id="answer-overlay">
+                <div class="answer-result-card" id="answer-result-card">
+                    <div class="correct-answer" id="correct-answer-display"></div>
+                    <div class="explanation" id="explanation-text"></div>
+                    <div class="round-results" id="round-results">
+                        <!-- Results will be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over -->
+        <div class="game-over hidden" id="game-over">
+            <div class="game-over-card bounce-in">
+                <div class="winner-display" id="winner-display">
+                    <span class="winner-emoji">&#x1F3C6;</span>
+                    <h1 class="winner-name" id="winner-name">Winner!</h1>
+                </div>
+
+                <div class="final-standings" id="final-standings">
+                    <!-- Final standings will be added here -->
+                </div>
+
+                <div class="game-over-actions">
+                    <a href="/realtime" class="action-button play-again">
+                        <span>&#x26A1;</span> Play Again
+                    </a>
+                    <a href="/" class="action-button go-home">
+                        <span>&#x1F3E0;</span> Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-toast hidden" id="copy-toast">Code copied!</div>
+
+    <script>
+        const ROOM_CODE = '{{ room_code }}';
+    </script>
+    <script src="/static/realtime-game.js"></script>
+</body>
+</html>

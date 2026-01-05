@@ -101,12 +101,12 @@ class TestGetCategories:
     def test_contains_expected_categories(self):
         """Should contain all expected categories."""
         categories = get_categories()
-        expected = ["ancient", "medieval", "modern", "world-wars"]
+        expected = ["ancient-civilizations", "medieval-europe", "world-wars", "cold-war", "ancient-philosophy", "revolutionary-periods", "science"]
         assert categories == expected
 
-    def test_returns_four_categories(self):
-        """Should return exactly four categories."""
-        assert len(get_categories()) == 4
+    def test_returns_seven_categories(self):
+        """Should return exactly seven categories."""
+        assert len(get_categories()) == 7
 
 
 class TestGetDifficulties:
@@ -408,8 +408,8 @@ class TestLoadQuestionsFromFile:
         result = _load_questions_from_file()
         assert isinstance(result, dict)
         # Should have the expected categories
-        assert "ancient" in result
-        assert "medieval" in result
+        assert "ancient-civilizations" in result
+        assert "medieval-europe" in result
 
     def test_real_file_has_expected_structure(self):
         """Real file should have nested category->difficulty structure."""
@@ -434,10 +434,10 @@ class TestIntegration:
 
     def test_filter_real_ancient_questions(self):
         """Should filter real ancient history questions."""
-        result = get_questions(count=20, category="ancient")
+        result = get_questions(count=20, category="ancient-civilizations")
         assert len(result) > 0
         for q in result:
-            assert q["category"] == "ancient"
+            assert q["category"] == "ancient-civilizations"
 
     def test_filter_real_hard_questions(self):
         """Should filter real hard questions."""
